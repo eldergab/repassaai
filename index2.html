@@ -171,13 +171,13 @@
         </div>
     </section>
 
-    <!-- Generator Section (Interactive Canvas with JSON Company Support) -->
+    <!-- Generator Section (Interactive Canvas with Auto-Loaded JSON Support) -->
     <section id="gerador" class="py-20 bg-slate-50 border-t border-b border-slate-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-2xl mx-auto mb-12">
                 <span class="text-xs font-bold text-brand-purple uppercase tracking-wider bg-purple-100 px-3 py-1 rounded-full">Gerador de Selo</span>
                 <h2 class="text-3xl sm:text-4xl font-bold font-heading text-slate-900 mt-3 mb-2">Monte seu Card Personalizado</h2>
-                <p class="text-slate-600 text-sm sm:text-base">Adicione seu nome, foto e escolha a empresa apoiadora cadastrada para se posicionar publicamente.</p>
+                <p class="text-slate-600 text-sm sm:text-base">Adicione seu nome e sua foto. O selo institucional de apoio da empresa aparecerá automaticamente no card.</p>
             </div>
 
             <div class="grid lg:grid-cols-12 gap-10 items-start max-w-6xl mx-auto">
@@ -189,13 +189,10 @@
                         <input type="text" id="inputName" placeholder="Ex: Maria Silva" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-purple/50 focus:border-brand-purple transition-all text-slate-800 text-sm" value="Apoiador da Causa" oninput="updateCanvas()">
                     </div>
 
-                    <!-- Seletor de Empresa Cadastrada (Lê do JSON/TXT do GitHub) -->
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Empresa Apoiadora (Opcional)</label>
-                        <select id="selectCompany" onchange="updateCanvas()" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-purple/50 text-sm text-slate-800 bg-white">
-                            <option value="">-- Nenhum / Apenas Apoiador --</option>
-                        </select>
-                        <p class="text-[11px] text-slate-500 mt-1">As empresas cadastradas aparecem aqui automaticamente.</p>
+                    <!-- Indicador visual da Empresa carregada automaticamente -->
+                    <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-3.5">
+                        <span class="block text-[11px] font-bold uppercase tracking-wider text-brand-purple mb-0.5">Empresa Apoiadora Oficial</span>
+                        <div id="companyBadgeInfo" class="text-sm font-semibold text-slate-800">Carregando apoiador...</div>
                     </div>
 
                     <div>
@@ -364,7 +361,9 @@
         let selectedAvatar = '✊🏽';
         let repsCount = 12480;
         let cardsCount = 8920;
-        let listaApoiadores = []; // Armazenará os dados carregados do GitHub
+        
+        // Dados da empresa apoiadora que serão lidos automaticamente do GitHub
+        let empresaApoiadoraAtual = { nome: "Carregando...", telefone: "" };
 
         const themes = {
             purple: {
@@ -391,28 +390,34 @@
         };
 
         window.onload = function() {
-            carregarApoiadoresDoGitHub();
+            carregarApoiadorDoGitHub();
             updateCanvas();
         };
 
-        // Função que busca o arquivo de apoiadores gravado no repositório
-        function carregarApoiadoresDoGitHub() {
+        // Função que busca automaticamente o arquivo JSON do repositório
+        function carregarApoiadorDoGitHub() {
             fetch('apoiadores.json')
                 .then(response => response.json())
                 .then(data => {
-                    listaApoiadores = data;
-                    const select = document.getElementById('selectCompany');
-                    
-                    // Preenche o <select> com as empresas vindas do arquivo
-                    data.forEach((apoiador, index) => {
-                        const option = document.createElement('option');
-                        option.value = index; // guarda a posição no array
-                        option.textContent = apoiador.nome;
-                        select.appendChild(option);
-                    });
+                    // Se houver empresas cadastradas no JSON, pega a primeira (ou a mais recente)
+                    if (Array.isArray(data) && data.length > 0) {
+                        empresaApoiadoraAtual = data[data.length - 1]; // Pega a última cadastrada ou fixa
+                    } else if (data.nome) {
+                        empresaApoiadoraAtual = data;
+                    }
+
+                    // Atualiza o aviso visual no painel do site
+                    document.getElementById('companyBadgeInfo').innerText = 
+                        `${empresaApoiadoraAtual.nome} (${empresaApoiadoraAtual.telefone || 'Apoio Oficial'})`;
+
+                    // Atualiza o desenho no canvas instantaneamente
+                    updateCanvas();
                 })
                 .catch(error => {
-                    console.log('Nenhum arquivo de apoiadores carregado ainda ou erro:', error);
+                    console.log('Erro ao carregar apoiadores.json:', error);
+                    empresaApoiadoraAtual = { nome: "Movimento Comunitário", telefone: "" };
+                    document.getElementById('companyBadgeInfo').innerText = "Apoio Comunitário Oficial";
+                    updateCanvas();
                 });
         }
 
@@ -447,18 +452,6 @@
             const canvas = document.getElementById('cardCanvas');
             const ctx = canvas.getContext('2d');
             const name = document.getElementById('inputName').value.trim() || "Apoiador da Causa";
-            
-            // Pega a empresa selecionada no select automático
-            const select = document.getElementById('selectCompany');
-            const selectedIndex = select.value;
-            let companyName = "";
-            let companyPhone = "";
-
-            if (selectedIndex !== "" && listaApoiadores[selectedIndex]) {
-                companyName = listaApoiadores[selectedIndex].nome;
-                companyPhone = listaApoiadores[selectedIndex].telefone;
-            }
-
             const theme = themes[currentTheme];
 
             // Canvas Dimensions: 600 x 750
@@ -552,16 +545,16 @@
             ctx.font = '600 15px "Inter", sans-serif';
             ctx.fillText('#RespeitoÀMulher #RepassaAí', 300, 470);
 
-            // Bloco de Apoio Empresarial Automático (se selecionado)
-            if (companyName) {
+            // Bloco Automático da Empresa Apoiadora (Lido do GitHub)
+            if (empresaApoiadoraAtual && empresaApoiadoraAtual.nome) {
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
                 roundRect(ctx, 60, 495, 480, 42, 10, true, false);
 
                 ctx.fillStyle = '#FFFFFF';
                 ctx.font = 'bold 13px "Inter", sans-serif';
-                let apoioTexto = `Apoio: ${companyName}`;
-                if (companyPhone) {
-                    apoioTexto += ` | Tel: ${companyPhone}`;
+                let apoioTexto = `Apoio: ${empresaApoiadoraAtual.nome}`;
+                if (empresaApoiadoraAtual.telefone) {
+                    apoioTexto += ` | Tel: ${empresaApoiadoraAtual.telefone}`;
                 }
                 ctx.fillText(apoioTexto, 300, 521);
             }
@@ -621,10 +614,9 @@
 
         function shareDirectWhatsApp() {
             const name = document.getElementById('inputName').value.trim() || "Apoiador da Causa";
-            const select = document.getElementById('selectCompany');
             let companyText = "";
-            if (select.value !== "" && listaApoiadores[select.value]) {
-                companyText = ` Apoio: ${listaApoiadores[select.value].nome}.`;
+            if (empresaApoiadoraAtual && empresaApoiadoraAtual.nome) {
+                companyText = ` Apoio: ${empresaApoiadoraAtual.nome}.`;
             }
 
             const msg = `Junte-se a mim nesse movimento! Respeito à mulher é nossa responsabilidade. Eu apoio essa causa.${companyText} Acesse e repasse você também: https://repassaai.com.br #RespeitoÀMulher #RepassaAí`;
