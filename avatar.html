@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Criador de Avatar & Selo de Apoio - RepassaAí</title>
+    <title>Criador de Avatar Cartoon - RepassaAí</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome para ícones -->
@@ -39,9 +39,9 @@
     <!-- Conteúdo Principal -->
     <main class="max-w-4xl mx-auto px-4 py-8 flex-1 w-full">
         <div class="text-center max-w-lg mx-auto mb-8">
-            <span class="text-xs font-bold text-brand-purple bg-purple-100 px-3 py-1 rounded-full uppercase tracking-wider">Criador de Avatar</span>
-            <h1 class="text-3xl font-bold font-heading text-slate-900 mt-2 mb-1">Transforme sua foto em Avatar</h1>
-            <p class="text-sm text-slate-600">Envie sua foto, escolha o filtro de desenho (clip art) e gere seu selo oficial de apoio com a empresa parceira.</p>
+            <span class="text-xs font-bold text-brand-purple bg-purple-100 px-3 py-1 rounded-full uppercase tracking-wider">Criador de Avatar Cartoon</span>
+            <h1 class="text-3xl font-bold font-heading text-slate-900 mt-2 mb-1">Transforme sua foto em Arte Cartoon</h1>
+            <p class="text-sm text-slate-600">Envie sua foto e o sistema aplicará o efeito de ilustração vetorial automaticamente junto com o selo da empresa parceira.</p>
         </div>
 
         <div class="grid md:grid-cols-12 gap-8 items-start">
@@ -53,7 +53,7 @@
                     <input type="text" id="inputName" placeholder="Seu Nome ou Apelido" class="w-full px-3 py-2 text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-purple" value="Apoiador(a)" oninput="drawAvatar()">
                 </div>
 
-                <!-- Info da Empresa Apoiadora (Lida direto do GitHub apoiadores.json) -->
+                <!-- Info da Empresa Apoiadora (Lida do GitHub) -->
                 <div class="bg-purple-50/70 border border-purple-100 rounded-xl p-3">
                     <span class="block text-[10px] font-bold text-brand-purple uppercase">Apoio Oficial (Carregado do GitHub)</span>
                     <div id="companyInfo" class="text-xs font-semibold text-slate-800 mt-0.5">Carregando apoiador...</div>
@@ -69,18 +69,17 @@
                     </label>
                 </div>
 
-                <!-- Estilo do Clip Art / Avatar -->
+                <!-- Estilo do Filtro Cartoon -->
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">Estilo do Avatar (Filtro Clip Art)</label>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Estilo do Filtro</label>
                     <select id="filterStyle" onchange="drawAvatar()" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-brand-purple">
-                        <option value="cartoon">Estilo Ilustração / Cartoon (Padrão)</option>
-                        <option value="sketch">Estilo Esboço a Traço (Preto e Branco)</option>
-                        <option value="popart">Estilo Pop Art Colorido</option>
-                        <option value="original">Foto Original com Moldura</option>
+                        <option value="cartoon">Estilo Cartoon Avançado (Padrão)</option>
+                        <option value="popart">Estilo Pop Art / Cores Vivas</option>
+                        <option value="clean">Foto Original com Moldura</option>
                     </select>
                 </div>
 
-                <!-- Botão de Download para Celular -->
+                <!-- Botão de Download -->
                 <button onclick="downloadAvatar()" class="w-full bg-brand-pink hover:bg-pink-600 text-white font-bold py-3 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 text-sm">
                     <i class="fa-solid fa-download"></i> Baixar Avatar no Celular
                 </button>
@@ -88,13 +87,13 @@
 
             <!-- Pré-visualização do Canvas -->
             <div class="md:col-span-7 flex flex-col items-center justify-center bg-slate-200/50 p-6 rounded-3xl border border-slate-300/50">
-                <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-3">Pré-visualização do Avatar</span>
+                <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-3">Pré-visualização em Tempo Real</span>
                 
                 <div class="w-full max-w-[360px] bg-white shadow-xl rounded-2xl overflow-hidden">
                     <canvas id="avatarCanvas" width="600" height="750" class="w-full h-auto block"></canvas>
                 </div>
                 <p class="text-[11px] text-slate-500 mt-3 text-center">
-                    <i class="fa-solid fa-mobile-screen mr-1"></i> Toque e segure na imagem gerada no celular para salvar caso o botão não abra direto.
+                    <i class="fa-solid fa-mobile-screen mr-1"></i> No celular, toque e segure na imagem gerada para salvar.
                 </p>
             </div>
 
@@ -103,27 +102,25 @@
 
     <!-- Footer -->
     <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500 mt-12">
-        &copy; 2026 repassaai.com.br — Criador de Avatar Comunitário.
+        &copy; 2026 repassaai.com.br — Criador de Avatar Cartoon.
     </footer>
 
-    <!-- Lógica JavaScript do Criador de Avatar e Leitura do JSON -->
+    <!-- Lógica JavaScript com Filtros Avançados de Cartoon -->
     <script>
         let uploadedImage = null;
         let empresaParceira = { nome: "Movimento Comunitário", telefone: "" };
 
         window.onload = function() {
             carregarApoiadorGitHub();
-            // Carrega um avatar padrão inicial se não houver foto
             gerarAvatarPadrao();
         };
 
-        // Lê o arquivo de apoiadores do GitHub automaticamente
         function carregarApoiadorGitHub() {
             fetch('apoiadores.json')
                 .then(res => res.json())
                 .then(data => {
                     if (Array.isArray(data) && data.length > 0) {
-                        empresaParceira = data[data.length - 1]; // Pega a última empresa cadastrada
+                        empresaParceira = data[data.length - 1];
                     } else if (data.nome) {
                         empresaParceira = data;
                     }
@@ -153,7 +150,6 @@
         }
 
         function gerarAvatarPadrao() {
-            // Desenha um avatar genérico de silhueta inicial se o usuário ainda não enviou foto
             const canvas = document.createElement('canvas');
             canvas.width = 300; canvas.height = 300;
             const ctx = canvas.getContext('2d');
@@ -182,7 +178,7 @@
             // Limpa o canvas (600x750)
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Fundo degradê moderno estilo Clip Art
+            // Fundo degradê moderno
             const bgGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
             bgGrad.addColorStop(0, '#31103F');
             bgGrad.addColorStop(0.5, '#4F46E5');
@@ -190,7 +186,7 @@
             ctx.fillStyle = bgGrad;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Círculo central para a foto/avatar
+            // Círculo central para o avatar
             const cx = 300, cy = 210, radius = 130;
 
             ctx.save();
@@ -200,7 +196,7 @@
             ctx.clip();
 
             if (uploadedImage) {
-                // Desenha a imagem centralizada no círculo
+                // Desenha a imagem base
                 const aspect = uploadedImage.width / uploadedImage.height;
                 let dw = radius * 2, dh = radius * 2;
                 if (aspect > 1) dw = dh * aspect;
@@ -208,13 +204,34 @@
                 
                 ctx.drawImage(uploadedImage, cx - dw/2, cy - dh/2, dw, dh);
 
-                // Aplicação de Filtros simulando efeito Clip Art / Desenho
-                if (filterType === 'sketch') {
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
-                    ctx.fillRect(cx - radius, cy - radius, radius * 2, radius * 2);
-                } else if (filterType === 'popart') {
-                    ctx.fillStyle = 'rgba(236, 72, 153, 0.2)';
-                    ctx.fillRect(cx - radius, cy - radius, radius * 2, radius * 2);
+                // APLICAÇÃO DOS FILTROS AVANÇADOS DIRETO NO CANVAS (CARTOON / POPART)
+                if (filterType !== 'clean') {
+                    const imgData = ctx.getImageData(cx - radius, cy - radius, radius * 2, radius * 2);
+                    const pixels = imgData.data;
+
+                    for (let i = 0; i < pixels.length; i += 4) {
+                        let r = pixels[i];
+                        let g = pixels[i + 1];
+                        let b = pixels[i + 2];
+
+                        if (filterType === 'cartoon') {
+                            // Posterização de cores (reduz tons para dar aspecto de desenho animado)
+                            const levels = 4;
+                            r = Math.floor(r / (256 / levels)) * (256 / levels);
+                            g = Math.floor(g / (256 / levels)) * (256 / levels);
+                            b = Math.floor(b / (256 / levels)) * (256 / levels);
+                        } else if (filterType === 'popart') {
+                            // Aumento drástico de saturação/contraste estilo Andy Warhol
+                            r = r > 125 ? 255 : 0;
+                            g = g > 125 ? 100 : 200;
+                            b = 255 - b;
+                        }
+
+                        pixels[i] = r;
+                        pixels[i + 1] = g;
+                        pixels[i + 2] = b;
+                    }
+                    ctx.putImageData(imgData, cx - radius, cy - radius);
                 }
             }
             ctx.restore();
@@ -237,7 +254,7 @@
             ctx.font = '600 15px "Inter", sans-serif';
             ctx.fillText('EMBAIXADOR(A) DA CAUSA', 300, 425);
 
-            // Caixa de Frase Principal (Estilo Clip Art Card)
+            // Caixa de Frase Principal
             ctx.fillStyle = 'rgba(255, 255, 255, 0.12)';
             roundRect(ctx, 50, 455, 500, 150, 16, true, false);
 
@@ -249,7 +266,7 @@
             ctx.font = 'bold 22px "Plus Jakarta Sans", sans-serif';
             wrapText(ctx, 'Respeito à mulher é nossa responsabilidade.', 300, 510, 420, 30);
 
-            // Bloco automático do Apoiador puxado do GitHub
+            // Bloco automático da Empresa Apoiadora (Lido do GitHub)
             if (empresaParceira && empresaParceira.nome) {
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
                 roundRect(ctx, 50, 625, 500, 45, 10, true, false);
@@ -303,7 +320,7 @@
         function downloadAvatar() {
             const canvas = document.getElementById('avatarCanvas');
             const link = document.createElement('a');
-            link.download = 'meu-avatar-repassaai.png';
+            link.download = 'meu-avatar-cartoon-repassaai.png';
             link.href = canvas.toDataURL('image/png');
             link.click();
         }
