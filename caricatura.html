@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Caricatura — Foto para Caricatura</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#eef4ff;color:#172033}
+header{background:#1565c0;color:white;padding:22px;text-align:center}
+header h1{margin:0 0 6px;font-size:30px}
+header p{margin:0;opacity:.9}
+main{max-width:1050px;margin:25px auto;padding:0 15px}
+.card{background:white;border-radius:18px;padding:20px;box-shadow:0 8px 30px #0001;margin-bottom:20px}
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+button,label.filebtn{border:0;border-radius:10px;padding:12px 16px;background:#1565c0;color:white;font-weight:bold;cursor:pointer}
+button.secondary{background:#607d8b}
+button.green{background:#16833b}
+button.red{background:#c62828}
+input[type=file]{display:none}
+.slider{display:flex;align-items:center;gap:8px;margin:8px 0}
+.slider input{width:170px}
+#previewWrap{position:relative;text-align:center;min-height:250px}
+canvas{max-width:100%;height:auto;border-radius:12px;background:#f5f5f5}
+#placeholder{padding:90px 20px;color:#789}
+#videoBox{display:none;text-align:center}
+video{max-width:100%;border-radius:12px;background:#111}
+.status{margin-top:10px;color:#555}
+.small{font-size:13px;color:#687386}
+</style>
+</head>
+<body>
+<header>
+<h1>🎨 Criador de Caricatura</h1>
+<p>Envie uma foto do computador ou use a câmera do celular/PC</p>
+</header>
+
+<main>
+<div class="card">
+<div class="controls">
+<label class="filebtn">📁 Escolher foto
+<input id="fileInput" type="file" accept="image/*">
+</label>
+<button id="cameraBtn">📷 Tirar foto</button>
+<button id="stopCamera" class="red" style="display:none">⏹ Parar câmera</button>
+</div>
+<p class="small">A imagem é processada no próprio navegador. Nenhuma foto é enviada para um servidor.</p>
+</div>
+
+<div class="card" id="videoBox">
+<video id="video" autoplay playsinline></video><br><br>
+<button id="captureBtn" class="green">📸 Capturar foto</button>
+</div>
+
+<div class="card">
+<h2>Resultado</h2>
+<div id="previewWrap">
+<div id="placeholder">Escolha uma foto para começar.</div>
+<canvas id="canvas" style="display:none"></canvas>
+</div>
+<p id="status" class="status"></p>
+</div>
+
+<div class="card">
+<h2>Estilo da caricatura</h2>
+<div class="slider">Intensidade <input id="strength" type="range" min="0" max="100" value="65"><span id="strengthVal">65</span></div>
+<div class="slider">Cores <input id="color" type="range" min="0" max="100" value="75"><span id="colorVal">75</span></div>
+<div class="controls">
+<button id="generate" class="green">✨ Gerar caricatura</button>
+<button id="download" class="secondary">⬇️ Baixar PNG</button>
+<button id="reset" class="red">🔄 Limpar</button>
+</div>
+</div>
+</main>
+
+<script>
+const fileInput=document.getElementById('fileInput');
+const canvas=document.getElementById('canvas');
+const ctx=canvas.getContext('2d',{willReadFrequently:true});
+const placeholder=document.getElementById('placeholder');
+const status=document.getElementById('status');
+const videoBox=document.getElementById('videoBox');
+const video=document.getElementById('video');
+let original=null, stream=null;
+
+function loadImage(src){
+ const img=new Image();
+ img.onload=()=>{
+   const max=1400, scale=Math.min(1,max/img.width,max/img.height);
+   canvas.width=Math.round(img.width*scale);
+   canvas.height=Math.round(img.height*scale);
+   ctx.drawImage(img,0,0,canvas.width,canvas.height);
+   original=ctx.getImageData(0,0,canvas.width,canvas.height);
+   canvas.style.display='block'; placeholder.style.display='none';
+   status.textContent='Foto carregada. Clique em “Gerar caricatura”.';
+ };
+ img.src=src;
+}
+fileInput.onchange=e=>{
+ const f=e.target.files[0]; if(!f)return;
+ const r=new FileReader(); r.onload=()=>loadImage(r.result); r.readAsDataURL(f);
+};
+
+document.getElementById('cameraBtn').onclick=async()=>{
+ try{
+   stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false});
+   video.srcObject=stream; videoBox.style.display='block';
+   document.getElementById('cameraBtn').style.display='none';
+   document.getElementById('stopCamera').style.display='inline-block';
+ }catch(e){alert('Não foi possível acessar a câmera. Verifique a permissão do navegador.');}
+};
+document.getElementById('stopCamera').onclick=stopCamera;
+function stopCamera(){
+ if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}
+ videoBox.style.display='none';
+ document.getElementById('cameraBtn').style.display='inline-block';
+ document.getElementById('stopCamera').style.display='none';
+}
+document.getElementById('captureBtn').onclick=()=>{
+ const c=document.createElement('canvas');
+ c.width=video.videoWidth;c.height=video.videoHeight;
+ c.getContext('2d').drawImage(video,0,0);
+ loadImage(c.toDataURL('image/jpeg',.95)); stopCamera();
+};
+
+const strength=document.getElementById('strength');
+const color=document.getElementById('color');
+strength.oninput=()=>document.getElementById('strengthVal').textContent=strength.value;
+color.oninput=()=>document.getElementById('colorVal').textContent=color.value;
+
+function caricature(){
+ if(!original){alert('Escolha ou tire uma foto primeiro.');return}
+ const w=canvas.width,h=canvas.height;
+ const src=original.data, out=ctx.createImageData(w,h), d=out.data;
+ const s=+strength.value/100, sat=+color.value/100;
+ // Suavização simples + saturação + realce de contornos.
+ function px(x,y,c){
+   x=Math.max(0,Math.min(w-1,x));y=Math.max(0,Math.min(h-1,y));
+   return src[(y*w+x)*4+c];
+ }
+ for(let y=0;y<h;y++){
+   for(let x=0;x<w;x++){
+     const i=(y*w+x)*4;
+     let r=px(x,y,0),g=px(x,y,1),b=px(x,y,2);
+     // Média local para aparência de desenho
+     let rr=0,gg=0,bb=0,n=0;
+     for(let yy=-1;yy<=1;yy++)for(let xx=-1;xx<=1;xx++){
+       rr+=px(x+xx,y+yy,0);gg+=px(x+xx,y+yy,1);bb+=px(x+xx,y+yy,2);n++;
+     }
+     r=rr/n;g=gg/n;b=bb/n;
+     const gray=.299*r+.587*g+.114*b;
+     const edge=Math.abs(gray-(.299*px(x+2,y,0)+.587*px(x+2,y,1)+.114*px(x+2,y,2)));
+     const edge2=Math.abs(gray-(.299*px(x,y+2,0)+.587*px(x,y+2,1)+.114*px(x,y+2,2)));
+     const line=Math.min(1,(edge+edge2)/90)*s;
+     const factor=1+(.35*s);
+     r=Math.max(0,Math.min(255,(r-128)*factor+128));
+     g=Math.max(0,Math.min(255,(g-128)*factor+128));
+     b=Math.max(0,Math.min(255,(b-128)*factor+128));
+     // Saturação
+     const lum=.299*r+.587*g+.114*b;
+     r=lum+(r-lum)*(1+.8*sat);
+     g=lum+(g-lum)*(1+.8*sat);
+     b=lum+(b-lum)*(1+.8*sat);
+     // Contorno escuro
+     r*=1-line*.72;g*=1-line*.72;b*=1-line*.72;
+     d[i]=Math.max(0,Math.min(255,r));d[i+1]=Math.max(0,Math.min(255,g));
+     d[i+2]=Math.max(0,Math.min(255,b));d[i+3]=255;
+   }
+ }
+ ctx.putImageData(out,0,0);
+ status.textContent='Caricatura gerada com sucesso!';
+}
+document.getElementById('generate').onclick=caricature;
+
+document.getElementById('download').onclick=()=>{
+ if(canvas.style.display==='none'){alert('Gere uma caricatura primeiro.');return}
+ const a=document.createElement('a');
+ a.download='minha-caricatura.png';a.href=canvas.toDataURL('image/png');a.click();
+};
+document.getElementById('reset').onclick=()=>{
+ stopCamera(); original=null; ctx.clearRect(0,0,canvas.width,canvas.height);
+ canvas.style.display='none';placeholder.style.display='block';status.textContent='';fileInput.value='';
+};
+</script>
+</body>
+</html>
