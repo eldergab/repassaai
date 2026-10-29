@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>repassaai.com.br - Respeito à mulher é nossa responsabilidade</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter e Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            purple: '#4F46E5',
+                            deepViolet: '#31103F',
+                            pink: '#EC4899',
+                            rose: '#F43F5E',
+                            softViolet: '#8B5CF6',
+                            lightBg: '#FAFAFC'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-text {
+            background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 50%, #4F46E5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #31103F 0%, #4C1D95 50%, #1E1B4B 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 10px 40px -10px rgba(79, 70, 229, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-brand-lightBg text-slate-800 font-sans antialiased selection:bg-brand-pink selection:text-white">
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-50 bg-white/85 backdrop-blur-md border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="text-2xl font-black font-heading tracking-tight text-slate-900">
+                    repassa<span class="text-brand-pink">aí</span><span class="text-brand-purple">.com.br</span>
+                </span>
+                <span class="hidden sm:inline-block ml-2 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-pink-100 text-brand-pink">
+                    Movimento Social
+                </span>
+            </div>
+            
+            <nav class="hidden md:flex items-center gap-8 font-medium text-slate-600 text-sm">
+                <a href="#manifesto" class="hover:text-brand-purple transition-colors">Manifesto</a>
+                <a href="#gerador" class="hover:text-brand-purple transition-colors">Criar Meu Card</a>
+                <a href="#proximas" class="hover:text-brand-purple transition-colors">Próximas Causas</a>
+            </nav>
+
+            <div>
+                <a href="#gerador" class="bg-brand-purple hover:bg-indigo-700 text-white font-semibold text-sm px-5 py-2.5 rounded-full transition-all duration-300 shadow-md hover:shadow-indigo-200 flex items-center gap-2">
+                    <i class="fa-solid fa-share-nodes"></i>
+                    <span>Repassar Mensagem</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden py-16 lg:py-24 gradient-bg text-white">
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-brand-pink/20 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-semibold uppercase tracking-wider text-pink-200 mb-6">
+                <span class="w-2 h-2 rounded-full bg-pink-400 animate-ping"></span>
+                Campanha Oficial de Lançamento
+            </span>
+            
+            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold font-heading tracking-tight max-w-4xl mx-auto leading-tight mb-6">
+                Respeito à mulher é <span class="bg-gradient-to-r from-pink-400 via-purple-300 to-indigo-300 bg-clip-text text-transparent">nossa responsabilidade.</span>
+            </h1>
+
+            <p class="text-lg sm:text-xl text-purple-100/90 max-w-2xl mx-auto mb-10 font-normal leading-relaxed">
+                Mensagens que transformam a sociedade começam com atitude. Junte-se ao movimento, gere seu selo de compromisso e repasse essa causa!
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="#gerador" class="w-full sm:w-auto bg-brand-pink hover:bg-pink-600 text-white font-bold text-base px-8 py-4 rounded-full transition-all shadow-lg hover:shadow-pink-500/30 transform hover:-translate-y-0.5 flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>Personalizar Meu Card</span>
+                </a>
+                <button onclick="shareDirectWhatsApp()" class="w-full sm:w-auto bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold text-base px-8 py-4 rounded-full backdrop-blur-md transition-all flex items-center justify-center gap-3">
+                    <i class="fa-brands fa-whatsapp text-green-400 text-xl"></i>
+                    <span>Repassar no WhatsApp</span>
+                </button>
+            </div>
+
+            <!-- Stats Counter Banner -->
+            <div class="mt-16 pt-10 border-t border-white/10 grid grid-cols-2 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
+                <div>
+                    <div class="text-3xl sm:text-4xl font-extrabold font-heading text-pink-300" id="counter-repasses">12.480</div>
+                    <div class="text-xs sm:text-sm text-purple-200 mt-1">Vozes Engajadas</div>
+                </div>
+                <div>
+                    <div class="text-3xl sm:text-4xl font-extrabold font-heading text-purple-300" id="counter-cards">8.920</div>
+                    <div class="text-xs sm:text-sm text-purple-200 mt-1">Cards Gerados</div>
+                </div>
+                <div class="col-span-2 md:col-span-1">
+                    <div class="text-3xl sm:text-4xl font-extrabold font-heading text-indigo-300">100%</div>
+                    <div class="text-xs sm:text-sm text-purple-200 mt-1">Impacto Coletivo</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Manifesto & Impact Section -->
+    <section id="manifesto" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-3xl mx-auto text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold font-heading text-slate-900 mb-4">
+                    Por que este recado precisa ser repassado?
+                </h2>
+                <p class="text-slate-600 text-base sm:text-lg">
+                    O <strong>RepassaAí</strong> nasceu para transformar o ato de compartilhar em uma corrente de conscientização social. Não basta concordar em silêncio; precisamos espalhar valores.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-pink-200 transition-all card-shadow">
+                    <div class="w-14 h-14 rounded-2xl bg-pink-100 text-brand-pink flex items-center justify-center text-2xl mb-6">
+                        <i class="fa-solid fa-bullhorn"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">Voz Ativa</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Dar visibilidade à pauta do respeito diário em casa, no trabalho, nas ruas e na internet.
+                    </p>
+                </div>
+
+                <div class="p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-purple-200 transition-all card-shadow">
+                    <div class="w-14 h-14 rounded-2xl bg-purple-100 text-brand-purple flex items-center justify-center text-2xl mb-6">
+                        <i class="fa-solid fa-handshake-angle"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">Responsabilidade Coletiva</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Segurança e dignidade feminina não são preocupações apenas das mulheres, mas de toda a sociedade.
+                    </p>
+                </div>
+
+                <div class="p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-indigo-200 transition-all card-shadow">
+                    <div class="w-14 h-14 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-2xl mb-6">
+                        <i class="fa-solid fa-share-nodes"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">Viral por uma Causa</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Usar o poder do "repasse" das redes para inundar a internet com empatia e educação.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Generator Section (Interactive Canvas with Auto-Loaded JSON Support) -->
+    <section id="gerador" class="py-20 bg-slate-50 border-t border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-xs font-bold text-brand-purple uppercase tracking-wider bg-purple-100 px-3 py-1 rounded-full">Gerador de Selo</span>
+                <h2 class="text-3xl sm:text-4xl font-bold font-heading text-slate-900 mt-3 mb-2">Monte seu Card Personalizado</h2>
+                <p class="text-slate-600 text-sm sm:text-base">Adicione seu nome e sua foto. O selo institucional de apoio da empresa aparecerá automaticamente no card.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-10 items-start max-w-6xl mx-auto">
+               
+                <!-- Form Inputs -->
+                <div class="lg:col-span-5 bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/80 shadow-sm space-y-5">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Seu Nome ou Apelido</label>
+                        <input type="text" id="inputName" placeholder="Ex: Maria Silva" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-purple/50 focus:border-brand-purple transition-all text-slate-800 text-sm" value="Apoiador da Causa" oninput="updateCanvas()">
+                    </div>
+
+                    <!-- Indicador visual da Empresa carregada automaticamente -->
+                    <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-3.5">
+                        <span class="block text-[11px] font-bold uppercase tracking-wider text-brand-purple mb-0.5">Empresa Apoiadora Oficial</span>
+                        <div id="companyBadgeInfo" class="text-sm font-semibold text-slate-800">Carregando apoiador...</div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Sua Foto de Perfil</label>
+                        <div class="flex items-center gap-4">
+                            <label class="flex-1 border-2 border-dashed border-slate-200 hover:border-brand-purple rounded-xl p-3 text-center cursor-pointer transition-colors bg-slate-50 hover:bg-purple-50/50">
+                                <i class="fa-solid fa-cloud-arrow-up text-brand-purple text-xl mb-1 block"></i>
+                                <span class="text-xs text-slate-600 font-medium">Carregar Foto</span>
+                                <input type="file" id="inputPhoto" accept="image/*" class="hidden" onchange="handlePhotoUpload(event)">
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Ou Escolha um Avatar</label>
+                        <div class="grid grid-cols-4 gap-2">
+                            <button onclick="selectAvatar('👩')" class="avatar-btn border border-slate-200 text-xl p-2 rounded-xl hover:bg-slate-100 transition-all">👩</button>
+                            <button onclick="selectAvatar('👨')" class="avatar-btn border border-slate-200 text-xl p-2 rounded-xl hover:bg-slate-100 transition-all">👨</button>
+                            <button onclick="selectAvatar('👩‍🦱')" class="avatar-btn border border-slate-200 text-xl p-2 rounded-xl hover:bg-slate-100 transition-all">👩‍🦱</button>
+                            <button onclick="selectAvatar('✊🏽')" class="avatar-btn border border-slate-200 text-xl p-2 rounded-xl hover:bg-slate-100 transition-all">✊🏽</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Estilo do Card</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button onclick="changeTheme('purple')" class="py-2 rounded-lg text-xs font-semibold border bg-purple-50 border-purple-300 text-purple-700">Roxo</button>
+                            <button onclick="changeTheme('dark')" class="py-2 rounded-lg text-xs font-semibold border bg-slate-800 border-slate-900 text-white">Escuro</button>
+                            <button onclick="changeTheme('pink')" class="py-2 rounded-lg text-xs font-semibold border bg-pink-50 border-pink-300 text-pink-700">Rosa</button>
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-t border-slate-100 flex flex-col gap-2.5">
+                        <button onclick="downloadCard()" class="w-full bg-brand-pink hover:bg-pink-600 text-white font-bold py-3 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 text-sm">
+                            <i class="fa-solid fa-download"></i>
+                            <span>Baixar Imagem (Card)</span>
+                        </button>
+                        <button onclick="shareDirectWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 text-sm">
+                            <i class="fa-brands fa-whatsapp text-lg"></i>
+                            <span>Repassar no WhatsApp</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Canvas Preview -->
+                <div class="lg:col-span-7 flex flex-col items-center justify-center bg-slate-200/60 p-6 sm:p-8 rounded-3xl border border-slate-300/60">
+                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">Pré-visualização em Tempo Real</span>
+                    
+                    <div class="w-full max-w-[420px] shadow-2xl rounded-2xl overflow-hidden bg-white">
+                        <canvas id="cardCanvas" width="600" height="750" class="w-full h-auto block"></canvas>
+                    </div>
+
+                    <p class="text-xs text-slate-500 text-center mt-4">
+                        <i class="fa-solid fa-lock text-slate-400 mr-1"></i> Suas imagens são processadas localmente no navegador e não são salvas em servidores.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Fast Social Share Buttons -->
+    <section class="py-16 bg-white">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h3 class="text-2xl font-bold font-heading text-slate-900 mb-6">Compartilhe essa ideia nas suas redes</h3>
+            <div class="flex flex-wrap gap-4 justify-center">
+                <button onclick="shareWhatsApp()" class="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-full font-medium transition-all flex items-center gap-2 shadow-sm text-sm">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> WhatsApp
+                </button>
+                <button onclick="shareLinkedIn()" class="bg-sky-700 hover:bg-sky-800 text-white px-6 py-3 rounded-full font-medium transition-all flex items-center gap-2 shadow-sm text-sm">
+                    <i class="fa-brands fa-linkedin text-lg"></i> LinkedIn
+                </button>
+                <button onclick="copyCampaignText()" class="bg-slate-800 hover:bg-slate-900 text-white px-6 py-3 rounded-full font-medium transition-all flex items-center gap-2 shadow-sm text-sm">
+                    <i class="fa-solid fa-copy"></i> Copiar Frase e Link
+                </button>
+            </div>
+            <!-- Notification Toast -->
+            <div id="toast" class="opacity-0 transition-opacity duration-300 text-xs font-semibold bg-slate-900 text-white py-2 px-4 rounded-full inline-block mt-4">
+                Texto copiado para a área de transferência!
+            </div>
+        </div>
+    </section>
+
+    <!-- Future Campaigns & Community Voting -->
+    <section id="proximas" class="py-20 bg-slate-900 text-white relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="max-w-3xl mx-auto text-center mb-16">
+                <span class="text-xs font-bold text-pink-400 uppercase tracking-wider bg-pink-500/10 px-3 py-1 rounded-full border border-pink-500/20">Em Breve no RepassaAí</span>
+                <h2 class="text-3xl sm:text-4xl font-bold font-heading mt-4 mb-4">Qual causa devemos repassar a seguir?</h2>
+                <p class="text-slate-400">Vote nas próximas mensagens de conscientização social que entrarem no portal.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-6 flex flex-col justify-between hover:border-pink-500/50 transition-all">
+                    <div>
+                        <span class="text-xs font-semibold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-md">Inclusão & Acessibilidade</span>
+                        <h3 class="text-xl font-bold mt-4 mb-2 text-white">"Acessibilidade não é favor, é direito fundamental."</h3>
+                        <p class="text-slate-400 text-sm">Campanha voltada para a conscientização sobre inclusão de pessoas com deficiência.</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-700 flex items-center justify-between">
+                        <span class="text-xs text-slate-400" id="votes-1">1.420 votos</span>
+                        <button onclick="voteCampaign(1)" class="bg-slate-700 hover:bg-brand-pink text-white text-xs font-semibold px-4 py-2 rounded-xl transition-all">Votar</button>
+                    </div>
+                </div>
+
+                <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-6 flex flex-col justify-between hover:border-pink-500/50 transition-all">
+                    <div>
+                        <span class="text-xs font-semibold text-sky-400 bg-sky-500/10 px-2.5 py-1 rounded-md">Meio Ambiente</span>
+                        <h3 class="text-xl font-bold mt-4 mb-2 text-white">"O futuro do planeta se constrói nas escolhas de hoje."</h3>
+                        <p class="text-slate-400 text-sm">Iniciativas de economia circular, combate ao desperdício e sustentabilidade urbana.</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-700 flex items-center justify-between">
+                        <span class="text-xs text-slate-400" id="votes-2">980 votos</span>
+                        <button onclick="voteCampaign(2)" class="bg-slate-700 hover:bg-brand-pink text-white text-xs font-semibold px-4 py-2 rounded-xl transition-all">Votar</button>
+                    </div>
+                </div>
+
+                <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-6 flex flex-col justify-between hover:border-pink-500/50 transition-all">
+                    <div>
+                        <span class="text-xs font-semibold text-purple-400 bg-purple-500/10 px-2.5 py-1 rounded-md">Anti-Bullying & Saúde Mental</span>
+                        <h3 class="text-xl font-bold mt-4 mb-2 text-white">"Gentileza na rede salva vidas no mundo real."</h3>
+                        <p class="text-slate-400 text-sm">Combate ao discurso de ódio e empatia no ambiente digital e escolar.</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-700 flex items-center justify-between">
+                        <span class="text-xs text-slate-400" id="votes-3">2.150 votos</span>
+                        <button onclick="voteCampaign(3)" class="bg-slate-700 hover:bg-brand-pink text-white text-xs font-semibold px-4 py-2 rounded-xl transition-all">Votar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Suggestion Form -->
+            <div class="mt-12 bg-slate-800/40 border border-slate-700/50 rounded-2xl p-6 max-w-2xl mx-auto text-center">
+                <h4 class="text-base font-semibold text-white mb-2">Tem uma ideia de frase ou causa para o repassaai.com.br?</h4>
+                <div class="flex flex-col sm:flex-row gap-2 mt-4">
+                    <input type="text" id="userSuggestion" placeholder="Digite sua ideia de frase social..." class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-pink">
+                    <button onclick="sendSuggestion()" class="bg-brand-purple hover:bg-indigo-600 text-white text-sm font-semibold px-6 py-2.5 rounded-xl transition-all">Enviar Ideia</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-2">
+                <span class="text-xl font-black font-heading tracking-tight text-white">
+                    repassa<span class="text-brand-pink">aí</span>.com.br
+                </span>
+            </div>
+            <p class="text-xs text-slate-500 text-center sm:text-left">
+                &copy; 2026 repassaai.com.br — Plataforma de engajamento e conscientização social.
+            </p>
+            <div class="flex gap-4 text-slate-400 text-sm">
+                <a href="#" class="hover:text-white transition-colors">Termos</a>
+                <a href="#" class="hover:text-white transition-colors">Privacidade</a>
+                <a href="#" class="hover:text-white transition-colors">Contato</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // State Management
+        let currentTheme = 'purple';
+        let userPhotoImg = null;
+        let selectedAvatar = '✊🏽';
+        let repsCount = 12480;
+        let cardsCount = 8920;
+        
+        // Dados da empresa apoiadora que serão lidos automaticamente do GitHub
+        let empresaApoiadoraAtual = { nome: "Carregando...", telefone: "" };
+
+        const themes = {
+            purple: {
+                bgGrad1: '#31103F',
+                bgGrad2: '#4F46E5',
+                accent: '#EC4899',
+                textColor: '#FFFFFF',
+                subText: '#E0E7FF'
+            },
+            dark: {
+                bgGrad1: '#0F172A',
+                bgGrad2: '#1E293B',
+                accent: '#38BDF8',
+                textColor: '#FFFFFF',
+                subText: '#94A3B8'
+            },
+            pink: {
+                bgGrad1: '#831843',
+                bgGrad2: '#BE185D',
+                accent: '#FDE047',
+                textColor: '#FFFFFF',
+                subText: '#FCE7F3'
+            }
+        };
+
+        window.onload = function() {
+            carregarApoiadorDoGitHub();
+            updateCanvas();
+        };
+
+        // Função que busca automaticamente o arquivo JSON do repositório
+        function carregarApoiadorDoGitHub() {
+            fetch('apoiadores.json')
+                .then(response => response.json())
+                .then(data => {
+                    // Se houver empresas cadastradas no JSON, pega a primeira (ou a mais recente)
+                    if (Array.isArray(data) && data.length > 0) {
+                        empresaApoiadoraAtual = data[data.length - 1]; // Pega a última cadastrada ou fixa
+                    } else if (data.nome) {
+                        empresaApoiadoraAtual = data;
+                    }
+
+                    // Atualiza o aviso visual no painel do site
+                    document.getElementById('companyBadgeInfo').innerText = 
+                        `${empresaApoiadoraAtual.nome} (${empresaApoiadoraAtual.telefone || 'Apoio Oficial'})`;
+
+                    // Atualiza o desenho no canvas instantaneamente
+                    updateCanvas();
+                })
+                .catch(error => {
+                    console.log('Erro ao carregar apoiadores.json:', error);
+                    empresaApoiadoraAtual = { nome: "Movimento Comunitário", telefone: "" };
+                    document.getElementById('companyBadgeInfo').innerText = "Apoio Comunitário Oficial";
+                    updateCanvas();
+                });
+        }
+
+        function changeTheme(themeKey) {
+            currentTheme = themeKey;
+            updateCanvas();
+        }
+
+        function selectAvatar(emoji) {
+            selectedAvatar = emoji;
+            userPhotoImg = null; 
+            updateCanvas();
+        }
+
+        function handlePhotoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        userPhotoImg = img;
+                        updateCanvas();
+                    }
+                    img.src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function updateCanvas() {
+            const canvas = document.getElementById('cardCanvas');
+            const ctx = canvas.getContext('2d');
+            const name = document.getElementById('inputName').value.trim() || "Apoiador da Causa";
+            const theme = themes[currentTheme];
+
+            // Canvas Dimensions: 600 x 750
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Background Gradient
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, theme.bgGrad1);
+            gradient.addColorStop(1, theme.bgGrad2);
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Decorative shapes
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+            ctx.beginPath();
+            ctx.arc(550, 50, 200, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Brand Header inside card
+            ctx.fillStyle = theme.accent;
+            ctx.font = 'bold 24px "Plus Jakarta Sans", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('repassaai.com.br', 300, 50);
+
+            // Photo or Avatar Container Circle
+            const avatarX = 300;
+            const avatarY = 150;
+            const radius = 55;
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(avatarX, avatarY, radius, 0, Math.PI * 2, true);
+            ctx.closePath();
+            ctx.clip();
+
+            if (userPhotoImg) {
+                const aspect = userPhotoImg.width / userPhotoImg.height;
+                let drawW = radius * 2;
+                let drawH = radius * 2;
+                if (aspect > 1) {
+                    drawW = radius * 2 * aspect;
+                } else {
+                    drawH = (radius * 2) / aspect;
+                }
+                ctx.drawImage(userPhotoImg, avatarX - drawW/2, avatarY - drawH/2, drawW, drawH);
+            } else {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.fillRect(avatarX - radius, avatarY - radius, radius * 2, radius * 2);
+                ctx.font = '55px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(selectedAvatar, avatarX, avatarY + 3);
+            }
+            ctx.restore();
+
+            // Circle Border Glow
+            ctx.strokeStyle = theme.accent;
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.arc(avatarX, avatarY, radius + 2, 0, Math.PI * 2);
+            ctx.stroke();
+
+            // Name
+            ctx.fillStyle = theme.textColor;
+            ctx.font = 'bold 22px "Inter", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'alphabetic';
+            ctx.fillText(name, 300, 235);
+
+            // Support Badge Text
+            ctx.fillStyle = theme.subText;
+            ctx.font = '500 13px "Inter", sans-serif';
+            ctx.fillText('APOIA A CAMPANHA OFICIAL', 300, 255);
+
+            // Quote Box Background
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+            roundRect(ctx, 40, 280, 520, 275, 20, true, false);
+
+            // Quote Symbol
+            ctx.fillStyle = theme.accent;
+            ctx.font = 'bold 45px Georgia, serif';
+            ctx.fillText('“', 75, 325);
+
+            // Main Campaign Quote
+            ctx.fillStyle = theme.textColor;
+            ctx.font = 'bold 26px "Plus Jakarta Sans", sans-serif';
+            wrapText(ctx, 'Respeito à mulher é nossa responsabilidade.', 300, 360, 440, 36);
+
+            // Secondary Hashtag / CTA
+            ctx.fillStyle = theme.accent;
+            ctx.font = '600 15px "Inter", sans-serif';
+            ctx.fillText('#RespeitoÀMulher #RepassaAí', 300, 470);
+
+            // Bloco Automático da Empresa Apoiadora (Lido do GitHub)
+            if (empresaApoiadoraAtual && empresaApoiadoraAtual.nome) {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+                roundRect(ctx, 60, 495, 480, 42, 10, true, false);
+
+                ctx.fillStyle = '#FFFFFF';
+                ctx.font = 'bold 13px "Inter", sans-serif';
+                let apoioTexto = `Apoio: ${empresaApoiadoraAtual.nome}`;
+                if (empresaApoiadoraAtual.telefone) {
+                    apoioTexto += ` | Tel: ${empresaApoiadoraAtual.telefone}`;
+                }
+                ctx.fillText(apoioTexto, 300, 521);
+            }
+
+            // Footer / Domain CTA inside card
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+            ctx.font = '400 13px "Inter", sans-serif';
+            ctx.fillText('Acesse repassaai.com.br e apoie você também', 300, 605);
+        }
+
+        function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+            if (fill) ctx.fill();
+            if (stroke) ctx.stroke();
+        }
+
+        function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+            const words = text.split(' ');
+            let line = '';
+            let currentY = y;
+
+            for (let n = 0; n < words.length; n++) {
+                const testLine = line + words[n] + ' ';
+                const metrics = ctx.measureText(testLine);
+                const testWidth = metrics.width;
+                if (testWidth > maxWidth && n > 0) {
+                    ctx.fillText(line.trim(), x, currentY);
+                    line = words[n] + ' ';
+                    currentY += lineHeight;
+                } else {
+                    line = testLine;
+                }
+            }
+            ctx.fillText(line.trim(), x, currentY);
+        }
+
+        function downloadCard() {
+            const canvas = document.getElementById('cardCanvas');
+            const link = document.createElement('a');
+            link.download = 'repassaai-respeito-a-mulher.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+
+            cardsCount++;
+            document.getElementById('counter-cards').innerText = cardsCount.toLocaleString('pt-BR');
+        }
+
+        function shareDirectWhatsApp() {
+            const name = document.getElementById('inputName').value.trim() || "Apoiador da Causa";
+            let companyText = "";
+            if (empresaApoiadoraAtual && empresaApoiadoraAtual.nome) {
+                companyText = ` Apoio: ${empresaApoiadoraAtual.nome}.`;
+            }
+
+            const msg = `Junte-se a mim nesse movimento! Respeito à mulher é nossa responsabilidade. Eu apoio essa causa.${companyText} Acesse e repasse você também: https://repassaai.com.br #RespeitoÀMulher #RepassaAí`;
+            const text = encodeURIComponent(msg);
+            window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+
+            repsCount++;
+            document.getElementById('counter-repasses').innerText = repsCount.toLocaleString('pt-BR');
+        }
+
+        function shareWhatsApp() { shareDirectWhatsApp(); }
+
+        function shareLinkedIn() {
+            const url = encodeURIComponent("https://repassaai.com.br");
+            const text = encodeURIComponent("Respeito à mulher é nossa responsabilidade. Junte-se a este movimento social no RepassaAí!");
+            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}&title=${text}`, '_blank');
+        }
+
+        function copyCampaignText() {
+            const textToCopy = "Respeito à mulher é nossa responsabilidade. Junte-se ao movimento social e apoie você também: https://repassaai.com.br #RespeitoÀMulher #RepassaAí";
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const toast = document.getElementById('toast');
+                toast.style.opacity = '1';
+                setTimeout(() => { toast.style.opacity = '0'; }, 3000);
+            });
+        }
+
+        function voteCampaign(id) {
+            const el = document.getElementById(`votes-${id}`);
+            let parts = el.innerText.split(' ');
+            let count = parseInt(parts[0].replace(/\./g, '')) + 1;
+            el.innerText = `${count.toLocaleString('pt-BR')} votos`;
+            alert('Obrigado pelo seu voto! Sua voz ajuda a definir as próximas pautas do RepassaAí.');
+        }
+
+        function sendSuggestion() {
+            const input = document.getElementById('userSuggestion');
+            if (input.value.trim() !== '') {
+                alert('Sugestão enviada com sucesso! Muito obrigado por contribuir com o RepassaAí.');
+                input.value = '';
+            } else {
+                alert('Por favor, digite uma ideia de frase antes de enviar.');
+            }
+        }
+    </script>
+</body>
+</html>
