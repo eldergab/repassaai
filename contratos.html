@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RepassaAí | Agente de Campo & Contratos</title>
+
+    <!-- PWA Primary Meta Tags -->
+    <meta name="theme-color" content="#0f172a">
+    <meta name="description" content="Ferramenta de Prospecção e Fechamento de Contratos de Campo - RepassaAí (repassaai.com.br)">
+    <meta name="application-name" content="RepassaAí Agente">
+    
+    <!-- iOS / Safari PWA Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="RepassaAí Agente">
+    <link rel="apple-touch-icon" href="https://placehold.co/192x192/10b981/ffffff?text=RA">
+
+    <!-- Web App Manifest (Blob Data URI) -->
+    <link rel="manifest" id="manifest-placeholder">
+
+    <!-- Tailwind CSS & FontAwesome Icons -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            400: '#34d399',
+                            500: '#10b981',
+                            600: '#059669',
+                            900: '#064e3b',
+                            950: '#022c22',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #10b981;
+        }
+        .glow-emerald {
+            box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 antialiased min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-slate-950">
+
+    <!-- HEADER DE NAVEGAÇÃO DO AGENTE -->
+    <nav class="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-md border-b border-slate-800/80 px-4 py-3">
+        <div class="max-w-4xl mx-auto flex items-center justify-between">
+            <!-- Logo RepassaAí -->
+            <a href="#" class="flex items-center gap-2.5">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-emerald-400 flex items-center justify-center font-black text-slate-950 text-xl shadow-lg">
+                    RA
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-black text-lg tracking-tight leading-none text-white">Repassa<span class="text-emerald-400">Aí</span></span>
+                    <span class="text-[10px] text-emerald-400 font-bold tracking-widest uppercase">Agente de Campo</span>
+                </div>
+            </a>
+
+            <!-- Ações PWA -->
+            <div class="flex items-center gap-2">
+                <button id="pwaInstallBtn" onclick="triggerPWAInstall()" class="hidden bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold px-3 py-2 rounded-xl shadow-lg transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Instalar App</span>
+                </button>
+                <div class="bg-slate-800 border border-slate-700/80 text-slate-300 text-xs px-3 py-1.5 rounded-xl flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span class="font-semibold">Online</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- BANNER PWA PARA MOBILE -->
+    <div id="pwaBanner" class="hidden bg-emerald-950/90 border-b border-emerald-500/30 px-4 py-2.5 text-emerald-200 text-xs">
+        <div class="max-w-4xl mx-auto flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-mobile-screen-button text-emerald-400 text-base"></i>
+                <span>Instale este app no seu celular para fechar contratos offline nas visitas!</span>
+            </div>
+            <button onclick="triggerPWAInstall()" class="bg-emerald-500 text-slate-950 font-bold px-3 py-1 rounded-lg text-xs whitespace-nowrap">
+                Instalar
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN APP CONTAINER -->
+    <main class="flex-grow max-w-4xl w-full mx-auto px-4 py-6 sm:py-10">
+
+        <!-- CABEÇALHO DA FERRAMENTA -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold mb-3">
+                <i class="fa-solid fa-handshake"></i> Prospecção Presencial de Lojistas
+            </div>
+            <h1 class="text-2xl sm:text-4xl font-black text-white tracking-tight">
+                Novo Contrato de Parceiro Comercial
+            </h1>
+            <p class="text-slate-400 text-xs sm:text-sm mt-1">
+                Preencha os dados acertados na visita presencial para gerar o Termo de Adesão e disparar via WhatsApp.
+            </p>
+        </div>
+
+        <!-- FORMULÁRIO DE PROSPECÇÃO DAS EMPRESAS -->
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 sm:p-8 shadow-2xl mb-8">
+            <form id="formProspec" onsubmit="gerarContrato(event)" class="space-y-6">
+                
+                <!-- DADOS DA EMPRESA -->
+                <div>
+                    <h3 class="text-emerald-400 font-bold text-xs uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-building"></i> 1. Dados do Estabelecimento Comercial
+                    </h3>
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Razão Social / Nome Fantasia *</label>
+                            <input type="text" id="razaoSocial" placeholder="Ex: Ótica Visão Real ou Lanchonete do João" required class="w-full px-3.5 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">CNPJ ou CPF do Responsável *</label>
+                            <input type="text" id="documento" placeholder="00.000.000/0001-00 ou CPF" required class="w-full px-3.5 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Nome do Responsável / Lojista *</label>
+                            <input type="text" id="nomeResponsavel" placeholder="Ex: Carlos Eduardo da Silva" required class="w-full px-3.5 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">WhatsApp da Empresa / Lojista *</label>
+                            <input type="tel" id="whatsappEmpresa" placeholder="Ex: 62988888888 (com DDD)" required class="w-full px-3.5 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Segmento de Atuação *</label>
+                            <select id="tipoEmpresa" required class="w-full px-3.5 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm focus:outline-none focus:border-emerald-500 transition">
+                                <option value="Ótica / Saúde Visual">Ótica / Saúde Visual</option>
+                                <option value="Restaurante / Pizzaria / Lanchonete">Restaurante / Pizzaria / Lanchonete</option>
+                                <option value="Sorveteria / Açaí">Sorveteria / Açaí</option>
+                                <option value="Vestuário / Calçados / Moda">Vestuário / Calçados / Moda</option>
+                                <option value="Prestador de Serviços / Estética">Prestador de Serviços / Estética</option>
+                                <option value="Outros">Outros Segmentos</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="border-slate-800">
+
+                <!-- MODELO DE RECOMPENSA PACTUADO -->
+                <div>
+                    <h3 class="text-emerald-400 font-bold text-xs uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-gift"></i> 2. Recompensa / Acordo de Parceria
+                    </h3>
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Modelo de Oferta Acordado *</label>
+                            <select id="modeloRecompensa" onchange="atualizarCampoDetalhes()" required class="w-full px-3.5 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm focus:outline-none focus:border-emerald-500 transition">
+                                <option value="Voucher de Experiência (Pizza/Sorvete/Açaí)">Voucher de Experiência (Pizza, Sorvete, Açaí)</option>
+                                <option value="Comissão Percentual por Venda (%)">Comissão Percentual por Venda (%)</option>
+                                <option value="Valor Fixo por Negócio Fechado (R$)">Valor Fixo por Negócio Fechado (R$)</option>
+                                <option value="Aceite de Propostas de Grupos Locais">Aceite de Propostas Criativas dos Grupos</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Detalhe da Oferta / Desconto do Cliente *</label>
+                            <input type="text" id="detalheOferta" placeholder="Ex: 10% de desc. nos óculos + 1 Pizza p/ grupo ao fechar" required class="w-full px-3.5 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition">
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="border-slate-800">
+
+                <!-- NEGOCIADOR E CIDADE -->
+                <div>
+                    <h3 class="text-emerald-400 font-bold text-xs uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-user-check"></i> 3. Dados do Agente Negociador
+                    </h3>
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Nome do Agente RepassaAí *</label>
+                            <input type="text" id="nomeAgente" value="Emerson Gabriel" required class="w-full px-3.5 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Cidade / Estado da Visita *</label>
+                            <input type="text" id="cidadeVisita" value="Anápolis - GO" required class="w-full px-3.5 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-4 rounded-xl transition flex items-center justify-center gap-2 text-base shadow-lg glow-emerald">
+                    <i class="fa-solid fa-file-signature text-xl"></i>
+                    <span>Gerar Termo de Adesão & Contrato</span>
+                </button>
+
+            </form>
+        </div>
+
+        <!-- ÁREA DO CONTRATO GERADO (INICIALMENTE OCULTA) -->
+        <div id="areaContrato" class="hidden bg-slate-900 border border-emerald-500/50 rounded-3xl p-5 sm:p-8 shadow-2xl mb-8">
+            <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></div>
+                    <h3 class="font-bold text-white text-base">Termo de Adesão Comercial Gerado</h3>
+                </div>
+                <span id="dataGeracao" class="text-xs text-slate-400"></span>
+            </div>
+
+            <!-- PRÉ-VISUALIZAÇÃO DO TEXTO DO CONTRATO -->
+            <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 sm:p-6 text-xs sm:text-sm font-mono text-slate-300 whitespace-pre-wrap leading-relaxed max-h-96 overflow-y-auto mb-6 select-all" id="textoContratoVisual">
+                <!-- Preenchido via JavaScript -->
+            </div>
+
+            <!-- BOTOES DE AÇÃO E DISPARO DUAL -->
+            <div class="space-y-3">
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-wider text-center mb-2">Ações de Envio do Contrato via WhatsApp</p>
+                
+                <div class="grid sm:grid-cols-2 gap-3">
+                    <!-- Disparo 1: Para a Empresa -->
+                    <button onclick="enviarWhatsappEmpresa()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 px-4 rounded-xl transition flex items-center justify-center gap-2 text-xs sm:text-sm shadow-md">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <span>1. Enviar p/ WhatsApp da Empresa</span>
+                    </button>
+
+                    <!-- Disparo 2: Para a Administração -->
+                    <button onclick="enviarWhatsappAdmin()" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-emerald-400 font-bold py-3.5 px-4 rounded-xl transition flex items-center justify-center gap-2 text-xs sm:text-sm">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <span>2. Salvar Cópia no Admin (62 920026981)</span>
+                    </button>
+                </div>
+
+                <!-- Botão Auxiliar Copiar -->
+                <button onclick="copiarTextoContrato()" class="w-full bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-300 font-semibold py-3 px-4 rounded-xl transition flex items-center justify-center gap-2 text-xs">
+                    <i class="fa-solid fa-copy"></i>
+                    <span>Copiar Texto Completo do Contrato para Área de Transferência</span>
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="py-6 bg-slate-950 text-center text-slate-500 text-xs border-t border-slate-900">
+        <div class="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+                <div class="w-5 h-5 rounded bg-emerald-500 text-slate-950 font-black flex items-center justify-center text-[10px]">
+                    RA
+                </div>
+                <span class="font-bold text-slate-300">RepassaAí Agente PWA</span> &copy; 2026.
+            </div>
+            <div class="text-slate-400 text-[11px]">
+                Plataforma de Panfletagem Digital • repassaai.com.br
+            </div>
+        </div>
+    </footer>
+
+    <!-- LÓGICA JAVASCRIPT DO SISTEMA -->
+    <script>
+        // Número padrão do administrador RepassaAí
+        const WHATSAPP_ADMIN = "5562920026981";
+
+        // Variável global para armazenar o contrato atual gerado
+        let contratoGlobal = {
+            textoCompleto: '',
+            whatsappEmpresaLimpo: ''
+        };
+
+        // Função de troca dinâmica do placeholder do detalhe da oferta
+        function atualizarCampoDetalhes() {
+            const modelo = document.getElementById('modeloRecompensa').value;
+            const inputDetalhes = document.getElementById('detalheOferta');
+
+            if (modelo.includes('Voucher')) {
+                inputDetalhes.placeholder = "Ex: 1 Pizza Família + Refrigerante ao atingir 5 vendas válidas";
+            } else if (modelo.includes('Percentual')) {
+                inputDetalhes.placeholder = "Ex: 10% de comissão repassada sobre o valor total do óculos/compra";
+            } else if (modelo.includes('Fixo')) {
+                inputDetalhes.placeholder = "Ex: R$ 50,00 fixos por cliente indicado que fechar negócio";
+            } else {
+                inputDetalhes.placeholder = "Ex: Aceita propostas de grupos locais (Açaí/Sorvete/Diversão)";
+            }
+        }
+
+        // Função principal: Gera o contrato comercial
+        function gerarContrato(event) {
+            event.preventDefault();
+
+            const razao = document.getElementById('razaoSocial').value.trim();
+            const doc = document.getElementById('documento').value.trim();
+            const resp = document.getElementById('nomeResponsavel').value.trim();
+            const zapEmp = document.getElementById('whatsappEmpresa').value.trim();
+            const tipo = document.getElementById('tipoEmpresa').value;
+            const modelo = document.getElementById('modeloRecompensa').value;
+            const oferta = document.getElementById('detalheOferta').value.trim();
+            const agente = document.getElementById('nomeAgente').value.trim();
+            const cidade = document.getElementById('cidadeVisita').value.trim();
+
+            // Limpa o WhatsApp da empresa para URL (remove parênteses, traços e espaços)
+            let zapLimpo = zapEmp.replace(/\D/g, '');
+            if (!zapLimpo.startsWith('55') && zapLimpo.length <= 11) {
+                zapLimpo = '55' + zapLimpo;
+            }
+
+            const dataAtual = new Date().toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            // Montagem do Termo de Adesão Comercial
+            const textoTermo = `*TERMO DE ADESÃO COMERCIAL - PARCEIRO REPASSAAÍ*
+----------------------------------------
+*DATA DO CADASTRO:* ${dataAtual}
+*LOCAL:* ${cidade}
+*AGENTE REPASSAAÍ:* ${agente}
+
+*1. DADOS DO ESTABELECIMENTO PARCEIRO:*
+- *Razão Social/Fantasia:* ${razao}
+- *CNPJ/CPF:* ${doc}
+- *Responsável Legal:* ${resp}
+- *WhatsApp Oficial:* ${zapEmp}
+- *Segmento:* ${tipo}
+
+*2. DA PARCERIA E RECOMPENSAS:*
+- *Modelo Acordado:* ${modelo}
+- *Detalhe da Oferta/Recompensa:* ${oferta}
+
+*3. CLÁUSULAS E CONDIÇÕES DE ADESÃO:*
+a) *Sem Taxa Inicial:* A inclusão do estabelecimento na plataforma RepassaAí (repassaai.com.br) é isenta de mensalidades fixas.
+b) *Validação no Balcão:* A empresa parceira se compromete a honrar as recompensas/descontos acordados mediante a validação do Código Único do projeto do cliente (apresentado no Status do WhatsApp).
+c) *Autenticidade:* A empresa declara que o responsável legível aprovou a criação das artes digitais para circulação nas redes dos divulgadores da cidade.
+d) *Cancelamento:* Qualquer das partes pode solicitar a pausa ou ajuste das campanhas com aviso prévio simples via WhatsApp.
+
+----------------------------------------
+*CONFIRMAÇÃO DO ACEITE:*
+Responda a esta mensagem com a palavra *"DE ACORDO"* para validar e ativar as campanhas no RepassaAí.
+
+_RepassaAí • A Panfletagem Digital que Paga a Diversão da Galera_
+_https://repassaai.com.br_`;
+
+            // Guarda no estado global
+            contratoGlobal.textoCompleto = textoTermo;
+            contratoGlobal.whatsappEmpresaLimpo = zapLimpo;
+
+            // Renderiza na tela
+            document.getElementById('textoContratoVisual').innerText = textoTermo;
+            document.getElementById('dataGeracao').innerText = `Gerado em: ${dataAtual}`;
+            
+            // Exibe a área do contrato com scroll suave
+            const areaContrato = document.getElementById('areaContrato');
+            areaContrato.classList.remove('hidden');
+            areaContrato.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Disparo 1: WhatsApp da Empresa
+        function enviarWhatsappEmpresa() {
+            if (!contratoGlobal.textoCompleto) return;
+            const textoEncoded = encodeURIComponent(contratoGlobal.textoCompleto);
+            const url = `https://api.whatsapp.com/send?phone=${contratoGlobal.whatsappEmpresaLimpo}&text=${textoEncoded}`;
+            window.open(url, '_blank');
+        }
+
+        // Disparo 2: WhatsApp do Administrador (62 920026981)
+        function enviarWhatsappAdmin() {
+            if (!contratoGlobal.textoCompleto) return;
+            let cabecalhoAdmin = `*REGISTRO DE NOVO CONTRATO (CÓPIA DE SEGURANÇA)*\n\n`;
+            const textoEncoded = encodeURIComponent(cabecalhoAdmin + contratoGlobal.textoCompleto);
+            const url = `https://api.whatsapp.com/send?phone=${WHATSAPP_ADMIN}&text=${textoEncoded}`;
+            window.open(url, '_blank');
+        }
+
+        // Copiar texto para área de transferência
+        function copiarTextoContrato() {
+            if (!contratoGlobal.textoCompleto) return;
+            
+            // Método compatível usando textarea temporário
+            const textarea = document.createElement('textarea');
+            textarea.value = contratoGlobal.textoCompleto;
+            document.body.appendChild(textarea);
+            textarea.select();
+            
+            try {
+                document.execCommand('copy');
+                alert('Termo de Adesão copiado para a área de transferência com sucesso!');
+            } catch (err) {
+                alert('Não foi possível copiar automaticamente. Selecione o texto e copie manualmente.');
+            }
+            document.body.removeChild(textarea);
+        }
+
+        // ==========================================
+        // LÓGICA PWA (MANIFEST E SERVICE WORKER INLINE)
+        // ==========================================
+
+        // 1. Geração dinâmica do Web Manifest via Blob URL
+        const manifestData = {
+            "name": "RepassaAí Agente de Campo",
+            "short_name": "RA Agente",
+            "start_url": "./",
+            "display": "standalone",
+            "background_color": "#0f172a",
+            "theme_color": "#0f172a",
+            "orientation": "portrait",
+            "description": "Ferramenta de Fechamento de Contratos de Campo RepassaAí",
+            "icons": [
+                {
+                    "src": "https://placehold.co/192x192/10b981/ffffff?text=RA",
+                    "sizes": "192x192",
+                    "type": "image/png"
+                },
+                {
+                    "src": "https://placehold.co/512x512/10b981/ffffff?text=RepassaAi",
+                    "sizes": "512x512",
+                    "type": "image/png"
+                }
+            ]
+        };
+
+        const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/json' });
+        document.getElementById('manifest-placeholder').setAttribute('href', URL.createObjectURL(manifestBlob));
+
+        // 2. Registro do Service Worker inline para suporte offline
+        if ('serviceWorker' in navigator) {
+            const swCode = `
+                const CACHE_NAME = 'repassaai-agente-v1';
+                const ASSETS = [
+                    './',
+                    'https://cdn.tailwindcss.com',
+                    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
+                ];
+
+                self.addEventListener('install', (event) => {
+                    event.waitUntil(
+                        caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS).catch(() => {}))
+                    );
+                    self.skipWaiting();
+                });
+
+                self.addEventListener('activate', (event) => {
+                    event.waitUntil(
+                        caches.keys().then((keys) => {
+                            return Promise.all(keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key)));
+                        })
+                    );
+                    self.clients.claim();
+                });
+
+                self.addEventListener('fetch', (event) => {
+                    event.respondWith(
+                        caches.match(event.request).then((cached) => cached || fetch(event.request).catch(() => cached))
+                    );
+                });
+            `;
+
+            const swBlob = new Blob([swCode], { type: 'text/javascript' });
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register(URL.createObjectURL(swBlob)).then(() => {
+                    console.log('SW Agente RepassaAí registrado com sucesso.');
+                }).catch(err => console.warn('PWA Dev mode:', err));
+            });
+        }
+
+        // 3. Prompt de Instalação PWA (Instalar App)
+        let deferredPrompt = null;
+        const installBtn = document.getElementById('pwaInstallBtn');
+        const pwaBanner = document.getElementById('pwaBanner');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            if (installBtn) installBtn.classList.remove('hidden');
+            if (pwaBanner) pwaBanner.classList.remove('hidden');
+        });
+
+        function triggerPWAInstall() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choice) => {
+                    if (choice.outcome === 'accepted') {
+                        console.log('App instalado no celular.');
+                    }
+                    deferredPrompt = null;
+                    if (installBtn) installBtn.classList.add('hidden');
+                    if (pwaBanner) pwaBanner.classList.add('hidden');
+                });
+            } else {
+                alert("Para instalar este app no seu iPhone ou celular:\n\n1. No Safari, toque no ícone de Compartilhar (quadrado com seta).\n2. Selecione 'Adicionar à Tela de Início'.");
+            }
+        }
+    </script>
+</body>
+</html>
