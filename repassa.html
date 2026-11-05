@@ -1,652 +1,501 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>repassaai.com.br - Respeito à mulher é nossa responsabilidade</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome para ícones -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Inter e Plus Jakarta Sans -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RepassaAí | Transforme Divulgação em Diversão!</title>
+
+    <!-- PWA Primary Meta Tags -->
+    <meta name="theme-color" content="#0f172a">
+    <meta name="description" content="Divulgue empresas locais no WhatsApp Status e ganhe Pizzas, Sorvetes e Comissões!">
+    <meta name="application-name" content="RepassaAí">
     
+    <!-- iOS / Safari PWA Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="RepassaAí">
+    <link rel="apple-touch-icon" href="https://placehold.co/192x192/10b981/ffffff?text=RA">
+
+    <!-- Web App Manifest (Data URI for single-file deployment) -->
+    <link rel="manifest" id="manifest-placeholder">
+
+    <!-- Tailwind CSS & FontAwesome Icons -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        brand: {
-                            purple: '#4F46E5',
-                            deepViolet: '#31103F',
-                            pink: '#EC4899',
-                            rose: '#F43F5E',
-                            softViolet: '#8B5CF6',
-                            lightBg: '#FAFAFC'
+                        emerald: {
+                            400: '#34d399',
+                            500: '#10b981',
+                            600: '#059669',
+                            900: '#064e3b',
+                            950: '#022c22',
                         }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        heading: ['Plus Jakarta Sans', 'sans-serif']
                     }
                 }
             }
         }
     </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
     <style>
-        .gradient-text {
-            background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 50%, #4F46E5 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
-        .gradient-bg {
-            background: linear-gradient(135deg, #31103F 0%, #4C1D95 50%, #1E1B4B 100%);
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-        .card-shadow {
-            box-shadow: 0 10px 40px -10px rgba(79, 70, 229, 0.15);
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
         }
-        .pulse-subtle {
-            animation: pulseSubtle 3s infinite;
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
         }
-        @keyframes pulseSubtle {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #10b981;
+        }
+        .glow-emerald {
+            box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.3);
         }
     </style>
 </head>
-<body class="bg-brand-lightBg text-slate-800 font-sans antialiased selection:bg-brand-pink selection:text-white">
+<body class="bg-slate-900 text-slate-100 antialiased min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-slate-950">
 
-    <!-- Header Navigation -->
-    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <span class="text-2xl font-black font-heading tracking-tight text-slate-900">
-                    repassa<span class="text-brand-pink">aí</span><span class="text-brand-purple">.com.br</span>
-                </span>
-                <span class="hidden sm:inline-block ml-2 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-pink-100 text-brand-pink">
-                    Movimento Social
-                </span>
-            </div>
-            
-            <nav class="hidden md:flex items-center gap-8 font-medium text-slate-600 text-sm">
-                <a href="#manifesto" class="hover:text-brand-purple transition-colors">Manifesto</a>
-                <a href="#gerador" class="hover:text-brand-purple transition-colors">Criar Meu Card</a>
-                <a href="#proximas" class="hover:text-brand-purple transition-colors">Próximas Causas</a>
-            </nav>
+    <!-- TOP NAVIGATION & PWA BAR -->
+    <nav class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800/80 px-4 py-3">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-2">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-emerald-400 flex items-center justify-center font-black text-slate-950 text-xl shadow-lg">
+                    RA
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-black text-xl tracking-tight leading-none text-white">Repassa<span class="text-emerald-400">Aí</span></span>
+                    <span class="text-[10px] text-slate-400 font-semibold tracking-wider">REPASSAAI.COM.BR</span>
+                </div>
+            </a>
 
-            <div>
-                <a href="#gerador" class="bg-brand-purple hover:bg-indigo-700 text-white font-semibold text-sm px-5 py-2.5 rounded-full transition-all duration-300 shadow-md hover:shadow-indigo-200 flex items-center gap-2">
-                    <i class="fa-solid fa-share-nodes"></i>
-                    <span>Repassar Mensagem</span>
-                </a>
-            </div>
-        </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="relative overflow-hidden py-16 lg:py-24 gradient-bg text-white">
-        <!-- Decorational Glows -->
-        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-brand-pink/20 rounded-full blur-3xl pointer-events-none"></div>
-        
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-semibold uppercase tracking-wider text-pink-200 mb-6">
-                <span class="w-2 h-2 rounded-full bg-pink-400 animate-ping"></span>
-                Campanha Oficial de Lançamento
-            </span>
-            
-            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold font-heading tracking-tight max-w-4xl mx-auto leading-tight mb-6">
-                Respeito à mulher é <span class="bg-gradient-to-r from-pink-400 via-purple-300 to-indigo-300 -webkit-background-clip: text text-transparent">nossa responsabilidade.</span>
-            </h1>
-
-            <p class="text-lg sm:text-xl text-purple-100/90 max-w-2xl mx-auto mb-10 font-normal leading-relaxed">
-                Mensagens que transformam a sociedade começam com atitude. Junte-se ao movimento, gere seu selo de compromisso e repasse essa causa!
-            </p>
-
-            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <a href="#gerador" class="w-full sm:w-auto bg-brand-pink hover:bg-pink-600 text-white font-bold text-base px-8 py-4 rounded-full transition-all shadow-lg hover:shadow-pink-500/30 transform hover:-translate-y-0.5 flex items-center justify-center gap-3">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i>
-                    <span>Personalizar Meu Card</span>
-                </a>
-                <button onclick="shareDirectWhatsApp()" class="w-full sm:w-auto bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold text-base px-8 py-4 rounded-full backdrop-blur-md transition-all flex items-center justify-center gap-3">
-                    <i class="fa-brands fa-whatsapp text-green-400 text-xl"></i>
-                    <span>Repassar no WhatsApp</span>
+            <!-- Install & Actions -->
+            <div class="flex items-center gap-3">
+                <!-- Dynamic PWA Install Button (Hidden by default, shown via JS) -->
+                <button id="pwaInstallBtn" onclick="triggerPWAInstall()" class="hidden bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs md:text-sm font-bold px-3 py-2 rounded-xl shadow-lg transition flex items-center gap-2">
+                    <i class="fa-solid fa-download"></i>
+                    <span class="hidden sm:inline">Instalar App</span>
                 </button>
-            </div>
 
-            <!-- Stats Counter Banner -->
-            <div class="mt-16 pt-10 border-t border-white/10 grid grid-cols-2 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
-                <div>
-                    <div class="text-3xl sm:text-4xl font-extrabold font-heading text-pink-300" id="counter-repasses">12.480</div>
-                    <div class="text-xs sm:text-sm text-purple-200 mt-1">Vozes Engajadas</div>
-                </div>
-                <div>
-                    <div class="text-3xl sm:text-4xl font-extrabold font-heading text-purple-300" id="counter-cards">8.920</div>
-                    <div class="text-xs sm:text-sm text-purple-200 mt-1">Cards Gerados</div>
-                </div>
-                <div class="col-span-2 md:col-span-1">
-                    <div class="text-3xl sm:text-4xl font-extrabold font-heading text-indigo-300">100%</div>
-                    <div class="text-xs sm:text-sm text-purple-200 mt-1">Impacto Coletivo</div>
-                </div>
+                <a href="#cadastro" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-emerald-400 text-xs md:text-sm font-semibold px-4 py-2 rounded-xl transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-bolt"></i>
+                    <span>VIP</span>
+                </a>
             </div>
         </div>
-    </section>
+    </nav>
 
-    <!-- Manifesto & Impact Section -->
-    <section id="manifesto" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="max-w-3xl mx-auto text-center mb-16">
-                <h2 class="text-3xl sm:text-4xl font-bold font-heading text-slate-900 mb-4">
-                    Por que este recado precisa ser repassado?
+    <!-- PWA INSTALL BANNER FOR MOBILE -->
+    <div id="pwaBanner" class="hidden bg-emerald-950/90 border-b border-emerald-500/30 px-4 py-3 text-emerald-200 text-xs sm:text-sm">
+        <div class="max-w-6xl mx-auto flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-mobile-screen-button text-emerald-400 text-lg"></i>
+                <span>Instale o RepassaAí no seu celular para receber novidades instantâneas!</span>
+            </div>
+            <button onclick="triggerPWAInstall()" class="bg-emerald-500 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs whitespace-nowrap">
+                Instalar
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main>
+        <!-- HERO SECTION -->
+        <header class="relative overflow-hidden bg-gradient-to-b from-emerald-950/30 via-slate-900 to-slate-900 border-b border-slate-800/80">
+            <div class="max-w-6xl mx-auto px-4 py-16 md:py-24 text-center">
+                
+                <!-- Tag status -->
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs md:text-sm font-medium mb-8 animate-pulse">
+                    <i class="fa-solid fa-fire"></i> O Marketing Viral que Paga sua Diversão
+                </div>
+                
+                <h1 class="text-4xl sm:text-6xl font-black tracking-tight mb-6 leading-tight">
+                    Divulgue empresas no seu WhatsApp e ganhe <span class="text-emerald-400 underline decoration-emerald-500/50">Pizzas, Sorvetes e Bônus!</span>
+                </h1>
+                
+                <p class="text-base sm:text-xl text-slate-300 max-w-3xl mx-auto mb-10 leading-relaxed font-normal">
+                    Crie o nome do seu grupo, escolha ofertas de empresas locais, gere a imagem com seu código exclusivo e transforme visualizações no Status em momentos inesquecíveis com a galera.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4 max-w-md mx-auto sm:max-w-none">
+                    <a href="#cadastro" class="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold px-8 py-4 rounded-2xl shadow-lg glow-emerald transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-rocket"></i>
+                        <span>Quero Ser Divulgador</span>
+                    </a>
+                    
+                    <a href="#lojistas" class="w-full sm:w-auto bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-100 font-bold px-8 py-4 rounded-2xl transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-store text-emerald-400"></i>
+                        <span>Sou um Lojista / Empresa</span>
+                    </a>
+                </div>
+
+            </div>
+        </header>
+
+        <!-- COMO FUNCIONA (4 PASSO) -->
+        <section class="py-16 md:py-24 max-w-6xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <span class="text-emerald-400 font-bold text-xs uppercase tracking-widest">Simples & Rápido</span>
+                <h2 class="text-3xl sm:text-4xl font-black text-white mt-1 mb-3">Como funciona o RepassaAí?</h2>
+                <p class="text-slate-400 text-sm sm:text-base max-w-xl mx-auto">Em apenas 4 passos você garante a diversão do final de semana.</p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Passo 1 -->
+                <div class="bg-slate-800/40 p-6 rounded-2xl border border-slate-800 relative hover:border-emerald-500/40 transition">
+                    <div class="w-12 h-12 bg-emerald-500/20 text-emerald-400 rounded-xl flex items-center justify-center font-black text-xl mb-4">1</div>
+                    <h3 class="font-bold text-lg mb-2 text-white">Crie seu Projeto</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Registre seu nome ou do seu grupo (ex: <i>"Amigos da Onça"</i>) e receba um avatar e código único.</p>
+                </div>
+
+                <!-- Passo 2 -->
+                <div class="bg-slate-800/40 p-6 rounded-2xl border border-slate-800 relative hover:border-emerald-500/40 transition">
+                    <div class="w-12 h-12 bg-emerald-500/20 text-emerald-400 rounded-xl flex items-center justify-center font-black text-xl mb-4">2</div>
+                    <h3 class="font-bold text-lg mb-2 text-white">Escolha ou Proponha</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Escolha campanhas prontas de óticas, restaurantes e lojas, ou proponha uma ideia de marketing personalizada!</p>
+                </div>
+
+                <!-- Passo 3 -->
+                <div class="bg-slate-800/40 p-6 rounded-2xl border border-slate-800 relative hover:border-emerald-500/40 transition">
+                    <div class="w-12 h-12 bg-emerald-500/20 text-emerald-400 rounded-xl flex items-center justify-center font-black text-xl mb-4">3</div>
+                    <h3 class="font-bold text-lg mb-2 text-white">Poste no Status</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">O site gera a imagem pronta com seu código. Baixe e publique no WhatsApp Status ou redes sociais.</p>
+                </div>
+
+                <!-- Passo 4 -->
+                <div class="bg-slate-800/40 p-6 rounded-2xl border border-slate-800 relative hover:border-emerald-500/40 transition">
+                    <div class="w-12 h-12 bg-emerald-500/20 text-emerald-400 rounded-xl flex items-center justify-center font-black text-xl mb-4">4</div>
+                    <h3 class="font-bold text-lg mb-2 text-white">Resgate a Diversão!</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Cada negócio fechado com seu código vira comissão instantânea e avança suas metas para ganhar Pizzas e Sorvetes.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- KITS DIVERSÃO (EXEMPLOS DE RECOMPENSAS) -->
+        <section class="bg-slate-950 py-16 md:py-24 border-y border-slate-800/80">
+            <div class="max-w-6xl mx-auto px-4">
+                <div class="text-center mb-16">
+                    <span class="text-emerald-400 font-bold text-xs uppercase tracking-widest">Recompensas Reais</span>
+                    <h2 class="text-3xl sm:text-4xl font-black text-white mt-1 mb-3">Sua divulgação vale momentos inesquecíveis</h2>
+                    <p class="text-slate-400 text-sm sm:text-base">Esqueça pontuações virtuais complicadas. Aqui você trabalha por momentos reais:</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Card 1 -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 text-center hover:border-emerald-500/50 transition flex flex-col justify-between">
+                        <div>
+                            <div class="text-6xl mb-6">🍕</div>
+                            <h3 class="font-bold text-2xl mb-3 text-white">Noite da Pizza</h3>
+                            <p class="text-slate-400 text-sm mb-6 leading-relaxed">Traga clientes para estabelecimentos parceiros e garanta a pizza família com refrigerante para a galera.</p>
+                        </div>
+                        <div>
+                            <span class="inline-block bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs px-3.5 py-1.5 rounded-full font-semibold">
+                                Ideal para grupos & amigos
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 text-center hover:border-emerald-500/50 transition flex flex-col justify-between">
+                        <div>
+                            <div class="text-6xl mb-6">🍦</div>
+                            <h3 class="font-bold text-2xl mb-3 text-white">Tarde do Sorvete / Açaí</h3>
+                            <p class="text-slate-400 text-sm mb-6 leading-relaxed">Promova óticas, lojas de roupas ou serviços locais e retire um pote de 2L de sorvete ou balde de açaí.</p>
+                        </div>
+                        <div>
+                            <span class="inline-block bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs px-3.5 py-1.5 rounded-full font-semibold">
+                                Perfeito para o fim de semana
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 text-center hover:border-emerald-500/50 transition flex flex-col justify-between">
+                        <div>
+                            <div class="text-6xl mb-6">💵</div>
+                            <h3 class="font-bold text-2xl mb-3 text-white">Comissão Imediata</h3>
+                            <p class="text-slate-400 text-sm mb-6 leading-relaxed">Além das recompensas físicas, receba comissões diretas a cada venda efetuada com seu código exclusivo.</p>
+                        </div>
+                        <div>
+                            <span class="inline-block bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs px-3.5 py-1.5 rounded-full font-semibold">
+                                Dinheiro direto no bolso
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SESSÃO PARA EMPRESAS E LOJISTAS -->
+        <section id="lojistas" class="py-16 md:py-24 max-w-6xl mx-auto px-4">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs sm:text-sm font-semibold mb-4">
+                    <i class="fa-solid fa-store"></i> Para Comerciantes e Empreendedores
+                </span>
+                <h2 class="text-3xl sm:text-5xl font-black tracking-tight mb-4">
+                    Coloque sua marca no WhatsApp de toda a cidade com o <span class="text-emerald-400">RepassaAí</span>
                 </h2>
-                <p class="text-slate-600 text-base sm:text-lg">
-                    O <strong>RepassaAí</strong> nasceu para transformar o ato de compartilhar em uma corrente de conscientização social. Não basta concordar em silêncio; precisamos espalhar valores.
+                <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
+                    Chega de panfletos impressos que vão para o lixo. Aqui, grupos locais disputam para divulgar sua loja em troca de recompensas e comissões.
                 </p>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-pink-200 transition-all card-shadow">
-                    <div class="w-14 h-14 rounded-2xl bg-pink-100 text-brand-pink flex items-center justify-center text-2xl mb-6">
+            <!-- Vantagens Lojistas -->
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="bg-slate-800/40 border border-slate-700/50 p-8 rounded-3xl">
+                    <div class="w-14 h-14 bg-emerald-500/20 text-emerald-400 rounded-2xl flex items-center justify-center text-2xl mb-6">
                         <i class="fa-solid fa-bullhorn"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-2">Voz Ativa</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">
-                        Dar visibilidade à pauta do respeito diário em casa, no trabalho, nas ruas e na internet.
+                    <h3 class="text-xl font-bold mb-3 text-white">Divulgação Orgânica Real</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Sua oferta aparece nos Status do WhatsApp de clientes engajados, amigos, familiares e grupos locais, gerando uma onda de confiança que o tráfego pago tradicional não alcança.
                     </p>
                 </div>
 
-                <div class="p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-purple-200 transition-all card-shadow">
-                    <div class="w-14 h-14 rounded-2xl bg-purple-100 text-brand-purple flex items-center justify-center text-2xl mb-6">
-                        <i class="fa-solid fa-handshake-angle"></i>
+                <div class="bg-slate-800/40 border border-slate-700/50 p-8 rounded-3xl">
+                    <div class="w-14 h-14 bg-emerald-500/20 text-emerald-400 rounded-2xl flex items-center justify-center text-2xl mb-6">
+                        <i class="fa-solid fa-handshake"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-2">Responsabilidade Coletiva</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">
-                        Segurança e dignidade feminina não são preocupações apenas das mulheres, mas de toda a sociedade.
+                    <h3 class="text-xl font-bold mb-3 text-white">Propostas Criativas de Marketing</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Os grupos criam projetos personalizados e te mandam propostas (ex: <i>"Se eu levar 4 pessoas na sua ótica/loja hoje, você patrocina a nossa pizza de sexta-feira?"</i>). Você só aceita o que der retorno!
                     </p>
                 </div>
 
-                <div class="p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-indigo-200 transition-all card-shadow">
-                    <div class="w-14 h-14 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-2xl mb-6">
-                        <i class="fa-solid fa-share-nodes"></i>
+                <div class="bg-slate-800/40 border border-slate-700/50 p-8 rounded-3xl">
+                    <div class="w-14 h-14 bg-emerald-500/20 text-emerald-400 rounded-2xl flex items-center justify-center text-2xl mb-6">
+                        <i class="fa-solid fa-ticket"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-2">Viral por uma Causa</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">
-                        Usar o poder do "repasse" das redes para inundar a internet com empatia e educação.
+                    <h3 class="text-xl font-bold mb-3 text-white">Controle por Código Único</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        O cliente chega ao seu balcão ou WhatsApp informando o código do grupo (ex: <code class="text-emerald-400 bg-slate-900 px-2 py-1 rounded">AO-8842</code>). Você valida na hora com um clique e só paga comissão se houver negócio fechado.
                     </p>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Generator Section (Interactive Canvas) -->
-    <section id="gerador" class="py-20 bg-slate-50 border-t border-b border-slate-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-2xl mx-auto mb-12">
-                <span class="text-xs font-bold text-brand-purple uppercase tracking-wider bg-purple-100 px-3 py-1 rounded-full">Gerador de Selo</span>
-                <h2 class="text-3xl sm:text-4xl font-bold font-heading text-slate-900 mt-3 mb-2">Monte seu Card Personalizado</h2>
-                <p class="text-slate-600 text-sm sm:text-base">Adicione seu nome, foto ou avatar para se posicionar publicamente por essa causa.</p>
+            <div class="bg-gradient-to-r from-emerald-950/80 to-slate-900 border border-emerald-500/30 rounded-3xl p-8 md:p-12 text-center max-w-4xl mx-auto">
+                <h3 class="text-2xl md:text-3xl font-bold mb-4 text-white">Quer cadastrar sua empresa na nossa fase de lançamento?</h3>
+                <p class="text-slate-300 mb-8 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
+                    Estamos selecionando os primeiros comércios locais (óticas, restaurantes, lojas de roupas e prestadores de serviço) para testar a plataforma em <b>repassaai.com.br</b>.
+                </p>
+                <a href="#cadastro" class="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold px-8 py-4 rounded-2xl shadow-lg transition transform hover:-translate-y-0.5">
+                    <i class="fa-solid fa-store"></i>
+                    <span>Quero Cadastrar Minha Empresa Gratuitamente</span>
+                </a>
             </div>
+        </section>
 
-            <div class="grid lg:grid-cols-12 gap-10 items-start max-w-6xl mx-auto">
-                
-                <!-- Form Inputs -->
-                <div class="lg:col-span-5 bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/80 shadow-sm space-y-6">
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">Seu Nome ou Apelido</label>
-                        <input type="text" id="inputName" placeholder="Ex: Maria Silva ou João" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-purple/50 focus:border-brand-purple transition-all text-slate-800" value="Apoiador da Causa" oninput="updateCanvas()">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">Sua Foto de Perfil</label>
-                        <div class="flex items-center gap-4">
-                            <label class="flex-1 border-2 border-dashed border-slate-200 hover:border-brand-purple rounded-xl p-4 text-center cursor-pointer transition-colors bg-slate-50 hover:bg-purple-50/50">
-                                <i class="fa-solid fa-cloud-arrow-up text-brand-purple text-2xl mb-1 block"></i>
-                                <span class="text-xs text-slate-600 font-medium">Carregar Foto</span>
-                                <input type="file" id="inputPhoto" accept="image/*" class="hidden" onchange="handlePhotoUpload(event)">
-                            </label>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">Ou Escolha um Avatar</label>
-                        <div class="grid grid-cols-4 gap-3">
-                            <button onclick="selectAvatar('👩')" class="avatar-btn border border-slate-200 text-2xl p-2.5 rounded-xl hover:bg-slate-100 transition-all">👩</button>
-                            <button onclick="selectAvatar('👨')" class="avatar-btn border border-slate-200 text-2xl p-2.5 rounded-xl hover:bg-slate-100 transition-all">👨</button>
-                            <button onclick="selectAvatar('👩‍🦱')" class="avatar-btn border border-slate-200 text-2xl p-2.5 rounded-xl hover:bg-slate-100 transition-all">👩‍🦱</button>
-                            <button onclick="selectAvatar('✊🏽')" class="avatar-btn border border-slate-200 text-2xl p-2.5 rounded-xl hover:bg-slate-100 transition-all">✊🏽</button>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">Estilo do Card</label>
-                        <div class="grid grid-cols-3 gap-2">
-                            <button onclick="changeTheme('purple')" class="py-2 rounded-lg text-xs font-semibold border bg-purple-50 border-purple-300 text-purple-700">Roxo</button>
-                            <button onclick="changeTheme('dark')" class="py-2 rounded-lg text-xs font-semibold border bg-slate-800 border-slate-900 text-white">Escuro</button>
-                            <button onclick="changeTheme('pink')" class="py-2 rounded-lg text-xs font-semibold border bg-pink-50 border-pink-300 text-pink-700">Rosa</button>
-                        </div>
-                    </div>
-
-                    <div class="pt-4 border-t border-slate-100 flex flex-col gap-3">
-                        <button onclick="downloadCard()" class="w-full bg-brand-pink hover:bg-pink-600 text-white font-bold py-3.5 rounded-xl transition-all shadow-md flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-download"></i>
-                            <span>Baixar Imagem (Card)</span>
-                        </button>
-                        <button onclick="shareDirectWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3.5 rounded-xl transition-all shadow-md flex items-center justify-center gap-2">
-                            <i class="fa-brands fa-whatsapp text-lg"></i>
-                            <span>Repassar no WhatsApp</span>
-                        </button>
-                    </div>
+        <!-- FORMULÁRIO COM ENVIO DIRETO PARA O WHATSAPP -->
+        <section id="cadastro" class="py-16 md:py-24 bg-slate-950 border-t border-slate-800/80">
+            <div class="max-w-xl mx-auto px-4 text-center">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-3xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-3xl mb-6">
+                    <i class="fa-solid fa-gem"></i>
                 </div>
+                <h2 class="text-3xl font-black text-white mb-2">Entre na Lista VIP do RepassaAí</h2>
+                <p class="text-slate-400 text-sm sm:text-base mb-8">
+                    Seja um dos primeiros a criar seu projeto ou cadastrar sua empresa para o lançamento em breve no <b>repassaai.com.br</b>.
+                </p>
 
-                <!-- Canvas Preview -->
-                <div class="lg:col-span-7 flex flex-col items-center justify-center bg-slate-200/60 p-6 sm:p-8 rounded-3xl border border-slate-300/60">
-                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">Pré-visualização em Tempo Real</span>
+                <form id="formWhatsapp" onsubmit="enviarParaWhatsapp(event)" class="space-y-4 text-left bg-slate-900 p-6 sm:p-8 rounded-3xl border border-slate-800 shadow-xl">
+                    <div>
+                        <label for="nome" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Seu Nome ou Nome do Grupo</label>
+                        <input type="text" id="nome" placeholder="Ex: Emerson Gabriel ou Amigos da Onça" required class="w-full px-4 py-3.5 bg-slate-950 border border-slate-800 rounded-xl text-white placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition">
+                    </div>
                     
-                    <div class="w-full max-w-[420px] shadow-2xl rounded-2xl overflow-hidden bg-white">
-                        <canvas id="cardCanvas" width="600" height="750" class="w-full h-auto block"></canvas>
+                    <div>
+                        <label for="whatsapp" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Seu WhatsApp com DDD</label>
+                        <input type="tel" id="whatsapp" placeholder="Ex: 62999999999" required class="w-full px-4 py-3.5 bg-slate-950 border border-slate-800 rounded-xl text-white placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition">
                     </div>
 
-                    <p class="text-xs text-slate-500 text-center mt-4">
-                        <i class="fa-solid fa-lock text-slate-400 mr-1"></i> Suas imagens são processadas localmente no navegador e não são salvas em servidores.
+                    <div>
+                        <label for="tipo_perfil" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Como você quer participar?</label>
+                        <select id="tipo_perfil" class="w-full px-4 py-3.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-emerald-500 transition">
+                            <option value="Divulgador (Quero Criar Projeto)">Quero ser Divulgador (Criar Projeto)</option>
+                            <option value="Empresa / Lojista (Quero Divulgar)">Quero Divulgar minha Empresa / Loja</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-4 rounded-xl transition flex items-center justify-center gap-2 text-base shadow-lg glow-emerald mt-2">
+                        <i class="fa-brands fa-whatsapp text-xl"></i>
+                        <span>Garantir Vaga pelo WhatsApp</span>
+                    </button>
+                    
+                    <p class="text-[11px] text-slate-500 text-center mt-3">
+                        <i class="fa-solid fa-lock mr-1"></i> Seus dados estão seguros. Ao clicar, o WhatsApp abrirá com sua mensagem preenchida.
                     </p>
-                </div>
-
+                </form>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <!-- Fast Social Share Buttons -->
-    <section class="py-16 bg-white">
-        <div class="max-w-4xl mx-auto px-4 text-center">
-            <h3 class="text-2xl font-bold font-heading text-slate-900 mb-6">Compartilhe essa ideia nas suas redes</h3>
-            <div class="flex flex-wrap gap-4 justify-center">
-                <button onclick="shareWhatsApp()" class="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-full font-medium transition-all flex items-center gap-2 shadow-sm">
-                    <i class="fa-brands fa-whatsapp text-lg"></i> WhatsApp
-                </button>
-                <button onclick="shareLinkedIn()" class="bg-sky-700 hover:bg-sky-800 text-white px-6 py-3 rounded-full font-medium transition-all flex items-center gap-2 shadow-sm">
-                    <i class="fa-brands fa-linkedin text-lg"></i> LinkedIn
-                </button>
-                <button onclick="copyCampaignText()" class="bg-slate-800 hover:bg-slate-900 text-white px-6 py-3 rounded-full font-medium transition-all flex items-center gap-2 shadow-sm">
-                    <i class="fa-solid fa-copy"></i> Copiar Frase e Link
-                </button>
-            </div>
-            <!-- Notification Toast -->
-            <div id="toast" class="opacity-0 transition-opacity duration-300 text-xs font-semibold bg-slate-900 text-white py-2 px-4 rounded-full inline-block mt-4">
-                Texto copiado para a área de transferência!
-            </div>
-        </div>
-    </section>
-
-    <!-- Future Campaigns & Community Voting -->
-    <section id="proximas" class="py-20 bg-slate-900 text-white relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="max-w-3xl mx-auto text-center mb-16">
-                <span class="text-xs font-bold text-pink-400 uppercase tracking-wider bg-pink-500/10 px-3 py-1 rounded-full border border-pink-500/20">Em Breve no RepassaAí</span>
-                <h2 class="text-3xl sm:text-4xl font-bold font-heading mt-4 mb-4">Qual causa devemos repassar a seguir?</h2>
-                <p class="text-slate-400">Vote nas próximas mensagens de conscientização social que entrarem no portal.</p>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                <!-- Option 1 -->
-                <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-6 flex flex-col justify-between hover:border-pink-500/50 transition-all">
-                    <div>
-                        <span class="text-xs font-semibold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-md">Inclusão & Acessibilidade</span>
-                        <h3 class="text-xl font-bold mt-4 mb-2 text-white">"Acessibilidade não é favor, é direito fundamental."</h3>
-                        <p class="text-slate-400 text-sm">Campanha voltada para a conscientização sobre inclusão de pessoas com deficiência.</p>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-slate-700 flex items-center justify-between">
-                        <span class="text-xs text-slate-400" id="votes-1">1.420 votos</span>
-                        <button onclick="voteCampaign(1)" class="bg-slate-700 hover:bg-brand-pink text-white text-xs font-semibold px-4 py-2 rounded-xl transition-all">Votar</button>
-                    </div>
-                </div>
-
-                <!-- Option 2 -->
-                <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-6 flex flex-col justify-between hover:border-pink-500/50 transition-all">
-                    <div>
-                        <span class="text-xs font-semibold text-sky-400 bg-sky-500/10 px-2.5 py-1 rounded-md">Meio Ambiente</span>
-                        <h3 class="text-xl font-bold mt-4 mb-2 text-white">"O futuro do planeta se constrói nas escolhas de hoje."</h3>
-                        <p class="text-slate-400 text-sm">Iniciativas de economia circular, combate ao desperdício e sustentabilidade urbana.</p>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-slate-700 flex items-center justify-between">
-                        <span class="text-xs text-slate-400" id="votes-2">980 votos</span>
-                        <button onclick="voteCampaign(2)" class="bg-slate-700 hover:bg-brand-pink text-white text-xs font-semibold px-4 py-2 rounded-xl transition-all">Votar</button>
-                    </div>
-                </div>
-
-                <!-- Option 3 -->
-                <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-6 flex flex-col justify-between hover:border-pink-500/50 transition-all">
-                    <div>
-                        <span class="text-xs font-semibold text-purple-400 bg-purple-500/10 px-2.5 py-1 rounded-md">Anti-Bullying & Saúde Mental</span>
-                        <h3 class="text-xl font-bold mt-4 mb-2 text-white">"Gentileza na rede salva vidas no mundo real."</h3>
-                        <p class="text-slate-400 text-sm">Combate ao discurso de ódio e empatia no ambiente digital e escolar.</p>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-slate-700 flex items-center justify-between">
-                        <span class="text-xs text-slate-400" id="votes-3">2.150 votos</span>
-                        <button onclick="voteCampaign(3)" class="bg-slate-700 hover:bg-brand-pink text-white text-xs font-semibold px-4 py-2 rounded-xl transition-all">Votar</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Suggestion Form -->
-            <div class="mt-12 bg-slate-800/40 border border-slate-700/50 rounded-2xl p-6 max-w-2xl mx-auto text-center">
-                <h4 class="text-base font-semibold text-white mb-2">Tem uma ideia de frase ou causa para o repassaai.com.br?</h4>
-                <div class="flex flex-col sm:flex-row gap-2 mt-4">
-                    <input type="text" id="userSuggestion" placeholder="Digite sua ideia de frase social..." class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-pink">
-                    <button onclick="sendSuggestion()" class="bg-brand-purple hover:bg-indigo-600 text-white text-sm font-semibold px-6 py-2.5 rounded-xl transition-all">Enviar Ideia</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-slate-950 text-slate-400 py-12 border-t border-slate-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+    <!-- FOOTER -->
+    <footer class="py-10 bg-slate-950 text-center text-slate-500 text-xs border-t border-slate-900">
+        <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="flex items-center gap-2">
-                <span class="text-xl font-black font-heading tracking-tight text-white">
-                    repassa<span class="text-brand-pink">aí</span>.com.br
-                </span>
+                <div class="w-6 h-6 rounded-lg bg-emerald-500 text-slate-950 font-bold flex items-center justify-center text-xs">
+                    RA
+                </div>
+                <span class="font-bold text-slate-300">RepassaAí</span> &copy; 2026. Todos os direitos reservados.
             </div>
-            <p class="text-xs text-slate-500 text-center sm:text-left">
-                &copy; 2026 repassaai.com.br — Plataforma de engajamento e conscientização social.
-            </p>
-            <div class="flex gap-4 text-slate-400 text-sm">
-                <a href="#" class="hover:text-white transition-colors">Termos</a>
-                <a href="#" class="hover:text-white transition-colors">Privacidade</a>
-                <a href="#" class="hover:text-white transition-colors">Contato</a>
+
+            <div class="flex items-center gap-4 text-slate-400 text-xs">
+                <span>repassaai.com.br</span>
+                <span>•</span>
+                <a href="#cadastro" class="hover:text-emerald-400 transition">Lista VIP</a>
+                <span>•</span>
+                <a href="#lojistas" class="hover:text-emerald-400 transition">Para Lojistas</a>
             </div>
         </div>
     </footer>
 
-    <!-- JavaScript Application Logic -->
+    <!-- PWA MANIFEST & SERVICE WORKER INLINE REGISTRATION SCRIPT -->
     <script>
-        // State Management
-        let currentTheme = 'purple';
-        let userPhotoImg = null;
-        let selectedAvatar = '✊🏽';
-        let repsCount = 12480;
-        let cardsCount = 8920;
-
-        const themes = {
-            purple: {
-                bgGrad1: '#31103F',
-                bgGrad2: '#4F46E5',
-                accent: '#EC4899',
-                textColor: '#FFFFFF',
-                subText: '#E0E7FF'
-            },
-            dark: {
-                bgGrad1: '#0F172A',
-                bgGrad2: '#1E293B',
-                accent: '#38BDF8',
-                textColor: '#FFFFFF',
-                subText: '#94A3B8'
-            },
-            pink: {
-                bgGrad1: '#831843',
-                bgGrad2: '#BE185D',
-                accent: '#FDE047',
-                textColor: '#FFFFFF',
-                subText: '#FCE7F3'
-            }
+        // 1. DYNAMIC MANIFEST CREATION VIA BLOB (Allows single-file PWA deployment)
+        const manifestData = {
+            "name": "RepassaAí - Panfletagem Digital",
+            "short_name": "RepassaAí",
+            "start_url": "./",
+            "display": "standalone",
+            "background_color": "#0f172a",
+            "theme_color": "#0f172a",
+            "orientation": "portrait",
+            "description": "Divulgue empresas locais no WhatsApp Status e ganhe Pizzas, Sorvetes e Comissões!",
+            "icons": [
+                {
+                    "src": "https://placehold.co/192x192/10b981/ffffff?text=RA",
+                    "sizes": "192x192",
+                    "type": "image/png"
+                },
+                {
+                    "src": "https://placehold.co/512x512/10b981/ffffff?text=RepassaAi",
+                    "sizes": "512x512",
+                    "type": "image/png"
+                }
+            ]
         };
 
-        window.onload = function() {
-            updateCanvas();
-        };
+        const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/json' });
+        const manifestURL = URL.createObjectURL(manifestBlob);
+        document.getElementById('manifest-placeholder').setAttribute('href', manifestURL);
 
-        function changeTheme(themeKey) {
-            currentTheme = themeKey;
-            updateCanvas();
+        // 2. INLINE SERVICE WORKER CREATION VIA BLOB
+        if ('serviceWorker' in navigator) {
+            const swCode = `
+                const CACHE_NAME = 'repassaai-v1';
+                const ASSETS = [
+                    './',
+                    'https://cdn.tailwindcss.com',
+                    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
+                ];
+
+                self.addEventListener('install', (event) => {
+                    event.waitUntil(
+                        caches.open(CACHE_NAME).then((cache) => {
+                            return cache.addAll(ASSETS).catch(() => {});
+                        })
+                    );
+                    self.skipWaiting();
+                });
+
+                self.addEventListener('activate', (event) => {
+                    event.waitUntil(
+                        caches.keys().then((keys) => {
+                            return Promise.all(
+                                keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
+                            );
+                        })
+                    );
+                    self.clients.claim();
+                });
+
+                self.addEventListener('fetch', (event) => {
+                    event.respondWith(
+                        caches.match(event.request).then((cachedResponse) => {
+                            return cachedResponse || fetch(event.request).catch(() => cachedResponse);
+                        })
+                    );
+                });
+            `;
+
+            const swBlob = new Blob([swCode], { type: 'text/javascript' });
+            const swURL = URL.createObjectURL(swBlob);
+
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register(swURL).then(reg => {
+                    console.log('PWA Service Worker ativo com sucesso!');
+                }).catch(err => {
+                    console.warn('Registro de SW em modo dev:', err);
+                });
+            });
         }
 
-        function selectAvatar(emoji) {
-            selectedAvatar = emoji;
-            userPhotoImg = null; // reset uploaded photo
-            updateCanvas();
-        }
+        // 3. PWA INSTALL PROMPT HANDLER (Android, Chrome, iOS)
+        let deferredPrompt = null;
+        const installBtn = document.getElementById('pwaInstallBtn');
+        const pwaBanner = document.getElementById('pwaBanner');
 
-        function handlePhotoUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = new Image();
-                    img.onload = function() {
-                        userPhotoImg = img;
-                        updateCanvas();
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent standard browser bar from showing up automatically
+            e.preventDefault();
+            deferredPrompt = e;
+
+            // Show custom install triggers
+            if (installBtn) installBtn.classList.remove('hidden');
+            if (pwaBanner) pwaBanner.classList.remove('hidden');
+        });
+
+        function triggerPWAInstall() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('Usuário aceitou a instalação do PWA');
                     }
-                    img.src = e.target.result;
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function updateCanvas() {
-            const canvas = document.getElementById('cardCanvas');
-            const ctx = canvas.getContext('2d');
-            const name = document.getElementById('inputName').value.trim() || "Apoiador da Causa";
-            const theme = themes[currentTheme];
-
-            // Canvas Dimensions: 600 x 750
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Background Gradient
-            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            gradient.addColorStop(0, theme.bgGrad1);
-            gradient.addColorStop(1, theme.bgGrad2);
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Decorative shapes
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
-            ctx.beginPath();
-            ctx.arc(550, 50, 200, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Brand Header inside card
-            ctx.fillStyle = theme.accent;
-            ctx.font = 'bold 24px "Plus Jakarta Sans", sans-serif';
-            ctx.textAlign = 'center';
-            ctx.fillText('repassaai.com.br', 300, 60);
-
-            // Photo or Avatar Container Circle
-            const avatarX = 300;
-            const avatarY = 180;
-            const radius = 65;
-
-            ctx.save();
-            ctx.beginPath();
-            ctx.arc(avatarX, avatarY, radius, 0, Math.PI * 2, true);
-            ctx.closePath();
-            ctx.clip();
-
-            if (userPhotoImg) {
-                // Draw uploaded image center crop
-                const aspect = userPhotoImg.width / userPhotoImg.height;
-                let drawW = radius * 2;
-                let drawH = radius * 2;
-                if (aspect > 1) {
-                    drawW = radius * 2 * aspect;
-                } else {
-                    drawH = (radius * 2) / aspect;
-                }
-                ctx.drawImage(userPhotoImg, avatarX - drawW/2, avatarY - drawH/2, drawW, drawH);
+                    deferredPrompt = null;
+                    if (installBtn) installBtn.classList.add('hidden');
+                    if (pwaBanner) pwaBanner.classList.add('hidden');
+                });
             } else {
-                // Draw solid background for avatar emoji
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
-                ctx.fillRect(avatarX - radius, avatarY - radius, radius * 2, radius * 2);
-                ctx.font = '65px sans-serif';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(selectedAvatar, avatarX, avatarY + 5);
+                // Instructions for iOS or browsers without automatic install prompt
+                alert("Para instalar no iPhone / iPad:\n1. Toque no botão 'Compartilhar' (ícone do quadrado com seta).\n2. Selecione 'Adicionar à Tela de Início'.");
             }
-            ctx.restore();
-
-            // Circle Border Glow
-            ctx.strokeStyle = theme.accent;
-            ctx.lineWidth = 4;
-            ctx.beginPath();
-            ctx.arc(avatarX, avatarY, radius + 2, 0, Math.PI * 2);
-            ctx.stroke();
-
-            // Name
-            ctx.fillStyle = theme.textColor;
-            ctx.font = 'bold 26px "Inter", sans-serif';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'alphabetic';
-            ctx.fillText(name, 300, 285);
-
-            // Support Badge Text
-            ctx.fillStyle = theme.subText;
-            ctx.font = '500 14px "Inter", sans-serif';
-            ctx.fillText('APOIA A CAMPANHA OFICIAL', 300, 310);
-
-            // Quote Box Background
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
-            roundRect(ctx, 40, 350, 520, 300, 20, true, false);
-
-            // Quote Symbol
-            ctx.fillStyle = theme.accent;
-            ctx.font = 'bold 50px Georgia, serif';
-            ctx.fillText('“', 80, 400);
-
-            // Main Campaign Quote
-            ctx.fillStyle = theme.textColor;
-            ctx.font = 'bold 30px "Plus Jakarta Sans", sans-serif';
-            
-            // Wrap Text function for quotes
-            wrapText(ctx, 'Respeito à mulher é nossa responsabilidade.', 300, 440, 440, 40);
-
-            // Secondary Hashtag / CTA
-            ctx.fillStyle = theme.accent;
-            ctx.font = '600 16px "Inter", sans-serif';
-            ctx.fillText('#RespeitoÀMulher #RepassaAí', 300, 580);
-
-            // Footer / Domain CTA inside card
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-            ctx.font = '400 14px "Inter", sans-serif';
-            ctx.fillText('Acesse repassaai.com.br e apoie você também', 300, 710);
         }
 
-        // Helper function for rounded rectangles in canvas
-        function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
-            ctx.beginPath();
-            ctx.moveTo(x + radius, y);
-            ctx.lineTo(x + width - radius, y);
-            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-            ctx.lineTo(x + width, y + height - radius);
-            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-            ctx.lineTo(x + radius, y + height);
-            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-            ctx.lineTo(x, y + radius);
-            ctx.quadraticCurveTo(x, y, x + radius, y);
-            ctx.closePath();
-            if (fill) ctx.fill();
-            if (stroke) ctx.stroke();
-        }
+        // 4. WHATSAPP FORM SUBMISSION HANDLER
+        function enviarParaWhatsapp(event) {
+            event.preventDefault(); // Impede o recarregamento da página
 
-        // Helper function for multi-line wrapped canvas text
-        function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
-            const words = text.split(' ');
-            let line = '';
-            let currentY = y;
+            // Pega os dados digitados
+            const nome = document.getElementById('nome').value.trim();
+            const zapUser = document.getElementById('whatsapp').value.trim();
+            const perfil = document.getElementById('tipo_perfil').value;
 
-            for (let n = 0; n < words.length; n++) {
-                const testLine = line + words[n] + ' ';
-                const metrics = ctx.measureText(testLine);
-                const testWidth = metrics.width;
-                if (testWidth > maxWidth && n > 0) {
-                    ctx.fillText(line.trim(), x, currentY);
-                    line = words[n] + ' ';
-                    currentY += lineHeight;
-                } else {
-                    line = testLine;
-                }
-            }
-            ctx.fillText(line.trim(), x, currentY);
-        }
+            // Número cadastrado no sistema
+            const meunumero = "5562920026981";
 
-        // Download Card as PNG Image
-        function downloadCard() {
-            const canvas = document.getElementById('cardCanvas');
-            const link = document.createElement('a');
-            link.download = 'repassaai-respeito-a-mulher.png';
-            link.href = canvas.toDataURL('image/png');
-            link.click();
+            // Monta a mensagem formatada para URL
+            let mensagem = `*Olá! Quero entrar na Lista VIP do RepassaAí!*%0A%0A`;
+            mensagem += `*Nome/Grupo:* ${encodeURIComponent(nome)}%0A`;
+            mensagem += `*WhatsApp:* ${encodeURIComponent(zapUser)}%0A`;
+            mensagem += `*Perfil:* ${encodeURIComponent(perfil)}%0A%0A`;
+            mensagem += `Vim pelo site repassaai.com.br e quero garantir minha vaga no lançamento!`;
 
-            // Increment Card Count
-            cardsCount++;
-            document.getElementById('counter-cards').innerText = cardsCount.toLocaleString('pt-BR');
-        }
-
-        // WhatsApp Share Action
-        function shareDirectWhatsApp() {
-            const text = encodeURIComponent("Junte-se a mim nesse movimento! Respeito à mulher é nossa responsabilidade. Acesse e repasse você também: https://repassaai.com.br #RespeitoÀMulher #RepassaAí");
-            window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
-            incrementRepassCounter();
-        }
-
-        function shareWhatsApp() {
-            shareDirectWhatsApp();
-        }
-
-        function shareLinkedIn() {
-            const url = encodeURIComponent("https://repassaai.com.br");
-            const title = encodeURIComponent("Respeito à mulher é nossa responsabilidade - repassaai.com.br");
-            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
-            incrementRepassCounter();
-        }
-
-        function copyCampaignText() {
-            const textToCopy = "Respeito à mulher é nossa responsabilidade. Faça sua parte e apoie essa causa em https://repassaai.com.br #RespeitoÀMulher #RepassaAí";
-            
-            // Fallback clipboard logic
-            const tempInput = document.createElement("textarea");
-            tempInput.value = textToCopy;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand("copy");
-            document.body.removeChild(tempInput);
-
-            // Toast animation
-            const toast = document.getElementById('toast');
-            toast.classList.remove('opacity-0');
-            toast.classList.add('opacity-100');
-            setTimeout(() => {
-                toast.classList.remove('opacity-100');
-                toast.classList.add('opacity-0');
-            }, 3000);
-
-            incrementRepassCounter();
-        }
-
-        function incrementRepassCounter() {
-            repsCount++;
-            document.getElementById('counter-repasses').innerText = repsCount.toLocaleString('pt-BR');
-        }
-
-        // Voting feature for next causes
-        let votes = { 1: 1420, 2: 980, 3: 2150 };
-        let hasVoted = false;
-
-        function voteCampaign(id) {
-            if (hasVoted) {
-                alert("Você já computou seu voto para a próxima causa. Obrigado!");
-                return;
-            }
-            votes[id]++;
-            document.getElementById(`votes-${id}`).innerText = `${votes[id].toLocaleString('pt-BR')} votos`;
-            hasVoted = true;
-            alert("Voto registrado com sucesso! Obrigado por construir o repassaai.com.br com a gente.");
-        }
-
-        function sendSuggestion() {
-            const input = document.getElementById('userSuggestion');
-            if (input.value.trim() !== '') {
-                alert('Sua sugestão foi enviada com sucesso! Em breve analisaremos para incluir nas próximas frases do RepassaAí.');
-                input.value = '';
-            }
+            // Abre o link direto do WhatsApp
+            const url = `https://api.whatsapp.com/send?phone=${meunumero}&text=${mensagem}`;
+            window.open(url, '_blank');
         }
     </script>
 </body>
