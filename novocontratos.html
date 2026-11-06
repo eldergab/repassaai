@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RepassaAí | Gerador de Contratos & PWA Agente</title>
+
+    <!-- PWA Primary Meta Tags -->
+    <meta name="theme-color" content="#0f172a">
+    <meta name="description" content="Aplicativo de Prospecção e Fechamento de Contratos de Campo - RepassaAí (repassaai.com.br)">
+    <meta name="application-name" content="RepassaAí Agente">
+    
+    <!-- iOS / Safari PWA Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="RepassaAí Agente">
+    <link rel="apple-touch-icon" href="https://placehold.co/192x192/10b981/ffffff?text=RA">
+
+    <!-- Web App Manifest (Blob Data URI) -->
+    <link rel="manifest" id="manifest-placeholder">
+
+    <!-- Tailwind CSS & FontAwesome Icons -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            400: '#34d399',
+                            500: '#10b981',
+                            600: '#059669',
+                            900: '#064e3b',
+                            950: '#022c22',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #10b981;
+        }
+        .glow-emerald {
+            box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.35);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 antialiased min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-slate-950">
+
+    <!-- NAVBAR NATIVA PWA -->
+    <nav class="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-md border-b border-slate-800/80 px-4 py-3">
+        <div class="max-w-4xl mx-auto flex items-center justify-between">
+            <a href="#" class="flex items-center gap-2.5">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-emerald-400 flex items-center justify-center font-black text-slate-950 text-xl shadow-lg">
+                    RA
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-black text-lg tracking-tight leading-none text-white">Repassa<span class="text-emerald-400">Aí</span></span>
+                    <span class="text-[10px] text-emerald-400 font-bold tracking-widest uppercase">Contratos & Agente</span>
+                </div>
+            </a>
+
+            <div class="flex items-center gap-2">
+                <button id="pwaInstallBtn" onclick="triggerPWAInstall()" class="hidden bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold px-3 py-2 rounded-xl shadow-lg transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Instalar App</span>
+                </button>
+                <div class="bg-slate-800 border border-slate-700/80 text-slate-300 text-xs px-3 py-1.5 rounded-xl flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span class="font-semibold">Online</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- BANNER PWA -->
+    <div id="pwaBanner" class="hidden bg-emerald-950/90 border-b border-emerald-500/30 px-4 py-2.5 text-emerald-200 text-xs">
+        <div class="max-w-4xl mx-auto flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-mobile-screen-button text-emerald-400 text-base"></i>
+                <span>Instale este App no seu celular para fechamento rápido de acordos com lojistas.</span>
+            </div>
+            <button onclick="triggerPWAInstall()" class="bg-emerald-500 text-slate-950 font-bold px-3 py-1 rounded-lg text-xs whitespace-nowrap">
+                Instalar
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN APP CONTAINER -->
+    <main class="flex-grow max-w-4xl w-full mx-auto px-4 py-6 sm:py-10">
+
+        <!-- CABEÇALHO -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold mb-3">
+                <i class="fa-solid fa-file-contract"></i> Sistema de Parceria Comercial
+            </div>
+            <h1 class="text-2xl sm:text-4xl font-black text-white tracking-tight">
+                Novo Contrato de Adesão RepassaAí
+            </h1>
+            <p class="text-slate-400 text-xs sm:text-sm mt-1">
+                Selecione o pacote de visualizações e defina se haverá parceria adicional (Vault ou Comissão).
+            </p>
+        </div>
+
+        <!-- FORMULÁRIO DE CONTRATOS -->
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 sm:p-8 shadow-2xl mb-8">
+            <form id="formContrato" onsubmit="processarContrato(event)" class="space-y-6">
+                
+                <!-- 1. DADOS DO ESTABELECIMENTO -->
+                <div>
+                    <h3 class="text-emerald-400 font-bold text-xs uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-building"></i> 1. Dados do Estabelecimento Lojista
+                    </h3>
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Razão Social / Nome Fantasia *</label>
+                            <input type="text" id="razaoSocial" placeholder="Ex: Ótica Visão Real ou Pizzaria Bella" required class="w-full px-3.5 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">CNPJ ou CPF do Responsável *</label>
+                            <input type="text" id="documento" placeholder="00.000.000/0001-00" required class="w-full px-3.5 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Nome do Responsável / Proprietário *</label>
+                            <input type="text" id="nomeResponsavel" placeholder="Ex: Carlos Eduardo da Silva" required class="w-full px-3.5 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">WhatsApp da Empresa (com DDD) *</label>
+                            <input type="tel" id="whatsappEmpresa" placeholder="Ex: 62988888888" required class="w-full px-3.5 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Endereço Completo do Estabelecimento *</label>
+                            <input type="text" id="enderecoEmpresa" placeholder="Ex: Av. Brasil, nº 1200, Centro - Anápolis/GO" required class="w-full px-3.5 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition">
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="border-slate-800">
+
+                <!-- 2. ETAPA 1: PACOTE DE VISUALIZAÇÕES (OBRIGATÓRIO) -->
+                <div>
+                    <h3 class="text-emerald-400 font-bold text-xs uppercase tracking-wider mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-eye"></i> ETAPA 1: Pacote de Visualizações (Obrigatório)
+                    </h3>
+                    <p class="text-xs text-slate-400 mb-4">Escolha o volume de alcance de panfletagem digital contratado no RepassaAí:</p>
+
+                    <div class="grid sm:grid-cols-3 gap-3">
+                        <!-- Pacote 1k -->
+                        <label class="relative bg-slate-950 border border-slate-800 rounded-2xl p-4 cursor-pointer hover:border-emerald-500/50 transition flex flex-col justify-between">
+                            <input type="radio" name="pacoteViews" value="1000" checked onchange="calcularResumoDinamico()" class="peer sr-only">
+                            <div class="peer-checked:text-emerald-400 peer-checked:border-emerald-500">
+                                <div class="text-xs font-bold text-slate-400 uppercase">Inicial</div>
+                                <div class="text-xl font-black text-white mt-1">1.000 <span class="text-xs text-slate-400 font-normal">views</span></div>
+                                <div class="text-lg font-bold text-emerald-400 mt-2">R$ 100,00</div>
+                                <div class="text-[11px] text-slate-400 mt-1 border-t border-slate-800 pt-2">
+                                    Custo unitário: <strong class="text-slate-200">R$ 0,10 / view</strong>
+                                </div>
+                            </div>
+                            <div class="absolute top-3 right-3 w-4 h-4 rounded-full border border-slate-600 peer-checked:border-emerald-400 peer-checked:bg-emerald-500"></div>
+                        </label>
+
+                        <!-- Pacote 5k -->
+                        <label class="relative bg-slate-950 border border-slate-800 rounded-2xl p-4 cursor-pointer hover:border-emerald-500/50 transition flex flex-col justify-between">
+                            <input type="radio" name="pacoteViews" value="5000" onchange="calcularResumoDinamico()" class="peer sr-only">
+                            <div class="peer-checked:text-emerald-400 peer-checked:border-emerald-500">
+                                <div class="text-xs font-bold text-emerald-400 uppercase">Intermediário</div>
+                                <div class="text-xl font-black text-white mt-1">5.000 <span class="text-xs text-slate-400 font-normal">views</span></div>
+                                <div class="text-lg font-bold text-emerald-400 mt-2">R$ 400,00</div>
+                                <div class="text-[11px] text-slate-400 mt-1 border-t border-slate-800 pt-2">
+                                    Custo unitário: <strong class="text-slate-200">R$ 0,08 / view</strong>
+                                </div>
+                            </div>
+                            <div class="absolute top-3 right-3 w-4 h-4 rounded-full border border-slate-600 peer-checked:border-emerald-400 peer-checked:bg-emerald-500"></div>
+                        </label>
+
+                        <!-- Pacote 10k -->
+                        <label class="relative bg-slate-950 border border-slate-800 rounded-2xl p-4 cursor-pointer hover:border-emerald-500/50 transition flex flex-col justify-between">
+                            <input type="radio" name="pacoteViews" value="10000" onchange="calcularResumoDinamico()" class="peer sr-only">
+                            <div class="peer-checked:text-emerald-400 peer-checked:border-emerald-500">
+                                <div class="text-xs font-bold text-purple-400 uppercase">Alta Performance</div>
+                                <div class="text-xl font-black text-white mt-1">10.000 <span class="text-xs text-slate-400 font-normal">views</span></div>
+                                <div class="text-lg font-bold text-emerald-400 mt-2">R$ 700,00</div>
+                                <div class="text-[11px] text-slate-400 mt-1 border-t border-slate-800 pt-2">
+                                    Custo unitário: <strong class="text-slate-200">R$ 0,07 / view</strong>
+                                </div>
+                            </div>
+                            <div class="absolute top-3 right-3 w-4 h-4 rounded-full border border-slate-600 peer-checked:border-emerald-400 peer-checked:bg-emerald-500"></div>
+                        </label>
+                    </div>
+                </div>
+
+                <hr class="border-slate-800">
+
+                <!-- 3. ETAPA 2: PARCERIA COMERCIAL COMPLEMENTAR -->
+                <div>
+                    <h3 class="text-emerald-400 font-bold text-xs uppercase tracking-wider mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-handshake-simple"></i> ETAPA 2: Parceria Comercial Complementar
+                    </h3>
+                    <p class="text-xs text-slate-400 mb-4">Escolha claramente se haverá algum adicional de recompensa ou comissão ao pacote contratado:</p>
+
+                    <div class="space-y-3">
+                        <!-- Opção A: Apenas o Pacote Escolhido -->
+                        <label class="flex items-start gap-3 p-4 bg-slate-950 border border-slate-800 rounded-2xl cursor-pointer hover:border-emerald-500/50 transition">
+                            <input type="radio" name="modeloParceria" value="sem_complemento" checked onchange="alternarCamposModelo()" class="mt-1 text-emerald-500 focus:ring-emerald-500">
+                            <div>
+                                <span class="font-bold text-sm text-white block">Opção A: O Pacote Escolhido SEM Adicional</span>
+                                <span class="text-xs text-slate-400">Paga somente o valor fixo do pacote contratado acima (sem comissão extra nem prêmios).</span>
+                            </div>
+                        </label>
+
+                        <!-- Opção B: Pacote Escolhido + Crédito Vault -->
+                        <label class="flex items-start gap-3 p-4 bg-slate-950 border border-slate-800 rounded-2xl cursor-pointer hover:border-emerald-500/50 transition">
+                            <input type="radio" name="modeloParceria" value="vault" onchange="alternarCamposModelo()" class="mt-1 text-emerald-500 focus:ring-emerald-500">
+                            <div>
+                                <span class="font-bold text-sm text-white block">Opção B: O Pacote Escolhido COM Crédito para Vault de Experiências</span>
+                                <span class="text-xs text-slate-400">Pacote contratado + Bônus de Crédito para prêmios (Pizzas, Sorvetes, Açaí, Vouchers).</span>
+                            </div>
+                        </label>
+
+                        <!-- Subcampo Opção B: Vault de Experiências -->
+                        <div id="boxVault" class="hidden ml-7 bg-slate-950/80 border border-emerald-500/30 rounded-2xl p-4">
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Valor do Crédito para Recompensa/Vault (R$) *</label>
+                            <input type="number" id="valorCreditoVault" min="1" step="0.01" placeholder="Ex: 50.00" oninput="calcularResumoDinamico()" class="w-full px-3.5 py-3 bg-slate-900 border border-slate-800 rounded-xl text-white text-sm placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition">
+                            <div id="resultadoCalcVault" class="mt-3 p-3 bg-emerald-950/40 border border-emerald-500/30 rounded-xl text-xs text-emerald-300">
+                                Digite o valor do crédito para calcular a meta de visualizações necessárias.
+                            </div>
+                        </div>
+
+                        <!-- Opção C: Pacote Escolhido + Comissão Percentual -->
+                        <label class="flex items-start gap-3 p-4 bg-slate-950 border border-slate-800 rounded-2xl cursor-pointer hover:border-emerald-500/50 transition">
+                            <input type="radio" name="modeloParceria" value="comissao" onchange="alternarCamposModelo()" class="mt-1 text-emerald-500 focus:ring-emerald-500">
+                            <div>
+                                <span class="font-bold text-sm text-white block">Opção C: O Pacote Escolhido COM Comissão Percentual sobre Vendas</span>
+                                <span class="text-xs text-slate-400">Pacote contratado + Repasse de porcentagem por cada venda fechada via código.</span>
+                            </div>
+                        </label>
+
+                        <!-- Subcampo Opção C: Comissão Percentual -->
+                        <div id="boxComissao" class="hidden ml-7 bg-slate-950/80 border border-emerald-500/30 rounded-2xl p-4">
+                            <label class="block text-xs font-semibold text-slate-300 mb-2">Selecione a alíquota de comissão por venda fechada *</label>
+                            <div class="grid grid-cols-3 gap-3">
+                                <label class="flex items-center justify-center p-3 bg-slate-900 border border-slate-800 rounded-xl cursor-pointer hover:border-emerald-500/50">
+                                    <input type="radio" name="porcentagemComissao" value="2.5" checked onchange="calcularResumoDinamico()" class="mr-2">
+                                    <span class="font-bold text-sm text-white">2,5%</span>
+                                </label>
+                                <label class="flex items-center justify-center p-3 bg-slate-900 border border-slate-800 rounded-xl cursor-pointer hover:border-emerald-500/50">
+                                    <input type="radio" name="porcentagemComissao" value="5.0" onchange="calcularResumoDinamico()" class="mr-2">
+                                    <span class="font-bold text-sm text-white">5,0%</span>
+                                </label>
+                                <label class="flex items-center justify-center p-3 bg-slate-900 border border-slate-800 rounded-xl cursor-pointer hover:border-emerald-500/50">
+                                    <input type="radio" name="porcentagemComissao" value="10.0" onchange="calcularResumoDinamico()" class="mr-2">
+                                    <span class="font-bold text-sm text-white">10,0%</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="border-slate-800">
+
+                <!-- 4. ACEITE DE PROPOSTAS CRIATIVAS DOS GRUPOS -->
+                <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4">
+                    <label class="flex items-start gap-3 cursor-pointer">
+                        <input type="checkbox" id="aceitaPropostas" checked class="mt-1 w-4 h-4 text-emerald-500 bg-slate-900 border-slate-700 rounded focus:ring-emerald-500">
+                        <div>
+                            <span class="font-bold text-sm text-white">Aceitar Propostas Criativas dos Grupos e Divulgadores Locais</span>
+                            <p class="text-xs text-slate-400 mt-0.5">Permite que divulgadores da cidade enviem propostas personalizadas (ex: negociação de grupo presencial na loja em troca de patrocínio de pizza/sobremesa).</p>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- 5. AGENTE NEGOCIADOR -->
+                <div class="grid sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Nome do Agente Negociador *</label>
+                        <input type="text" id="nomeAgente" value="Emerson Gabriel" required class="w-full px-3.5 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm focus:outline-none focus:border-emerald-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Cidade / Estado da Assinatura *</label>
+                        <input type="text" id="cidadeVisita" value="Anápolis - GO" required class="w-full px-3.5 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm focus:outline-none focus:border-emerald-500 transition">
+                    </div>
+                </div>
+
+                <!-- RESUMO DE CÁLCULOS DINÂMICO -->
+                <div class="bg-emerald-950/30 border border-emerald-500/30 rounded-2xl p-4 text-xs text-slate-300 space-y-1.5" id="boxResumoCalculo">
+                    <!-- Preenchido via JS -->
+                </div>
+
+                <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-4 rounded-xl transition flex items-center justify-center gap-2 text-base shadow-lg glow-emerald">
+                    <i class="fa-solid fa-file-signature text-xl"></i>
+                    <span>Gerar Termo de Adesão & Contrato</span>
+                </button>
+
+            </form>
+        </div>
+
+        <!-- CONTRATO GERADO E DISPARO VIA WHATSAPP -->
+        <div id="areaContrato" class="hidden bg-slate-900 border border-emerald-500/50 rounded-3xl p-5 sm:p-8 shadow-2xl mb-8">
+            <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></div>
+                    <h3 class="font-bold text-white text-base">Termo de Adesão Comercial Gerado</h3>
+                </div>
+                <span id="dataGeracao" class="text-xs text-slate-400"></span>
+            </div>
+
+            <!-- EXIBIÇÃO DO TEXTO DO CONTRATO -->
+            <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 sm:p-6 text-xs sm:text-sm font-mono text-slate-300 whitespace-pre-wrap leading-relaxed max-h-96 overflow-y-auto mb-6 select-all" id="textoContratoVisual">
+            </div>
+
+            <!-- BOTÕES DE DISPARO WHATSAPP -->
+            <div class="space-y-3">
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-wider text-center mb-2">Enviar Contrato via WhatsApp</p>
+                
+                <div class="grid sm:grid-cols-2 gap-3">
+                    <button onclick="enviarWhatsappEmpresa()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 px-4 rounded-xl transition flex items-center justify-center gap-2 text-xs sm:text-sm shadow-md">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <span>1. Enviar p/ WhatsApp do Lojista</span>
+                    </button>
+
+                    <button onclick="enviarWhatsappAdmin()" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-emerald-400 font-bold py-3.5 px-4 rounded-xl transition flex items-center justify-center gap-2 text-xs sm:text-sm">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <span>2. Salvar Cópia no Admin (62 920026981)</span>
+                    </button>
+                </div>
+
+                <button onclick="copiarTextoContrato()" class="w-full bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-300 font-semibold py-3 px-4 rounded-xl transition flex items-center justify-center gap-2 text-xs">
+                    <i class="fa-solid fa-copy"></i>
+                    <span>Copiar Texto Completo do Contrato</span>
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="py-6 bg-slate-950 text-center text-slate-500 text-xs border-t border-slate-900">
+        <div class="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+                <div class="w-5 h-5 rounded bg-emerald-500 text-slate-950 font-black flex items-center justify-center text-[10px]">
+                    RA
+                </div>
+                <span class="font-bold text-slate-300">RepassaAí Agente PWA</span> &copy; 2026.
+            </div>
+            <div class="text-slate-400 text-[11px]">
+                Plataforma de Panfletagem Digital • repassaai.com.br
+            </div>
+        </div>
+    </footer>
+
+    <!-- LÓGICA JAVASCRIPT -->
+    <script>
+        const WHATSAPP_ADMIN = "5562920026981";
+
+        let estadoContrato = {
+            textoCompleto: '',
+            whatsappEmpresaLimpo: ''
+        };
+
+        // Precificação dos Pacotes de Visualização
+        const TABELA_PACOTES = {
+            "1000": { visualizacoes: 1000, precoTotal: 100.00, valorUnitario: 0.10, nome: "Inicial (1.000 views)" },
+            "5000": { visualizacoes: 5000, precoTotal: 400.00, valorUnitario: 0.08, nome: "Intermediário (5.000 views)" },
+            "10000": { visualizacoes: 10000, precoTotal: 700.00, valorUnitario: 0.07, nome: "Alta Performance (10.000 views)" }
+        };
+
+        function alternarCamposModelo() {
+            const radioModelo = document.querySelector('input[name="modeloParceria"]:checked');
+            const modelo = radioModelo ? radioModelo.value : 'sem_complemento';
+
+            const boxVault = document.getElementById('boxVault');
+            const boxComissao = document.getElementById('boxComissao');
+
+            boxVault.classList.add('hidden');
+            boxComissao.classList.add('hidden');
+
+            if (modelo === 'vault') {
+                boxVault.classList.remove('hidden');
+            } else if (modelo === 'comissao') {
+                boxComissao.classList.remove('hidden');
+            }
+
+            calcularResumoDinamico();
+        }
+
+        function calcularResumoDinamico() {
+            const radioPacote = document.querySelector('input[name="pacoteViews"]:checked');
+            const valPacoteKey = radioPacote ? radioPacote.value : "1000";
+            const infoPacote = TABELA_PACOTES[valPacoteKey];
+
+            const radioModelo = document.querySelector('input[name="modeloParceria"]:checked');
+            const modelo = radioModelo ? radioModelo.value : 'sem_complemento';
+
+            const boxResumo = document.getElementById('boxResumoCalculo');
+            const resultadoVaultDiv = document.getElementById('resultadoCalcVault');
+
+            let htmlResumo = `<div><strong>Pacote Escolhido:</strong> ${infoPacote.nome} — R$ ${infoPacote.precoTotal.toFixed(2).replace('.', ',')}</div>`;
+            htmlResumo += `<div><strong>Custo Unitário por Visualização:</strong> R$ ${infoPacote.valorUnitario.toFixed(2).replace('.', ',')} / view</div>`;
+
+            if (modelo === 'sem_complemento') {
+                htmlResumo += `<div class="text-emerald-400 font-semibold"><strong>Parceria Complementar:</strong> Opção A — Pacote Selecionado SEM adicionais (Apenas o valor fixo contratado).</div>`;
+            } else if (modelo === 'vault') {
+                const valCredito = parseFloat(document.getElementById('valorCreditoVault').value) || 0;
+                if (valCredito > 0) {
+                    const viewsNecessarias = Math.ceil(valCredito / infoPacote.valorUnitario);
+                    htmlResumo += `<div><strong>Parceria Complementar:</strong> Opção B — Pacote Escolhido + Crédito Vault de R$ ${valCredito.toFixed(2).replace('.', ',')}</div>`;
+                    htmlResumo += `<div><strong>Meta de Visualizações para Recompensa:</strong> <span class="text-emerald-400 font-bold">${viewsNecessarias.toLocaleString('pt-BR')} views</span></div>`;
+
+                    resultadoVaultDiv.innerHTML = `Crédito de <strong>R$ ${valCredito.toFixed(2).replace('.', ',')}</strong> ÷ R$ ${infoPacote.valorUnitario.toFixed(2).replace('.', ',')}/view = <strong>${viewsNecessarias.toLocaleString('pt-BR')} visualizações</strong> necessárias para resgate.`;
+                } else {
+                    resultadoVaultDiv.innerText = "Digite o valor do crédito para calcular a meta de visualizações necessárias.";
+                }
+            } else if (modelo === 'comissao') {
+                const radioComissao = document.querySelector('input[name="porcentagemComissao"]:checked');
+                const pct = radioComissao ? radioComissao.value : "2.5";
+                htmlResumo += `<div class="text-emerald-400 font-semibold"><strong>Parceria Complementar:</strong> Opção C — Pacote Escolhido + Comissão de ${pct}% por cada venda fechada.</div>`;
+            }
+
+            boxResumo.innerHTML = htmlResumo;
+        }
+
+        function processarContrato(event) {
+            event.preventDefault();
+
+            const razao = document.getElementById('razaoSocial').value.trim();
+            const doc = document.getElementById('documento').value.trim();
+            const resp = document.getElementById('nomeResponsavel').value.trim();
+            const zapEmp = document.getElementById('whatsappEmpresa').value.trim();
+            const endereco = document.getElementById('enderecoEmpresa').value.trim();
+
+            const radioPacote = document.querySelector('input[name="pacoteViews"]:checked');
+            const infoPacote = TABELA_PACOTES[radioPacote.value];
+
+            const radioModelo = document.querySelector('input[name="modeloParceria"]:checked');
+            const modelo = radioModelo ? radioModelo.value : 'sem_complemento';
+
+            const aceitaPropostas = document.getElementById('aceitaPropostas').checked ? 'SIM (Disponível)' : 'NÃO';
+            const agente = document.getElementById('nomeAgente').value.trim();
+            const cidade = document.getElementById('cidadeVisita').value.trim();
+
+            let zapLimpo = zapEmp.replace(/\D/g, '');
+            if (!zapLimpo.startsWith('55') && zapLimpo.length <= 11) {
+                zapLimpo = '55' + zapLimpo;
+            }
+
+            const dataAtual = new Date().toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            // Detalhamento do modelo no texto do contrato
+            let detalheModeloTexto = "";
+            if (modelo === 'sem_complemento') {
+                detalheModeloTexto = `OPÇÃO A - SOMENTE PACOTE DE VISUALIZAÇÃO CONTRATADO
+- O contratante pagará apenas o valor fixo contratado de R$ ${infoPacote.precoTotal.toFixed(2).replace('.', ',')} referente a ${infoPacote.visualizacoes.toLocaleString('pt-BR')} visualizações (Custo: R$ ${infoPacote.valorUnitario.toFixed(2).replace('.', ',')}/view).
+- Isento de taxas, comissões adicionais ou prêmios por vendas.`;
+            } else if (modelo === 'vault') {
+                const valCredito = parseFloat(document.getElementById('valorCreditoVault').value) || 0;
+                const viewsNecessarias = Math.ceil(valCredito / infoPacote.valorUnitario);
+                detalheModeloTexto = `OPÇÃO B - PACOTE CONTRATADO + CRÉDITO VAULT DE EXPERIÊNCIAS
+- Pacote Base: ${infoPacote.nome} (R$ ${infoPacote.precoTotal.toFixed(2).replace('.', ',')})
+- Valor do Crédito de Recompensa/Bônus: R$ ${valCredito.toFixed(2).replace('.', ',')}
+- Custo por Visualização do Pacote: R$ ${infoPacote.valorUnitario.toFixed(2).replace('.', ',')}
+- Meta de Visualizações para Liberação do Crédito: ${viewsNecessarias.toLocaleString('pt-BR')} views`;
+            } else if (modelo === 'comissao') {
+                const radioComissao = document.querySelector('input[name="porcentagemComissao"]:checked');
+                const pct = radioComissao ? radioComissao.value : "2.5";
+                detalheModeloTexto = `OPÇÃO C - PACOTE CONTRATADO + COMISSÃO PERCENTUAL SOBRE VENDAS
+- Pacote Base: ${infoPacote.nome} (R$ ${infoPacote.precoTotal.toFixed(2).replace('.', ',')})
+- Percentual de Comissão Repassado: ${pct}% sobre o valor bruto de cada venda/serviço fechado via código de indicação RepassaAí.`;
+            }
+
+            const textoTermo = `*TERMO DE ADESÃO COMERCIAL - REPASSAAÍ*
+----------------------------------------
+*DATA DO REGISTRO:* ${dataAtual}
+*CIDADE/UF:* ${cidade}
+*AGENTE RESPONSÁVEL:* ${agente}
+
+*1. DADOS CONTRATUAIS DO LOJISTA:*
+- *Razão Social/Fantasia:* ${razao}
+- *CNPJ/CPF:* ${doc}
+- *Responsável Legal:* ${resp}
+- *WhatsApp Oficial:* ${zapEmp}
+- *Endereço:* ${endereco}
+
+*2. ETAPA 1: PACOTE DE VISUALIZAÇÕES CONTRATADO (OBRIGATÓRIO)*
+- *Plano Contratado:* ${infoPacote.nome}
+- *Total de Visualizações:* ${infoPacote.visualizacoes.toLocaleString('pt-BR')} views
+- *Valor Total do Pacote:* R$ ${infoPacote.precoTotal.toFixed(2).replace('.', ',')}
+- *Custo Unitário por View:* R$ ${infoPacote.valorUnitario.toFixed(2).replace('.', ',')}
+
+*3. ETAPA 2: PARCERIA COMERCIAL COMPLEMENTAR*
+${detalheModeloTexto}
+
+*4. ACEITE DE PROPOSTAS CRIATIVAS DOS GRUPOS:*
+- *Permite Propostas Personalizadas:* ${aceitaPropostas}
+
+*5. CLÁUSULAS GERAIS DE CONDIÇÕES:*
+a) A validação de clientes ou cupons será feita via sistema RepassaAí no balcão/WhatsApp da empresa através de Código Único do divulgador.
+b) O contratante garante a autenticidade das informações prestadas e a honra da oferta/desconto estabelecida aos clientes do sistema.
+c) Qualquer alteração nas campanhas poderá ser solicitada com aviso prévio simples via atendimento oficial.
+
+----------------------------------------
+*CONFIRMAÇÃO DO ACEITE:*
+Responda a esta mensagem no WhatsApp com a palavra *"DE ACORDO"* para validar e ativar formalmente o contrato no RepassaAí.
+
+_RepassaAí • Panfletagem Digital & Recompensas_
+_https://repassaai.com.br_`;
+
+            estadoContrato.textoCompleto = textoTermo;
+            estadoContrato.whatsappEmpresaLimpo = zapLimpo;
+
+            document.getElementById('textoContratoVisual').innerText = textoTermo;
+            document.getElementById('dataGeracao').innerText = `Gerado em: ${dataAtual}`;
+
+            const areaContrato = document.getElementById('areaContrato');
+            areaContrato.classList.remove('hidden');
+            areaContrato.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function enviarWhatsappEmpresa() {
+            if (!estadoContrato.textoCompleto) return;
+            const textoEncoded = encodeURIComponent(estadoContrato.textoCompleto);
+            window.open(`https://api.whatsapp.com/send?phone=${estadoContrato.whatsappEmpresaLimpo}&text=${textoEncoded}`, '_blank');
+        }
+
+        function enviarWhatsappAdmin() {
+            if (!estadoContrato.textoCompleto) return;
+            const cabecalho = `*CÓPIA DE CONTRATO (REGISTRO ADMINISTRATIVO)*\n\n`;
+            const textoEncoded = encodeURIComponent(cabecalho + estadoContrato.textoCompleto);
+            window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP_ADMIN}&text=${textoEncoded}`, '_blank');
+        }
+
+        function copiarTextoContrato() {
+            if (!estadoContrato.textoCompleto) return;
+            const textarea = document.createElement('textarea');
+            textarea.value = estadoContrato.textoCompleto;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                alert('Contrato copiado para a área de transferência!');
+            } catch (err) {
+                alert('Não foi possível copiar automaticamente.');
+            }
+            document.body.removeChild(textarea);
+        }
+
+        // ==========================================
+        // CONFIGURAÇÃO PWA & MANIFEST INLINE
+        // ==========================================
+        const manifestData = {
+            "name": "RepassaAí Contratos PWA",
+            "short_name": "RA Contratos",
+            "start_url": "./",
+            "display": "standalone",
+            "background_color": "#0f172a",
+            "theme_color": "#0f172a",
+            "orientation": "portrait",
+            "icons": [
+                {
+                    "src": "https://placehold.co/192x192/10b981/ffffff?text=RA",
+                    "sizes": "192x192",
+                    "type": "image/png"
+                }
+            ]
+        };
+
+        const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/json' });
+        document.getElementById('manifest-placeholder').setAttribute('href', URL.createObjectURL(manifestBlob));
+
+        if ('serviceWorker' in navigator) {
+            const swCode = `
+                const CACHE_NAME = 'repassaai-contratos-v3';
+                self.addEventListener('install', (e) => self.skipWaiting());
+                self.addEventListener('activate', (e) => self.clients.claim());
+                self.addEventListener('fetch', (e) => {
+                    e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
+                });
+            `;
+            const swBlob = new Blob([swCode], { type: 'text/javascript' });
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(() => {});
+            });
+        }
+
+        let deferredPrompt = null;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('pwaInstallBtn').classList.remove('hidden');
+            document.getElementById('pwaBanner').classList.remove('hidden');
+        });
+
+        function triggerPWAInstall() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then(() => {
+                    deferredPrompt = null;
+                    document.getElementById('pwaInstallBtn').classList.add('hidden');
+                    document.getElementById('pwaBanner').classList.add('hidden');
+                });
+            } else {
+                alert("No iOS (Safari): Toque em Compartilhar e selecione 'Adicionar à Tela de Início'.");
+            }
+        }
+
+        // Inicialização dos cálculos ao carregar a página
+        window.onload = function() {
+            calcularResumoDinamico();
+        };
+    </script>
+</body>
+</html>
