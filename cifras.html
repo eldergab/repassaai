@@ -38,7 +38,7 @@ h2{font-size:1.2rem;margin:0 0 3px}
 </style>
 </head>
 <body>
-<header><h1>Meu Caderno de Músicas Sertanejas</h1><p>100 músicas • letras e treino de memorização</p></header>
+<header><h1>Meu Caderno de Músicas Sertanejas</h1><p>106 músicas • letras e treino de memorização</p></header>
 <main>
   <div class="tools">
     <input id="busca" type="search" placeholder="Buscar música ou artista..." aria-label="Buscar música ou artista">
@@ -79,12 +79,12 @@ h2{font-size:1.2rem;margin:0 0 3px}
 </main>
 <script>
 const repertorio = [
-["Trio Parada Dura",["Telefone Mudo","As Andorinhas","Castelo de Amor","Blusa Vermelha","Fuscão Preto","Luz da Minha Vida","Barco de Papel","Último Adeus","Berrante da Saudade","Se Martins Não Vem"]],
+["Trio Parada Dura",["Telefone Mudo","As Andorinhas","Castelo de Amor","Blusa Vermelha","Fuscão Preto","Luz da Minha Vida","Barco de Papel","Último Adeus","Berrante da Saudade","Se Martins Não Vem","Três Sentimentos","Você Não Sabe Amar","Os 3 Bichos","Bole Bole","Voa Voa" ]],
 ["Milionário & José Rico",["Estrada da Vida","Vontade Dividida","Sonhei com Você","O Tropeiro","Decida","Duas Camisas","Meu Sentimento","Viva a Vida!","A Carta","Amor Dividido"]],
-["Chitãozinho & Xororó",["Fio de Cabelo","Se Deus Me Ouvisse","Somos Assim","Amargurado","Quebradas da Vida","Confissões de Amor","Ela Chora, Chora","Caipira de Fato","Meu Sótão","Sistema Bruto"]],
-["Tião Carreiro & Pardinho",["Amargurado","O Mineiro e o Italiano","Pagode em Brasília","Couro de Boi","Boi Soberano","Rio de Piracicaba (Videira)","A Vaca Já Foi Pro Brejo","Rancho dos Ipês","Terra Roxa","Tratorista"]],
-["Teodoro & Sampaio",["Vestido de Seda","Paixão Proibida","Água no Leite","Passe Livre","Mulher Chorona","O Garrafão","Vou Tomar Um Pingão","Casaco Verde","Pelos Cotovelos","Gostoso Pecado"]],
-["Barr erito (Solo / Trio Parada Dura)",["O Doutor e a Empregada","O Oitavo Mandamento","Discos Voadores","Rodeio do Amor","Filho Pródigo"]],
+["Chitãozinho & Xororó",["Fio de Cabelo","Se Deus Me Ouvisse","Somos Assim","Amargurado","Quebradas da Vida","Confissões de Amor","Ela Chora, Chora","Caipira de Fato","Meu Sótão","Sistema Bruto","Coisas do Coração","A Muralha","Você Faz Falta","Aquela Pessoa","O Amor e o Poder"]],
+["Tião Carreiro & Pardinho",["Amargurado","O Mineiro e o Italiano","Pagode em Brasília","Couro de Boi","Boi Soberano","Rio de Piracicaba (Videira)","A Vaca Já Foi Pro Brejo","Rancho dos Ipês","Terra da Minha Saída","Sítio do Vovô","Boi que vai para o brejo","Fio de Cabelo","Pé de Chinelo","Hino do Boiadeiro","Dona do Riacho"]],
+["Teodoro & Sampaio",["Vestido de Seda","Paixão Proibida","Água no Leite","Passe Livre","Mulher Chorona","O Garrafão","Vou Tomar Um Pingão","Casaco Verde","Pelos Cotovelos","Gostoso Pecado","Pé na Estrada","Xodó","O Sinal da Vida","Tarde Triste","Duas Vezes Você"]],
+["Barrerito (Solo / Trio Parada Dura)",["O Doutor e a Empregada","O Oitavo Mandamento","Discos Voadores","Rodeio do Amor","Filho Pródigo"]],
 ["Belmonte & Amaraí",["Saudade de Minha Terra","Mervada Pinga","Desde Que Te Vi","Lamento de Boiadeiro","Morada do Meu Bem"]],
 ["Cezar & Paulinho",["Viajante Solitário","Noite de Apressados","Amor Além da Vida","Porta do Mundo","Só Por Você"]],
 ["Lourenço & Lourival",["Franguinho na Panela","Meu Reino por um Amor","Menina da Aldeia","Como Eu Chorei","Velha Boiada"]],
@@ -93,7 +93,8 @@ const repertorio = [
 ["Liu & Léu",["Caminheiro","O Ipê e a Prisioneira","Boiadeiro Berranteiro","Sete de Setembro","Rosa Vermelha"]],
 ["Chrystian & Ralf",["Chora Peito","Ausência","Saudade","Sensível Demais","Yolanda"]],
 ["Leandro & Leonardo (Início de Carreira - Final Anos 80)",["Contradições","Solidão","Deixaria Tudo","Entre Tapas e Beijos","Desculpe, Mas Eu Vou Chorar"]],
-["Zezé Di Camargo & Luciano (Início de Carreira - Início Anos 90)",["É o Amor","Mudar de Coisa","Coração em Pedaços","Faz Mais Uma Vez Comigo","Deus!"]]
+["Zezé Di Camargo & Luciano (Início de Carreira - Início Anos 90)",["É o Amor","Mudar de Coisa","Coração em Pedaços","Faz Mais Uma Vez Comigo","Deus!"]],
+["João Mineiro & Marciano",["Ainda Ontem Chorei de Saudade","Seu Amor Ainda é Tudo","No Mesmo Lugar","Crises de Amor","Paredes Azuis","Duas Vezes Você"]]
 ];
 const musicas = [];
 repertorio.forEach(([artista, titulos]) => titulos.forEach(titulo => musicas.push({id:String(musicas.length+1),artista,titulo})));
