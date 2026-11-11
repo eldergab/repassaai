@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#123b70">
+<title>Meu Caderno de Músicas Sertanejas</title>
+<style>
+:root{--azul:#123b70;--azul2:#1d5da8;--fundo:#f3f6fb;--texto:#172235;--borda:#d7e0ec}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fundo);color:var(--texto);font:16px/1.5 Arial, sans-serif}
+header{background:var(--azul);color:white;padding:22px 16px;text-align:center}
+header h1{margin:0;font-size:1.5rem} header p{margin:6px 0 0;color:#dceaff}
+main{max-width:900px;margin:18px auto;padding:0 14px}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+input,select,button,textarea{font:inherit;border:1px solid var(--borda);border-radius:9px;padding:11px;background:white;color:var(--texto)}
+#busca{flex:1;min-width:190px}
+button{cursor:pointer;background:var(--azul2);color:white;border-color:var(--azul2)}
+button.secondary{background:white;color:var(--azul);border-color:var(--borda)}
+button:focus,input:focus,select:focus,textarea:focus{outline:3px solid #9cc7fa;outline-offset:1px}
+.layout{display:grid;grid-template-columns:minmax(220px,300px) 1fr;gap:14px}
+.panel,.editor{background:white;border:1px solid var(--borda);border-radius:12px;padding:14px;min-width:0}
+#lista{max-height:70vh;overflow:auto}
+.grupo{font-weight:bold;color:var(--azul);padding:10px 7px 5px}
+.musica{display:block;width:100%;text-align:left;background:white;color:var(--texto);border:0;border-radius:7px;padding:8px}
+.musica:hover,.musica.ativa{background:#e8f1fc;color:var(--azul)}
+.musica small{display:block;color:#607087}
+h2{font-size:1.2rem;margin:0 0 3px}
+#artista{color:#607087;margin:0 0 12px}
+#letra{width:100%;min-height:340px;resize:vertical;line-height:1.8;white-space:pre-wrap}
+.acoes{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+#letraExibida{white-space:pre-wrap;line-height:2;font-size:1.08rem;overflow-wrap:anywhere}
+#letraExibida.oculta{filter:blur(6px);user-select:none}
+.status{font-size:.9rem;color:#55708f;min-height:22px}
+.vazio{color:#607087;text-align:center;padding:25px 10px}
+.rodape{font-size:.85rem;color:#607087;margin:14px 2px}
+@media(max-width:680px){.layout{grid-template-columns:1fr}#lista{max-height:34vh}.editor{min-height:45vh}}
+</style>
+</head>
+<body>
+<header><h1>Meu Caderno de Músicas Sertanejas</h1><p>100 músicas • letras e treino de memorização</p></header>
+<main>
+  <div class="tools">
+    <input id="busca" type="search" placeholder="Buscar música ou artista..." aria-label="Buscar música ou artista">
+    <select id="filtro" aria-label="Filtrar artista"><option value="">Todos os artistas</option></select>
+  </div>
+  <div class="layout">
+    <section class="panel"><strong>Repertório</strong><div id="lista"></div></section>
+    <section class="editor">
+      <div id="inicio" class="vazio">Escolha uma música na lista para adicionar ou estudar a letra.</div>
+      <div id="conteudo" hidden>
+        <h2 id="titulo"></h2><p id="artista"></p>
+        <label for="letra"><strong>Letra da música</strong></label>
+        <textarea id="letra" placeholder="Cole ou digite aqui a letra que você tem autorização para usar."></textarea>
+        <div class="acoes">
+          <button id="salvar">Salvar letra</button>
+          <button class="secondary" id="estudar">Modo decorar</button>
+          <button class="secondary" id="mostrar">Mostrar letra</button>
+        </div>
+        <div class="status" id="status" aria-live="polite">As letras ficam salvas neste navegador.</div>
+        <div id="areaEstudo" hidden>
+          <hr>
+          <strong>Treino de memorização</strong>
+          <div class="acoes">
+            <button class="secondary" id="ocultar">Ocultar letra</button>
+            <button class="secondary" id="revelar">Revelar letra</button>
+          </div>
+          <div id="letraExibida"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <p class="rodape">Dica: depois de inserir suas letras, use “Exportar backup” para guardar uma cópia. Os dados ficam no navegador e não são enviados para o GitHub.</p>
+  <div class="acoes">
+    <button class="secondary" id="exportar">Exportar backup</button>
+    <button class="secondary" id="importarBtn">Importar backup</button>
+    <input id="arquivo" type="file" accept="application/json,.json" hidden>
+  </div>
+</main>
+<script>
+const repertorio = [
+["Trio Parada Dura",["Telefone Mudo","As Andorinhas","Castelo de Amor","Blusa Vermelha","Fuscão Preto","Luz da Minha Vida","Barco de Papel","Último Adeus","Berrante da Saudade","Se Martins Não Vem"]],
+["Milionário & José Rico",["Estrada da Vida","Vontade Dividida","Sonhei com Você","O Tropeiro","Decida","Duas Camisas","Meu Sentimento","Viva a Vida!","A Carta","Amor Dividido"]],
+["Chitãozinho & Xororó",["Fio de Cabelo","Se Deus Me Ouvisse","Somos Assim","Amargurado","Quebradas da Vida","Confissões de Amor","Ela Chora, Chora","Caipira de Fato","Meu Sótão","Sistema Bruto"]],
+["Tião Carreiro & Pardinho",["Amargurado","O Mineiro e o Italiano","Pagode em Brasília","Couro de Boi","Boi Soberano","Rio de Piracicaba (Videira)","A Vaca Já Foi Pro Brejo","Rancho dos Ipês","Terra Roxa","Tratorista"]],
+["Teodoro & Sampaio",["Vestido de Seda","Paixão Proibida","Água no Leite","Passe Livre","Mulher Chorona","O Garrafão","Vou Tomar Um Pingão","Casaco Verde","Pelos Cotovelos","Gostoso Pecado"]],
+["Barr erito (Solo / Trio Parada Dura)",["O Doutor e a Empregada","O Oitavo Mandamento","Discos Voadores","Rodeio do Amor","Filho Pródigo"]],
+["Belmonte & Amaraí",["Saudade de Minha Terra","Mervada Pinga","Desde Que Te Vi","Lamento de Boiadeiro","Morada do Meu Bem"]],
+["Cezar & Paulinho",["Viajante Solitário","Noite de Apressados","Amor Além da Vida","Porta do Mundo","Só Por Você"]],
+["Lourenço & Lourival",["Franguinho na Panela","Meu Reino por um Amor","Menina da Aldeia","Como Eu Chorei","Velha Boiada"]],
+["Peão Carreiro & Zé Paulo",["Seguindo Seus Passos","Nos Braços da Noite","Cadeira Vazia","A Caneta e a Enxada","Vento Uivante"]],
+["Tonico & Tinoco",["Chico Mineiro","Tristeza do Jeca","Baile em Catanduva","Moreninha Linda","Cana Verde"]],
+["Liu & Léu",["Caminheiro","O Ipê e a Prisioneira","Boiadeiro Berranteiro","Sete de Setembro","Rosa Vermelha"]],
+["Chrystian & Ralf",["Chora Peito","Ausência","Saudade","Sensível Demais","Yolanda"]],
+["Leandro & Leonardo (Início de Carreira - Final Anos 80)",["Contradições","Solidão","Deixaria Tudo","Entre Tapas e Beijos","Desculpe, Mas Eu Vou Chorar"]],
+["Zezé Di Camargo & Luciano (Início de Carreira - Início Anos 90)",["É o Amor","Mudar de Coisa","Coração em Pedaços","Faz Mais Uma Vez Comigo","Deus!"]]
+];
+const musicas = [];
+repertorio.forEach(([artista, titulos]) => titulos.forEach(titulo => musicas.push({id:String(musicas.length+1),artista,titulo})));
+const chave = "cadernoSertanejoLetras_v1";
+let letras = JSON.parse(localStorage.getItem(chave) || "{}");
+let selecionada = null;
+const $ = id => document.getElementById(id);
+function preencherFiltro(){
+  [...new Set(musicas.map(m=>m.artista))].forEach(a=>{const o=document.createElement("option");o.value=a;o.textContent=a;$("filtro").appendChild(o)});
+}
+function renderLista(){
+  const termo=$("busca").value.toLocaleLowerCase("pt-BR"), artista=$("filtro").value;
+  const lista=$("lista");lista.innerHTML="";
+  let atual="";
+  musicas.filter(m=>(!artista||m.artista===artista)&&(`${m.titulo} ${m.artista}`.toLocaleLowerCase("pt-BR").includes(termo))).forEach(m=>{
+    if(m.artista!==atual){atual=m.artista;const g=document.createElement("div");g.className="grupo";g.textContent=atual;lista.appendChild(g)}
+    const b=document.createElement("button");b.className="musica"+(selecionada?.id===m.id?" ativa":"");b.innerHTML="";
+    b.append(document.createTextNode(`${m.id}. ${m.titulo}`));
+    const s=document.createElement("small");s.textContent=letras[m.id]?.trim()?"Letra salva":"Sem letra adicionada";b.appendChild(s);
+    b.onclick=()=>abrir(m);lista.appendChild(b);
+  });
+  if(!lista.children.length)lista.innerHTML='<div class="vazio">Nenhuma música encontrada.</div>';
+}
+function abrir(m){
+  selecionada=m;$("inicio").hidden=true;$("conteudo").hidden=false;
+  $("titulo").textContent=`${m.id}. ${m.titulo}`;$("artista").textContent=m.artista;
+  $("letra").value=letras[m.id]||"";$("areaEstudo").hidden=true;$("status").textContent="As letras ficam salvas neste navegador.";
+  renderLista();
+}
+function salvar(){
+  if(!selecionada)return;
+  letras[selecionada.id]=$("letra").value;localStorage.setItem(chave,JSON.stringify(letras));
+  $("status").textContent="Letra salva neste navegador.";renderLista();atualizarEstudo();
+}
+function atualizarEstudo(){const t=$("letra").value;$("letraExibida").textContent=t;$("letraExibida").classList.remove("oculta")}
+$("busca").addEventListener("input",renderLista);$("filtro").addEventListener("change",renderLista);
+$("salvar").onclick=salvar;
+$("estudar").onclick=()=>{$("areaEstudo").hidden=false;atualizarEstudo()};
+$("mostrar").onclick=()=>{$("areaEstudo").hidden=false;atualizarEstudo()};
+$("ocultar").onclick=()=>{$("letraExibida").classList.add("oculta")};
+$("revelar").onclick=()=>{$("letraExibida").classList.remove("oculta")};
+$("letra").addEventListener("input",atualizarEstudo);
+$("exportar").onclick=()=>{
+  const blob=new Blob([JSON.stringify({versao:1,letras},null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="backup-letras-sertanejas.json";a.click();URL.revokeObjectURL(url);
+};
+$("importarBtn").onclick=()=>$("arquivo").click();
+$("arquivo").onchange=async e=>{
+  const f=e.target.files[0];if(!f)return;
+  try{const dados=JSON.parse(await f.text());if(!dados.letras||typeof dados.letras!=="object")throw Error();
+    letras={...letras,...dados.letras};localStorage.setItem(chave,JSON.stringify(letras));renderLista();
+    if(selecionada){$("letra").value=letras[selecionada.id]||"";atualizarEstudo()}
+    alert("Backup importado com sucesso.");
+  }catch{alert("Não foi possível importar. Confira se escolheu um backup válido.")}
+  e.target.value="";
+};
+preencherFiltro();renderLista();
+</script>
+</body>
+</html>
