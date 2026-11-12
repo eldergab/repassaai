@@ -50,16 +50,6 @@
             background-color: #2d533b;
             color: #ffffff !important;
         }
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #a8bba8;
-            border-radius: 4px;
-        }
     </style>
 </head>
 <body class="bg-earth-100 text-gray-800 font-sans min-h-screen flex flex-col">
@@ -71,7 +61,7 @@
                 <!-- Logo -->
                 <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
                     <div class="w-12 h-12 rounded-full bg-earth-200 text-brand-700 flex items-center justify-center font-bold text-2xl shadow-inner border-2 border-brand-500">
-                        <i class="fa-solid font-jar fa-jar text-amber-700"></i>
+                        <i class="fa-solid fa-jar text-amber-700"></i>
                     </div>
                     <div>
                         <h1 class="font-serif font-bold text-lg sm:text-xl leading-tight">Consórcio de Conservas</h1>
@@ -81,20 +71,23 @@
 
                 <!-- Desktop Nav -->
                 <nav class="hidden md:flex space-x-1 font-medium text-sm">
-                    <button onclick="switchTab('home')" id="nav-home" class="nav-btn px-4 py-2 rounded-lg transition-colors hover:bg-brand-600">
-                        <i class="fa-solid fa-house mr-1.5"></i> Início
+                    <button onclick="switchTab('home')" id="nav-home" class="nav-btn active-tab px-3.5 py-2 rounded-lg transition-colors hover:bg-brand-600">
+                        <i class="fa-solid fa-house mr-1"></i> Início
                     </button>
-                    <button onclick="switchTab('guia')" id="nav-guia" class="nav-btn px-4 py-2 rounded-lg transition-colors hover:bg-brand-600">
-                        <i class="fa-solid fa-book-open mr-1.5"></i> Guia do Amigo
+                    <button onclick="switchTab('guia')" id="nav-guia" class="nav-btn px-3.5 py-2 rounded-lg transition-colors hover:bg-brand-600">
+                        <i class="fa-solid fa-book-open mr-1"></i> Como Funciona
                     </button>
-                    <button onclick="switchTab('itens')" id="nav-itens" class="nav-btn px-4 py-2 rounded-lg transition-colors hover:bg-brand-600">
-                        <i class="fa-solid fa-carrot mr-1.5"></i> Cardápio de Legumes
+                    <button onclick="switchTab('itens')" id="nav-itens" class="nav-btn px-3.5 py-2 rounded-lg transition-colors hover:bg-brand-600">
+                        <i class="fa-solid fa-carrot mr-1"></i> Cardápio
                     </button>
-                    <button onclick="switchTab('inscricao')" id="nav-inscricao" class="nav-btn px-4 py-2 rounded-lg transition-colors hover:bg-brand-600">
-                        <i class="fa-solid fa-clipboard-check mr-1.5"></i> Montar Meus Potes
+                    <button onclick="switchTab('inscricao')" id="nav-inscricao" class="nav-btn px-3.5 py-2 rounded-lg transition-colors hover:bg-brand-600">
+                        <i class="fa-solid fa-clipboard-check mr-1"></i> Participar
                     </button>
-                    <button onclick="switchTab('admin')" id="nav-admin" class="nav-btn px-4 py-2 rounded-lg transition-colors hover:bg-amber-700 bg-amber-800 text-white font-semibold ml-2">
-                        <i class="fa-solid fa-sliders mr-1.5"></i> Painel Organizador
+                    <button onclick="switchTab('extrato')" id="nav-extrato" class="nav-btn px-3.5 py-2 rounded-lg transition-colors hover:bg-brand-600 bg-brand-600/60 border border-brand-500">
+                        <i class="fa-solid fa-receipt mr-1"></i> Minha Cota
+                    </button>
+                    <button onclick="accessAdmin()" id="nav-admin" class="nav-btn px-3.5 py-2 rounded-lg transition-colors hover:bg-amber-700 bg-amber-800 text-white font-semibold ml-2">
+                        <i class="fa-solid fa-lock mr-1"></i> Organizador
                     </button>
                 </nav>
 
@@ -113,46 +106,54 @@
                 <i class="fa-solid fa-house w-6"></i> Início
             </button>
             <button onclick="switchTab('guia')" class="w-full text-left px-3 py-2 rounded-md font-medium text-white hover:bg-brand-600 flex items-center">
-                <i class="fa-solid fa-book-open w-6"></i> Guia do Amigo
+                <i class="fa-solid fa-book-open w-6"></i> Como Funciona
             </button>
             <button onclick="switchTab('itens')" class="w-full text-left px-3 py-2 rounded-md font-medium text-white hover:bg-brand-600 flex items-center">
                 <i class="fa-solid fa-carrot w-6"></i> Cardápio de Legumes
             </button>
             <button onclick="switchTab('inscricao')" class="w-full text-left px-3 py-2 rounded-md font-medium text-white hover:bg-brand-600 flex items-center">
-                <i class="fa-solid fa-clipboard-check w-6"></i> Montar Meus Potes
+                <i class="fa-solid fa-clipboard-check w-6"></i> Participar (R$ 100)
             </button>
-            <button onclick="switchTab('admin')" class="w-full text-left px-3 py-2 rounded-md font-semibold bg-amber-700 text-white hover:bg-amber-800 flex items-center mt-2">
-                <i class="fa-solid fa-sliders w-6"></i> Painel Organizador
+            <button onclick="switchTab('extrato')" class="w-full text-left px-3 py-2 rounded-md font-medium text-white bg-brand-700 hover:bg-brand-600 flex items-center">
+                <i class="fa-solid fa-receipt w-6"></i> Consultar Minha Cota / Recibo
+            </button>
+            <button onclick="accessAdmin()" class="w-full text-left px-3 py-2 rounded-md font-semibold bg-amber-700 text-white hover:bg-amber-800 flex items-center mt-2">
+                <i class="fa-solid fa-lock w-6"></i> Painel Organizador
             </button>
         </div>
     </header>
 
+    <!-- AVISO DE MODO DE BANCO DE DADOS -->
+    <div id="db-status-bar" class="bg-amber-100 border-b border-amber-200 text-amber-900 text-xs py-1.5 px-4 text-center hidden">
+        <i class="fa-solid fa-triangle-exclamation mr-1"></i>
+        <strong>Modo Local Ativo:</strong> Cole suas chaves do Firebase no código para sincronizar dados entre celulares na nuvem.
+    </div>
+
     <!-- MAIN CONTENT AREA -->
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-        <!-- 1. ABA INÍCIO / VISÃO GERAL -->
+        <!-- 1. ABA INÍCIO -->
         <section id="tab-home" class="tab-content space-y-10">
-            <!-- Hero Banner -->
             <div class="relative bg-brand-600 rounded-3xl overflow-hidden shadow-xl text-white">
                 <div class="absolute inset-0 bg-cover bg-center opacity-20" style="background-image: url('https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80');"></div>
                 <div class="relative z-10 p-8 sm:p-12 lg:p-16 max-w-3xl">
                     <span class="bg-amber-700 text-amber-100 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-4 inline-block">Consórcio Solidário</span>
                     <h2 class="font-serif text-3xl sm:text-5xl font-bold leading-tight mb-4">Conservas artesanais com vegetais frescos selecionados no Ceasa.</h2>
                     <p class="text-lg text-brand-100 mb-8 leading-relaxed">
-                        Selecionamos o melhor hortifrúti fresco da estação para preparar conservas artesanais de alta qualidade. Você investe R$ 100,00 e garante **10 potes de 500 ml** montados conforme sua preferência!
+                        Você investe <strong>R$ 100,00</strong> e garante <strong>10 potes de 500 ml</strong> montados conforme sua preferência, com recibo digital e acompanhamento online das entregas!
                     </p>
                     <div class="flex flex-wrap gap-4">
-                        <button onclick="switchTab('inscricao')" class="bg-amber-700 hover:bg-amber-800 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition-transform transform hover:-translate-y-0.5">
+                        <button onclick="switchTab('inscricao')" class="bg-amber-700 hover:bg-amber-800 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
                             Quero me Inscrever (R$ 100)
                         </button>
-                        <button onclick="switchTab('guia')" class="bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3 rounded-xl border border-white/30 backdrop-blur-sm transition">
-                            Como Funciona?
+                        <button onclick="switchTab('extrato')" class="bg-white/15 hover:bg-white/25 text-white font-semibold px-6 py-3 rounded-xl border border-white/30 backdrop-blur-sm transition">
+                            <i class="fa-solid fa-receipt mr-1.5"></i> Consultar Minha Cota
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Destaques / Vantagens Rápidas -->
+            <!-- Vantagens -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="bg-white p-6 rounded-2xl shadow-md border border-earth-200 flex items-start space-x-4">
                     <div class="w-12 h-12 bg-green-100 text-brand-700 rounded-xl flex items-center justify-center text-xl shrink-0">
@@ -160,17 +161,17 @@
                     </div>
                     <div>
                         <h3 class="font-bold text-lg mb-1 text-gray-900">Economia Garantida</h3>
-                        <p class="text-sm text-gray-600">Potes de 500ml de conservas nobres saem por apenas **R$ 10,00 cada** no consórcio. No mercado tradicional custam muito mais!</p>
+                        <p class="text-sm text-gray-600">Potes de 500ml de conservas nobres saem por apenas <strong>R$ 10,00 cada</strong> no consórcio.</p>
                     </div>
                 </div>
 
                 <div class="bg-white p-6 rounded-2xl shadow-md border border-earth-200 flex items-start space-x-4">
                     <div class="w-12 h-12 bg-amber-100 text-amber-800 rounded-xl flex items-center justify-center text-xl shrink-0">
-                        <i class="fa-solid fa-list-check"></i>
+                        <i class="fa-solid fa-shield-halved"></i>
                     </div>
                     <div>
-                        <h3 class="font-bold text-lg mb-1 text-gray-900">Lista Personalizada</h3>
-                        <p class="text-sm text-gray-600">Escolha os vegetais da sua preferência! Nós preparamos seus potes sob medida à medida que os lotes frescos chegam do Ceasa.</p>
+                        <h3 class="font-bold text-lg mb-1 text-gray-900">Controle e Transparência</h3>
+                        <p class="text-sm text-gray-600">Acompanhe seu pagamento confirmado e o histórico detalhado de cada pote entregue pelo seu WhatsApp.</p>
                     </div>
                 </div>
 
@@ -180,12 +181,12 @@
                     </div>
                     <div>
                         <h3 class="font-bold text-lg mb-1 text-gray-900">Qualidade & Tempero</h3>
-                        <p class="text-sm text-gray-600">Aproveitamos o auge de cada alimento com temperos especiais e higienização rigorosa para conservas saboreadas por meses.</p>
+                        <p class="text-sm text-gray-600">Higienização rigorosa, esterilização térmica e vedação a vácuo para durabilidade de até 6 meses.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Resumo dos Itens Disponíveis -->
+            <!-- Resumo dos Itens -->
             <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-md border border-earth-200">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                     <div>
@@ -196,10 +197,7 @@
                         Ver detalhes do preparo <i class="fa-solid fa-arrow-right ml-1"></i>
                     </button>
                 </div>
-
-                <div class="grid grid-cols-2 sm:grid-cols-5 gap-4" id="home-vegetables-grid">
-                    <!-- Gerado via JS com a lista de 10 vegetais -->
-                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-4" id="home-vegetables-grid"></div>
             </div>
         </section>
 
@@ -208,19 +206,16 @@
             <div class="bg-white p-8 rounded-3xl shadow-md border border-earth-200 max-w-4xl mx-auto">
                 <div class="text-center max-w-2xl mx-auto mb-10">
                     <span class="text-amber-700 text-sm font-bold uppercase tracking-widest">Transparência total</span>
-                    <h2 class="font-serif text-3xl font-bold text-gray-900 mt-1">Como Funciona o Consórcio de Conservas?</h2>
-                    <p class="text-gray-600 mt-2">Um modelo colaborativo onde todos ganham: você recebe conservas nobres a preço de custo e viabiliza a produção artesanal.</p>
+                    <h2 class="font-serif text-3xl font-bold text-gray-900 mt-1">Como Funciona o Consórcio?</h2>
+                    <p class="text-gray-600 mt-2">Um modelo colaborativo onde todos ganham e acompanham cada etapa.</p>
                 </div>
 
-                <!-- Passo a Passo (Passo 1 a 4) -->
                 <div class="space-y-6">
                     <div class="flex flex-col sm:flex-row items-start space-y-4 sm:space-y-0 sm:space-x-6 p-6 rounded-2xl bg-earth-100 border border-earth-200">
                         <div class="w-12 h-12 rounded-2xl bg-brand-700 text-white font-bold text-xl flex items-center justify-center shrink-0">1</div>
                         <div>
                             <h4 class="font-bold text-lg text-gray-900">Cota Única de R$ 100,00</h4>
-                            <p class="text-gray-600 text-sm mt-1">
-                                Cada amigo entra com uma cota fixa de R$ 100,00. Esse valor financia a aquisição dos potes de vidro de 500ml, tampas herméticas novas, vinagre de álcool nobre, azeite, especiarias e custos de preparo.
-                            </p>
+                            <p class="text-gray-600 text-sm mt-1">Cada participante adquire uma cota de R$ 100,00 via Pix. Assim que o pagamento é confirmado, seu recibo digital fica liberado na aba "Minha Cota".</p>
                         </div>
                     </div>
 
@@ -228,134 +223,105 @@
                         <div class="w-12 h-12 rounded-2xl bg-brand-700 text-white font-bold text-xl flex items-center justify-center shrink-0">2</div>
                         <div>
                             <h4 class="font-bold text-lg text-gray-900">Retorno de 10 Potes de 500ml</h4>
-                            <p class="text-gray-600 text-sm mt-1">
-                                Com o seu investimento de R$ 100,00, você tem direito a **10 potes cheios de conserva**. Isso equivale a apenas R$ 10,00 por vidro — um valor imbatível por conservas artesanais de qualidade!
-                            </p>
+                            <p class="text-gray-600 text-sm mt-1">Você recebe <strong>10 potes cheios de conserva</strong> (R$ 10,00 por vidro) entregues em lotes conforme os vegetais frescos são selecionados e preparados.</p>
                         </div>
                     </div>
 
                     <div class="flex flex-col sm:flex-row items-start space-y-4 sm:space-y-0 sm:space-x-6 p-6 rounded-2xl bg-earth-100 border border-earth-200">
                         <div class="w-12 h-12 rounded-2xl bg-brand-700 text-white font-bold text-xl flex items-center justify-center shrink-0">3</div>
                         <div>
-                            <h4 class="font-bold text-lg text-gray-900">Escolha dos Itens Favoritos</h4>
-                            <p class="text-gray-600 text-sm mt-1">
-                                Ao se inscrever, você escolhe de 3 a 5 legumes de sua preferência. Assim que selecionamos esses itens de primeira qualidade no Ceasa, fazemos o lote e preparamos suas conservas.
-                            </p>
+                            <h4 class="font-bold text-lg text-gray-900">Comprovação Mútua das Entregas</h4>
+                            <p class="text-gray-600 text-sm mt-1">A cada entrega realizada, o organizador dá baixa no sistema registrando a data e os sabores entregues, enviando também uma confirmação direto no seu WhatsApp.</p>
                         </div>
-                    </div>
-
-                    <div class="flex flex-col sm:flex-row items-start space-y-4 sm:space-y-0 sm:space-x-6 p-6 rounded-2xl bg-earth-100 border border-earth-200">
-                        <div class="w-12 h-12 rounded-2xl bg-brand-700 text-white font-bold text-xl flex items-center justify-center shrink-0">4</div>
-                        <div>
-                            <h4 class="font-bold text-lg text-gray-900">Entregas Progressivas e Práticas</h4>
-                            <p class="text-gray-600 text-sm mt-1">
-                                As entregas ocorrem em lotes à medida que os vegetais são selecionados no Ceasa e preparados com capricho. Você vai recebendo seus potes até completar sua quota de 10 unidades.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- FAQ / Informações Úteis -->
-                <div class="mt-10 border-t border-earth-300 pt-8">
-                    <h3 class="font-serif font-bold text-xl text-gray-900 mb-4">Perguntas Frequentes</h3>
-                    <div class="space-y-4">
-                        <details class="bg-white p-4 rounded-xl border border-gray-200">
-                            <summary class="font-semibold text-gray-800 cursor-pointer">Qual é a durabilidade das conservas?</summary>
-                            <p class="text-sm text-gray-600 mt-2">
-                                Nossos potes passam por esterilização térmica e vedação a vácuo. Armazenados em local fresco, conservam o sabor e o frescor por até **6 meses**. Após abertos, devem ser mantidos sob refrigeração.
-                            </p>
-                        </details>
-                        <details class="bg-white p-4 rounded-xl border border-gray-200">
-                            <summary class="font-semibold text-gray-800 cursor-pointer">Posso fornecer potes de vidro para o consórcio?</summary>
-                            <p class="text-sm text-gray-600 mt-2">
-                                Sim! Potes de vidro higienizados de 500ml (como os de azeitona ou maionese) são muito bem-vindos e ajudam a manter a sustentabilidade e o valor baixo do projeto.
-                            </p>
-                        </details>
-                        <details class="bg-white p-4 rounded-xl border border-gray-200">
-                            <summary class="font-semibold text-gray-800 cursor-pointer">Por que o foco é em legumes e raízes em vez de folhas?</summary>
-                            <p class="text-sm text-gray-600 mt-2">
-                                Folhas delicadas como alface e rúcula devem ser consumidas no frescor do dia. Já legumes e raízes (como abobrinha, pepino, cebola e batata) mantêm sua textura crocante e absorvem o sabor dos temperos no vinagrete.
-                            </p>
-                        </details>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 3. ABA CARDÁPIO DO CEASA (ITENS E PREPARO) -->
+        <!-- 3. ABA CARDÁPIO -->
         <section id="tab-itens" class="tab-content hidden space-y-6">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h2 class="font-serif text-3xl font-bold text-gray-900">Cardápio de Legumes & Métodos de Conserva</h2>
                     <p class="text-gray-600 text-sm">Conheça os vegetais frescos do Ceasa e nossas técnicas de preparo artesanal.</p>
                 </div>
-                <div class="bg-brand-50 text-brand-800 border border-brand-200 px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2">
-                    <i class="fa-solid fa-leaf text-brand-600"></i>
-                    <span>Produtos frescos selecionados na temporada!</span>
-                </div>
             </div>
-
-            <!-- Grid de Vegetais -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="veg-details-grid">
-                <!-- Preenchido via JS -->
-            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="veg-details-grid"></div>
         </section>
 
-        <!-- 4. ABA INSCRIÇÃO & SIMULADOR DE SELEÇÃO -->
+        <!-- 4. ABA INSCRIÇÃO -->
         <section id="tab-inscricao" class="tab-content hidden space-y-8">
-            <div class="bg-white rounded-3xl shadow-lg border border-earth-200 overflow-hidden">
+            <div class="bg-white rounded-3xl shadow-lg border border-earth-200 overflow-hidden max-w-4xl mx-auto">
                 <div class="bg-brand-700 text-white p-6 sm:p-8">
                     <h2 class="font-serif text-2xl sm:text-3xl font-bold">Ficha de Adesão ao Consórcio</h2>
-                    <p class="text-brand-100 text-sm mt-1">Preencha seus dados e escolha seus legumes favoritos para garantirmos seus 10 potes de 500ml!</p>
+                    <p class="text-brand-100 text-sm mt-1">Preencha seus dados e escolha seus legumes favoritos para reservar sua cota de 10 potes.</p>
                 </div>
 
                 <form id="order-form" onsubmit="submitForm(event)" class="p-6 sm:p-8 space-y-8">
-                    <!-- Dados Pessoais -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">Seu Nome Completo *</label>
-                            <input type="text" id="participant-name" required placeholder="Ex: Maria Silva" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition">
+                            <input type="text" id="participant-name" required placeholder="Ex: Maria Silva" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">Seu WhatsApp *</label>
-                            <input type="tel" id="participant-phone" required placeholder="Ex: (62) 99999-8888" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">Seu WhatsApp (com DDD) *</label>
+                            <input type="tel" id="participant-phone" required placeholder="Ex: 62999998888" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none">
+                            <p class="text-[11px] text-gray-500 mt-1">Você usará este número para consultar seu comprovante e saldo de potes.</p>
                         </div>
                     </div>
 
-                    <!-- Seleção de Vegetais Favoritos -->
                     <div>
                         <div class="flex justify-between items-center mb-3">
                             <label class="block text-xs font-bold uppercase tracking-wider text-gray-700">
                                 Selecione de 3 a 5 vegetais da sua preferência *
                             </label>
-                            <span id="veg-count" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-brand-100 text-brand-800">
+                            <span id="veg-count" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800">
                                 Selecionados: 0/5
                             </span>
                         </div>
-                        <p class="text-xs text-gray-500 mb-4">À medida que selecionamos o hortifrúti fresco no Ceasa, priorizaremos estes itens para preparar os seus potes!</p>
-
-                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3" id="veg-checkboxes-container">
-                            <!-- Gerado via JS -->
-                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3" id="veg-checkboxes-container"></div>
                     </div>
 
-                    <!-- Resumo do Pedido -->
                     <div class="bg-earth-100 p-6 rounded-2xl border border-earth-300 flex flex-col sm:flex-row justify-between items-center gap-4">
                         <div>
                             <h4 class="font-bold text-gray-900">Resumo da sua cota:</h4>
-                            <p class="text-sm text-gray-600">Investimento: <strong class="text-gray-900">R$ 100,00</strong> (Apenas R$ 10,00 por pote de 500ml)</p>
-                            <p class="text-sm text-gray-600">Garantia: <strong class="text-brand-700">10 Potes de Conserva Artesanal</strong></p>
+                            <p class="text-sm text-gray-600">Investimento: <strong class="text-gray-900">R$ 100,00</strong> (10 potes de 500ml)</p>
+                            <p class="text-xs text-brand-700 font-medium mt-0.5"><i class="fa-solid fa-check-circle"></i> Acompanhamento online liberado após inscrição</p>
                         </div>
-                        <button type="submit" class="w-full sm:w-auto bg-amber-700 hover:bg-amber-800 text-white font-bold px-8 py-4 rounded-xl shadow-md transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                        <button type="submit" id="btn-submit-form" class="w-full sm:w-auto bg-amber-700 hover:bg-amber-800 text-white font-bold px-8 py-4 rounded-xl shadow-md transition flex items-center justify-center gap-2">
                             <i class="fa-brands fa-whatsapp text-lg"></i>
-                            Confirmar Cota pelo WhatsApp
+                            Reservar e Enviar no WhatsApp
                         </button>
                     </div>
                 </form>
             </div>
         </section>
 
-        <!-- 5. ABA PAINEL ORGANIZADOR (ADMIN) -->
+        <!-- 5. NOVA ABA: CONSULTAR MINHA COTA / COMPROVANTE -->
+        <section id="tab-extrato" class="tab-content hidden space-y-8">
+            <div class="max-w-2xl mx-auto space-y-6">
+                <!-- Caixa de Busca -->
+                <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-md border border-earth-200 text-center">
+                    <div class="w-14 h-14 bg-brand-100 text-brand-700 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4">
+                        <i class="fa-solid fa-receipt"></i>
+                    </div>
+                    <h2 class="font-serif text-2xl sm:text-3xl font-bold text-gray-900">Consultar Minha Cota</h2>
+                    <p class="text-sm text-gray-600 mt-1 mb-6">Digite o número do seu WhatsApp cadastrado para visualizar seu comprovante de pagamento e extrato de entregas.</p>
+
+                    <form onsubmit="searchParticipantQuota(event)" class="flex flex-col sm:flex-row gap-3">
+                        <input type="tel" id="search-phone-input" required placeholder="Digite seu WhatsApp (Ex: 62981112233)" class="flex-grow px-4 py-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-center sm:text-left font-medium">
+                        <button type="submit" class="bg-brand-700 hover:bg-brand-800 text-white font-bold px-6 py-3.5 rounded-xl shadow transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-magnifying-glass"></i> Consultar
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Resultado / Cartão Comprovante -->
+                <div id="quota-result-container" class="hidden"></div>
+            </div>
+        </section>
+
+        <!-- 6. ABA PAINEL ORGANIZADOR (ADMIN) -->
         <section id="tab-admin" class="tab-content hidden space-y-8">
             <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-lg border border-earth-200">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-200 pb-6 mb-6">
@@ -364,38 +330,38 @@
                             <span class="bg-amber-100 text-amber-800 font-bold text-xs px-2.5 py-1 rounded-full">Painel Interno</span>
                             <h2 class="font-serif text-2xl sm:text-3xl font-bold text-gray-900">Gestão do Consórcio</h2>
                         </div>
-                        <p class="text-sm text-gray-600 mt-1">Controle de caixa, participantes inscritos e saldo de potes a entregar.</p>
+                        <p class="text-sm text-gray-600 mt-1">Confirme pagamentos, registre entregas com data/sabores e notifique os participantes.</p>
                     </div>
                     <div class="flex flex-wrap gap-2">
                         <button onclick="openAddParticipantModal()" class="bg-brand-700 hover:bg-brand-800 text-white px-4 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-2">
                             <i class="fa-solid fa-plus"></i> Novo Participante
                         </button>
-                        <button onclick="resetToDefaultData()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-xl text-xs font-semibold border transition">
-                            <i class="fa-solid fa-rotate-right"></i> Reset Dados
+                        <button onclick="logoutAdmin()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-xl text-xs font-semibold border transition">
+                            <i class="fa-solid fa-right-from-bracket"></i> Sair
                         </button>
                     </div>
                 </div>
 
-                <!-- Dashboard Metrics -->
+                <!-- Métricas -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                     <div class="bg-brand-50 p-5 rounded-2xl border border-brand-100">
-                        <span class="text-xs font-bold text-brand-700 uppercase">Total de Participantes</span>
+                        <span class="text-xs font-bold text-brand-700 uppercase">Participantes</span>
                         <div class="flex items-baseline justify-between mt-2">
                             <span id="metric-total-members" class="text-3xl font-extrabold text-brand-800">0</span>
-                            <span class="text-xs text-brand-600">Mínimo ideal: 10</span>
+                            <span class="text-xs text-brand-600">Meta: 10 cotas</span>
                         </div>
                     </div>
 
                     <div class="bg-amber-50 p-5 rounded-2xl border border-amber-100">
-                        <span class="text-xs font-bold text-amber-800 uppercase">Arrecadação Total</span>
+                        <span class="text-xs font-bold text-amber-800 uppercase">Caixa Confirmado</span>
                         <div class="flex items-baseline justify-between mt-2">
                             <span id="metric-total-cash" class="text-3xl font-extrabold text-amber-900">R$ 0</span>
-                            <span class="text-xs text-amber-700">Cota R$ 100/cada</span>
+                            <span class="text-xs text-amber-700">Cotas pagas</span>
                         </div>
                     </div>
 
                     <div class="bg-blue-50 p-5 rounded-2xl border border-blue-100">
-                        <span class="text-xs font-bold text-blue-800 uppercase">Potes dos Participantes</span>
+                        <span class="text-xs font-bold text-blue-800 uppercase">Potes Entregues</span>
                         <div class="flex items-baseline justify-between mt-2">
                             <span id="metric-potes-entrega" class="text-3xl font-extrabold text-blue-900">0 / 0</span>
                             <span class="text-xs text-blue-700">Entregues / Total</span>
@@ -403,10 +369,10 @@
                     </div>
 
                     <div class="bg-purple-50 p-5 rounded-2xl border border-purple-100">
-                        <span class="text-xs font-bold text-purple-800 uppercase">Seu Lucro Estimado</span>
+                        <span class="text-xs font-bold text-purple-800 uppercase">Rendimento Extra</span>
                         <div class="flex items-baseline justify-between mt-2">
                             <span id="metric-potes-sobra" class="text-3xl font-extrabold text-purple-900">0</span>
-                            <span class="text-xs text-purple-700">Potes extras pra você</span>
+                            <span class="text-xs text-purple-700">Potes do organizador</span>
                         </div>
                     </div>
                 </div>
@@ -416,16 +382,14 @@
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="bg-earth-200 text-gray-700 text-xs font-bold uppercase tracking-wider">
-                                <th class="p-4">Nome / WhatsApp</th>
-                                <th class="p-4">Itens Preferidos</th>
-                                <th class="p-4">Status de Pagamento</th>
-                                <th class="p-4">Progresso (Potes)</th>
+                                <th class="p-4">Participante</th>
+                                <th class="p-4">Preferências</th>
+                                <th class="p-4">Pagamento</th>
+                                <th class="p-4">Saldo & Entregas</th>
                                 <th class="p-4 text-right">Ações</th>
                             </tr>
                         </thead>
-                        <tbody id="members-table-body" class="divide-y divide-gray-200 text-sm">
-                            <!-- Preenchido via JS -->
-                        </tbody>
+                        <tbody id="members-table-body" class="divide-y divide-gray-200 text-sm"></tbody>
                     </table>
                 </div>
             </div>
@@ -433,16 +397,13 @@
 
     </main>
 
-    <!-- MODAL DE ADICIONAR PARTICIPANTE NO ADMIN -->
+    <!-- MODAL: ADICIONAR PARTICIPANTE (ADMIN) -->
     <div id="modal-add-member" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
         <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-6">
             <div class="flex justify-between items-center border-b pb-4">
-                <h3 class="font-serif font-bold text-xl text-gray-900">Adicionar Novo Participante</h3>
-                <button onclick="closeAddParticipantModal()" class="text-gray-400 hover:text-gray-600">
-                    <i class="fa-solid fa-xmark text-xl"></i>
-                </button>
+                <h3 class="font-serif font-bold text-xl text-gray-900">Adicionar Participante</h3>
+                <button onclick="closeAddParticipantModal()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
-
             <form id="admin-add-form" onsubmit="saveAdminMember(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Nome *</label>
@@ -450,7 +411,7 @@
                 </div>
                 <div>
                     <label class="block text-xs font-bold uppercase text-gray-700 mb-1">WhatsApp *</label>
-                    <input type="tel" id="admin-phone" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm">
+                    <input type="tel" id="admin-phone" required placeholder="62999998888" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm">
                 </div>
                 <div>
                     <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Status Pagamento</label>
@@ -460,13 +421,40 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Itens de Preferência (Separados por vírgula)</label>
+                    <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Itens de Preferência</label>
                     <input type="text" id="admin-items" placeholder="Ex: Pepino, Abobrinha, Cebola" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm">
                 </div>
-
                 <div class="pt-4 flex justify-end space-x-3">
-                    <button type="button" onclick="closeAddParticipantModal()" class="px-4 py-2.5 rounded-xl border border-gray-300 text-sm font-semibold text-gray-600 hover:bg-gray-50">Cancelar</button>
-                    <button type="submit" class="px-6 py-2.5 rounded-xl bg-brand-700 hover:bg-brand-800 text-white text-sm font-semibold shadow">Salvar Participante</button>
+                    <button type="button" onclick="closeAddParticipantModal()" class="px-4 py-2.5 rounded-xl border border-gray-300 text-sm font-semibold text-gray-600">Cancelar</button>
+                    <button type="submit" class="px-6 py-2.5 rounded-xl bg-brand-700 hover:bg-brand-800 text-white text-sm font-semibold shadow">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: REGISTRAR ENTREGA DETALHADA (ADMIN) -->
+    <div id="modal-register-delivery" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl space-y-5">
+            <div class="flex justify-between items-center border-b pb-3">
+                <div>
+                    <h3 class="font-serif font-bold text-xl text-gray-900">Registrar Entrega</h3>
+                    <p id="delivery-member-name" class="text-xs text-brand-700 font-semibold"></p>
+                </div>
+                <button onclick="closeDeliveryModal()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <form onsubmit="confirmDeliveryRegistration(event)" class="space-y-4">
+                <input type="hidden" id="delivery-member-id">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Quantidade de Potes Entregues Hoje *</label>
+                    <input type="number" id="delivery-qty" min="1" max="10" value="2" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm font-bold">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Quais sabores foram entregues? *</label>
+                    <input type="text" id="delivery-details" required placeholder="Ex: 1 Pepino, 1 Abobrinha" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm">
+                </div>
+                <div class="pt-2 flex justify-end space-x-3">
+                    <button type="button" onclick="closeDeliveryModal()" class="px-4 py-2.5 rounded-xl border border-gray-300 text-sm font-semibold text-gray-600">Cancelar</button>
+                    <button type="submit" class="px-6 py-2.5 rounded-xl bg-brand-700 hover:bg-brand-800 text-white text-sm font-semibold shadow">Confirmar Entrega</button>
                 </div>
             </form>
         </div>
@@ -476,18 +464,46 @@
     <footer class="bg-brand-800 text-earth-300 mt-16 border-t border-brand-700">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-sm">
             <p class="font-serif text-white font-semibold mb-2">Consórcio Solidário de Conservas Caseiras</p>
-            <p class="text-xs text-brand-100 max-w-xl mx-auto">
-                Iniciativa artesanal sem fins lucrativos abusivos. Foco na sustentabilidade, economia doméstica e valorização dos alimentos do Ceasa.
-            </p>
-            <div class="mt-4 text-xs text-earth-300">
-                &copy; 2026 - Produção Artesanal e Comunitária.
-            </div>
+            <p class="text-xs text-brand-100 max-w-xl mx-auto">Iniciativa artesanal comunitária. Economia doméstica e valorização dos alimentos frescos do Ceasa.</p>
+            <div class="mt-4 text-xs text-earth-300">&copy; 2026 - Produção Artesanal e Comunitária.</div>
         </div>
     </footer>
 
-    <!-- JAVASCRIPT LOGIC -->
-    <script>
-        // Data Structure: Ceasa Vegetables Info
+    <!-- FIREBASE SDK + LÓGICA DO SISTEMA -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getFirestore, collection, doc, setDoc, updateDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+        // =========================================================================
+        // 1. CONFIGURAÇÕES DO ORGANIZADOR (EDITE AQUI ANTES DE SUBIR NO GIT)
+        // =========================================================================
+        const CONFIG = {
+            organizadorWhatsApp: "5562920026981", // Seu WhatsApp com 55 + DDD + Número
+            chavePix: "62920026981",              // Sua chave Pix para aparecer no recibo pendente
+            nomeRecebedorPix: "Emerson Charles Gabriel",
+            senhaAdmin: "1234",                   // Senha para abrir o Painel Organizador
+            linkSiteGit: window.location.href.split('#')[0]
+        };
+
+        // 2. COLE AQUI AS CHAVES DO SEU PROJETO FIREBASE (Firestore)
+        // Enquanto estiver "COLE_AQUI", o sistema funciona em modo local no navegador.
+        const firebaseConfig = {
+            apiKey: "COLE_AQUI",
+            authDomain: "COLE_AQUI",
+            projectId: "COLE_AQUI",
+            storageBucket: "COLE_AQUI",
+            messagingSenderId: "COLE_AQUI",
+            appId: "COLE_AQUI"
+        };
+        // =========================================================================
+
+        const useFirebase = firebaseConfig.apiKey !== "COLE_AQUI";
+        let db = null;
+        let members = [];
+        let selectedVegIds = [];
+        let isAdminAuthenticated = false;
+        const STORAGE_KEY = 'consorcio_conservas_v2';
+
         const VEGETABLES = [
             { id: 'abobrinha', name: 'Abobrinha', method: 'Escabeche Ácido', icon: 'fa-pepper-hot', color: 'bg-green-100 text-green-800', desc: 'Fatiada em lâminas finas ou rodelas. Branqueamento rápido e conserva com azeite, alho e orégano.', tip: 'Tira-se a água no sal antes do escabeche.' },
             { id: 'pepino', name: 'Pepino', method: 'Avinagrado Crocante', icon: 'fa-seedling', color: 'bg-emerald-100 text-emerald-800', desc: 'Estilo picles tradicional com endro, alho e sementes de mostarda em vinagre de álcool.', tip: 'Ponto bem crocante!' },
@@ -501,87 +517,102 @@
             { id: 'cenoura', name: 'Cenoura', method: 'Picles Crocante', icon: 'fa-carrot', color: 'bg-amber-100 text-amber-900', desc: 'Cenoura em palitos ou rodelas branqueadas, preservadas no vinagre com pimenta-do-reino.', tip: 'Combinação clássica e super colorida.' }
         ];
 
-        // Sample initial members dataset for LocalStorage
-        const INITIAL_MEMBERS = [
-            { id: 1, name: 'Carlos Eduardo', phone: '(62) 98111-2233', items: ['Pepino', 'Abobrinha', 'Berinjela', 'Cebola'], paid: true, delivered: 4 },
-            { id: 2, name: 'Ana Paula Souza', phone: '(62) 99222-3344', items: ['Jiló', 'Batata', 'Cenoura', 'Tomate'], paid: true, delivered: 2 },
-            { id: 3, name: 'Marcos Vinicius', phone: '(62) 98333-4455', items: ['Mandioca', 'Batata Doce', 'Pepino'], paid: false, delivered: 0 }
-        ];
-
-        // Local Storage Key
-        const STORAGE_KEY = 'consorcio_conservas_members_v1';
-
-        // State Management
-        let members = [];
-        let selectedVegIds = [];
-
-        // App Initialization
-        window.onload = function() {
-            loadMembers();
+        // Inicialização
+        window.addEventListener('DOMContentLoaded', () => {
             renderHomeVegetables();
             renderVegetableDetails();
             renderFormCheckboxes();
-            renderAdminDashboard();
-        };
 
-        // Navigation Switcher
-        function switchTab(tabId) {
-            // Hide all tabs
+            if (useFirebase) {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                onSnapshot(collection(db, "participantes"), (snapshot) => {
+                    members = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    renderAdminDashboard();
+                });
+            } else {
+                document.getElementById('db-status-bar').classList.remove('hidden');
+                const stored = localStorage.getItem(STORAGE_KEY);
+                members = stored ? JSON.parse(stored) : [
+                    {
+                        id: "1001",
+                        name: "Carlos Eduardo (Exemplo)",
+                        phone: "62981112233",
+                        items: ["Pepino", "Abobrinha", "Cebola"],
+                        paid: true,
+                        paidDate: "10/11/2026",
+                        delivered: 4,
+                        deliveries: [
+                            { date: "11/11/2026", qty: 2, details: "2 Pepinos" },
+                            { date: "12/11/2026", qty: 2, details: "1 Abobrinha, 1 Cebola" }
+                        ]
+                    }
+                ];
+                renderAdminDashboard();
+            }
+        });
+
+        // Funções de Persistência (Nuvem ou Local)
+        async function saveOrUpdateMember(memberObj) {
+            if (useFirebase && db) {
+                await setDoc(doc(db, "participantes", String(memberObj.id)), memberObj);
+            } else {
+                const idx = members.findIndex(m => String(m.id) === String(memberObj.id));
+                if (idx >= 0) members[idx] = memberObj;
+                else members.push(memberObj);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(members));
+                renderAdminDashboard();
+            }
+        }
+
+        async function removeMemberById(id) {
+            if (useFirebase && db) {
+                await deleteDoc(doc(db, "participantes", String(id)));
+            } else {
+                members = members.filter(m => String(m.id) !== String(id));
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(members));
+                renderAdminDashboard();
+            }
+        }
+
+        // Navegação
+        window.switchTab = function(tabId) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
-            
-            // Remove active style from desktop nav buttons
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active-tab'));
-
-            // Show selected tab
             const activeTab = document.getElementById(`tab-${tabId}`);
             if (activeTab) activeTab.classList.remove('hidden');
-
-            // Set active class on nav
             const activeBtn = document.getElementById(`nav-${tabId}`);
             if (activeBtn) activeBtn.classList.add('active-tab');
-
-            // Close mobile menu if open
             document.getElementById('mobile-menu').classList.add('hidden');
-
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+        };
 
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        }
+        window.toggleMobileMenu = function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        };
 
-        // Data Storage Handlers
-        function loadMembers() {
-            const stored = localStorage.getItem(STORAGE_KEY);
-            if (stored) {
-                try {
-                    members = JSON.parse(stored);
-                } catch(e) {
-                    members = INITIAL_MEMBERS;
-                }
-            } else {
-                members = INITIAL_MEMBERS;
-                saveMembers();
+        window.accessAdmin = function() {
+            if (isAdminAuthenticated) {
+                switchTab('admin');
+                return;
             }
-        }
-
-        function saveMembers() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(members));
-            renderAdminDashboard();
-        }
-
-        function resetToDefaultData() {
-            if (confirm("Deseja restaurar os dados de exemplo do painel?")) {
-                members = INITIAL_MEMBERS;
-                saveMembers();
+            const pass = prompt("Digite a senha do Organizador:");
+            if (pass === CONFIG.senhaAdmin) {
+                isAdminAuthenticated = true;
+                switchTab('admin');
+            } else if (pass !== null) {
+                alert("Senha incorreta!");
             }
-        }
+        };
 
-        // Render Functions
+        window.logoutAdmin = function() {
+            isAdminAuthenticated = false;
+            switchTab('home');
+        };
+
+        // Renderizadores Visuais
         function renderHomeVegetables() {
-            const container = document.getElementById('home-vegetables-grid');
-            container.innerHTML = VEGETABLES.map(v => `
+            document.getElementById('home-vegetables-grid').innerHTML = VEGETABLES.map(v => `
                 <div class="bg-earth-100 p-3.5 rounded-xl border border-earth-200 flex flex-col items-center text-center">
                     <span class="w-10 h-10 rounded-full ${v.color} flex items-center justify-center text-lg mb-2 shadow-sm">
                         <i class="fa-solid ${v.icon}"></i>
@@ -593,8 +624,7 @@
         }
 
         function renderVegetableDetails() {
-            const container = document.getElementById('veg-details-grid');
-            container.innerHTML = VEGETABLES.map(v => `
+            document.getElementById('veg-details-grid').innerHTML = VEGETABLES.map(v => `
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-earth-200 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center space-x-3 mb-4">
@@ -610,28 +640,25 @@
                     </div>
                     <div class="bg-earth-100 p-3 rounded-xl border border-earth-200 text-xs text-earth-800 flex items-start space-x-2">
                         <i class="fa-solid fa-lightbulb text-amber-700 mt-0.5"></i>
-                        <span><strong>Segredo de vó:</strong> ${v.tip}</span>
+                        <span><strong>Segredo:</strong> ${v.tip}</span>
                     </div>
                 </div>
             `).join('');
         }
 
         function renderFormCheckboxes() {
-            const container = document.getElementById('veg-checkboxes-container');
-            container.innerHTML = VEGETABLES.map(v => `
+            document.getElementById('veg-checkboxes-container').innerHTML = VEGETABLES.map(v => `
                 <label class="cursor-pointer">
                     <input type="checkbox" value="${v.name}" onchange="handleVegSelection(this)" class="peer hidden">
-                    <div class="p-3 rounded-xl border border-gray-200 bg-white peer-checked:border-brand-600 peer-checked:bg-brand-50 peer-checked:text-brand-800 transition flex items-center space-x-2.5 text-sm font-medium text-gray-700 hover:border-gray-300">
-                        <div class="w-4 h-4 rounded border border-gray-400 peer-checked:bg-brand-700 flex items-center justify-center text-white text-xs">
-                            <i class="fa-solid fa-check hidden peer-checked:block"></i>
-                        </div>
+                    <div class="p-3 rounded-xl border border-gray-200 bg-white peer-checked:border-brand-600 peer-checked:bg-brand-50 peer-checked:text-brand-800 transition flex items-center space-x-2 text-sm font-medium text-gray-700">
+                        <i class="fa-solid fa-check text-brand-700 opacity-0 peer-checked:opacity-100"></i>
                         <span>${v.name}</span>
                     </div>
                 </label>
             `).join('');
         }
 
-        function handleVegSelection(checkbox) {
+        window.handleVegSelection = function(checkbox) {
             const val = checkbox.value;
             if (checkbox.checked) {
                 if (selectedVegIds.length >= 5) {
@@ -643,96 +670,244 @@
             } else {
                 selectedVegIds = selectedVegIds.filter(item => item !== val);
             }
-
-            // Update badge
             const badge = document.getElementById('veg-count');
             badge.innerText = `Selecionados: ${selectedVegIds.length}/5`;
-            if(selectedVegIds.length >= 3) {
-                badge.className = 'text-xs font-semibold px-2.5 py-1 rounded-full bg-green-100 text-green-800';
-            } else {
-                badge.className = 'text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800';
-            }
+            badge.className = selectedVegIds.length >= 3
+                ? 'text-xs font-semibold px-2.5 py-1 rounded-full bg-green-100 text-green-800'
+                : 'text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800';
+        };
+
+        // Limpa telefone para apenas números para facilitar busca
+        function normalizePhone(phone) {
+            return String(phone).replace(/\D/g, '');
         }
 
-        // Form Submit -> WhatsApp Redirect & Admin Auto Add
-        function submitForm(event) {
+        // Submissão do Formulário de Adesão
+        window.submitForm = async function(event) {
             event.preventDefault();
-
             const name = document.getElementById('participant-name').value.trim();
-            const phone = document.getElementById('participant-phone').value.trim();
+            const rawPhone = document.getElementById('participant-phone').value.trim();
+            const cleanPhone = normalizePhone(rawPhone);
 
+            if (cleanPhone.length < 10) {
+                alert('Por favor, digite um número de WhatsApp válido com DDD.');
+                return;
+            }
             if (selectedVegIds.length < 3) {
                 alert('Por favor, escolha pelo menos 3 vegetais de sua preferência.');
                 return;
             }
 
-            // Save automatically into members state
             const newMember = {
-                id: Date.now(),
+                id: String(Date.now()),
                 name: name,
-                phone: phone,
+                phone: cleanPhone,
                 items: [...selectedVegIds],
                 paid: false,
-                delivered: 0
+                paidDate: null,
+                delivered: 0,
+                deliveries: []
             };
 
-            members.push(newMember);
-            saveMembers();
+            await saveOrUpdateMember(newMember);
 
-            // Build WhatsApp Message
-            const message = `Olá! Gostaria de me inscrever no Consórcio de Conservas Artesanais de 500ml.%0A%0A` +
-                `*Nome:* ${encodeURIComponent(name)}%0A` +
-                `*WhatsApp:* ${encodeURIComponent(phone)}%0A` +
-                `*Cota:* 10 potes por R$ 100,00%0A` +
-                `*Preferências de Hortifrúti:* ${encodeURIComponent(selectedVegIds.join(', '))}%0A%0A` +
-                `Como posso efetuar o pagamento da cota de R$ 100,00?`;
+            const message = `Olá! Acabei de reservar minha cota no *Consórcio de Conservas Artesanais*.\n\n` +
+                `*Nome:* ${name}\n` +
+                `*WhatsApp:* ${cleanPhone}\n` +
+                `*Cota:* 10 potes de 500ml (R$ 100,00)\n` +
+                `*Preferências:* ${selectedVegIds.join(', ')}\n\n` +
+                `Vou fazer o Pix de R$ 100,00 para ativar meu comprovante!`;
 
-            // Open WhatsApp link (using placeholder phone number)
-            const whatsappUrl = `https://api.whatsapp.com/send?phone=55062920026981&text=${message}`;
+            const whatsappUrl = `https://api.whatsapp.com/send?phone=${CONFIG.organizadorWhatsApp}&text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
 
-            alert('Sua ficha foi gerada com sucesso! Você será redirecionado para o WhatsApp para confirmar a cota.');
-            
-            // Reset form
             document.getElementById('order-form').reset();
             selectedVegIds = [];
             renderFormCheckboxes();
             document.getElementById('veg-count').innerText = 'Selecionados: 0/5';
+
+            // Já abre a consulta da cota da pessoa
+            document.getElementById('search-phone-input').value = cleanPhone;
+            switchTab('extrato');
+            renderQuotaCard(newMember);
+        };
+
+        // Consulta da Cota / Extrato do Participante
+        window.searchParticipantQuota = function(event) {
+            event.preventDefault();
+            const inputPhone = normalizePhone(document.getElementById('search-phone-input').value);
+            const found = members.find(m => normalizePhone(m.phone).endsWith(inputPhone) && inputPhone.length >= 8);
+
+            const container = document.getElementById('quota-result-container');
+            container.classList.remove('hidden');
+
+            if (!found) {
+                container.innerHTML = `
+                    <div class="bg-white p-6 rounded-2xl border border-red-200 text-center space-y-3">
+                        <i class="fa-solid fa-circle-xmark text-red-500 text-3xl"></i>
+                        <h3 class="font-bold text-gray-900">Nenhuma cota encontrada para este número</h3>
+                        <p class="text-sm text-gray-600">Verifique se digitou com o DDD ou faça sua inscrição na aba Participar.</p>
+                    </div>
+                `;
+                return;
+            }
+            renderQuotaCard(found);
+        };
+
+        function renderQuotaCard(m) {
+            const container = document.getElementById('quota-result-container');
+            container.classList.remove('hidden');
+
+            const delivered = m.delivered || 0;
+            const remaining = Math.max(0, 10 - delivered);
+            const progressPct = Math.min(100, (delivered / 10) * 100);
+            const deliveriesList = m.deliveries || [];
+
+            const paymentSection = m.paid
+                ? `
+                    <div class="bg-green-50 border border-green-200 rounded-2xl p-4 flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-full bg-green-600 text-white flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-bold uppercase text-green-800 block">Comprovante de Quitação</span>
+                                <span class="font-bold text-green-900 text-base">Cota Paga — R$ 100,00</span>
+                                <span class="text-xs text-green-700 block">Confirmado em: ${m.paidDate || 'Confirmado pelo organizador'}</span>
+                            </div>
+                        </div>
+                        <span class="bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full">ATIVO</span>
+                    </div>
+                `
+                : `
+                    <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span class="text-xs font-bold uppercase text-amber-800 block">Status Financeiro</span>
+                                <span class="font-bold text-amber-900 text-base">Aguardando Pagamento (R$ 100,00)</span>
+                            </div>
+                            <span class="bg-amber-600 text-white text-xs font-bold px-3 py-1 rounded-full">PENDENTE</span>
+                        </div>
+                        <div class="bg-white p-3 rounded-xl border border-amber-200 text-xs space-y-1">
+                            <p class="text-gray-600">Para validar sua cota, faça o Pix de <strong>R$ 100,00</strong>:</p>
+                            <p class="font-mono font-bold text-sm text-gray-900">Chave Pix: ${CONFIG.chavePix}</p>
+                            <p class="text-gray-500">Favorecido: ${CONFIG.nomeRecebedorPix}</p>
+                            <button onclick="copyPixKey()" class="mt-2 bg-amber-700 hover:bg-amber-800 text-white font-semibold px-3 py-1.5 rounded-lg text-xs inline-flex items-center gap-1.5">
+                                <i class="fa-regular fa-copy"></i> Copiar Chave Pix
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+            const historyHtml = deliveriesList.length > 0
+                ? deliveriesList.map(d => `
+                    <div class="flex items-center justify-between py-2.5 border-b border-gray-100 last:border-0 text-sm">
+                        <div>
+                            <span class="font-bold text-gray-800">+${d.qty} pote(s)</span>
+                            <span class="text-gray-600 ml-1">(${d.details})</span>
+                        </div>
+                        <span class="text-xs font-medium bg-earth-200 text-earth-800 px-2.5 py-0.5 rounded-full">${d.date}</span>
+                    </div>
+                `).join('')
+                : `<p class="text-xs text-gray-500 italic py-2">Nenhuma entrega registrada ainda. Você será avisado assim que o primeiro lote ficar pronto!</p>`;
+
+            container.innerHTML = `
+                <div class="bg-white rounded-3xl shadow-lg border border-earth-300 overflow-hidden">
+                    <div class="bg-brand-800 text-white p-6 flex justify-between items-center">
+                        <div>
+                            <span class="text-[11px] uppercase tracking-widest text-earth-300">Cartão Digital do Participante</span>
+                            <h3 class="font-serif text-xl font-bold mt-0.5">${m.name}</h3>
+                            <p class="text-xs text-brand-100">Cota #${String(m.id).slice(-4)} • WhatsApp: ${m.phone}</p>
+                        </div>
+                        <i class="fa-solid fa-jar text-3xl text-amber-400"></i>
+                    </div>
+
+                    <div class="p-6 space-y-6">
+                        ${paymentSection}
+
+                        <!-- Progresso dos Potes -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm font-bold">
+                                <span class="text-gray-700">Saldo de Conservas (500ml)</span>
+                                <span class="text-brand-700">${delivered} de 10 entregues</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                                <div class="bg-brand-600 h-3 rounded-full transition-all" style="width: ${progressPct}%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 text-right">Faltam <strong>${remaining} potes</strong> para concluir sua cota.</p>
+                        </div>
+
+                        <!-- Preferências -->
+                        <div>
+                            <span class="text-xs font-bold uppercase text-gray-500 block mb-1.5">Sabores Escolhidos</span>
+                            <div class="flex flex-wrap gap-1.5">
+                                ${(m.items || []).map(i => `<span class="bg-earth-200 text-earth-800 text-xs font-medium px-2.5 py-1 rounded-lg">${i}</span>`).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Histórico de Entregas -->
+                        <div class="bg-earth-100 p-4 rounded-2xl border border-earth-200">
+                            <h4 class="text-xs font-bold uppercase text-gray-700 mb-2 flex items-center gap-1.5">
+                                <i class="fa-solid fa-clock-rotate-left text-brand-700"></i> Histórico de Entregas Comprovadas
+                            </h4>
+                            ${historyHtml}
+                        </div>
+
+                        <!-- Botão Compartilhar Comprovante -->
+                        <button onclick="shareReceiptWhatsApp('${m.id}')" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl shadow transition flex items-center justify-center gap-2 text-sm">
+                            <i class="fa-brands fa-whatsapp text-lg"></i> Salvar / Enviar Comprovante no Meu WhatsApp
+                        </button>
+                    </div>
+                </div>
+            `;
         }
 
-        // ADMIN DASHBOARD LOGIC
+        window.copyPixKey = function() {
+            navigator.clipboard.writeText(CONFIG.chavePix);
+            alert("Chave Pix copiada: " + CONFIG.chavePix);
+        };
+
+        window.shareReceiptWhatsApp = function(id) {
+            const m = members.find(item => String(item.id) === String(id));
+            if (!m) return;
+            const statusText = m.paid ? `PAGO (Confirmado em ${m.paidDate || 'OK'})` : 'PENDENTE';
+            const hist = (m.deliveries || []).map(d => `- ${d.date}: +${d.qty} pote(s) [${d.details}]`).join('\n') || 'Nenhuma entrega ainda.';
+
+            const text = `*EXTRATO - CONSÓRCIO DE CONSERVAS*\n` +
+                `Participante: *${m.name}*\n` +
+                `Status Cota (R$ 100): *${statusText}*\n` +
+                `Saldo de Potes: *${m.delivered || 0}/10 entregues* (Faltam ${10 - (m.delivered || 0)})\n\n` +
+                `*Histórico de Entregas:*\n${hist}\n\n` +
+                `Consulte online: ${CONFIG.linkSiteGit}`;
+
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+        };
+
+        // PAINEL DO ORGANIZADOR (ADMIN)
         function renderAdminDashboard() {
             const tableBody = document.getElementById('members-table-body');
-            
-            // Metrics calculation
+            if (!tableBody) return;
+
             const totalMembers = members.length;
             const paidMembers = members.filter(m => m.paid).length;
             const totalCash = paidMembers * 100;
-
             const totalPotesContratados = totalMembers * 10;
             const totalPotesEntregues = members.reduce((acc, m) => acc + (m.delivered || 0), 0);
-
-            // Regra do Organizador: a cada lote de conservas feitas com os vegetais do Ceasa, há um rendimento de potes extras para o produtor
-            const potesSobraOrganizador = Math.floor(totalMembers * 3);
+            const potesSobraOrganizador = totalMembers * 3;
 
             document.getElementById('metric-total-members').innerText = totalMembers;
-            document.getElementById('metric-total-cash').innerText = `R$ ${totalCash},00`;
+            document.getElementById('metric-total-cash').innerText = `R$ ${totalCash}`;
             document.getElementById('metric-potes-entrega').innerText = `${totalPotesEntregues} / ${totalPotesContratados}`;
             document.getElementById('metric-potes-sobra').innerText = `+${potesSobraOrganizador} potes`;
 
             if (members.length === 0) {
-                tableBody.innerHTML = `
-                    <tr>
-                        <td colspan="5" class="p-8 text-center text-gray-500">Nenhum participante inscrito ainda.</td>
-                    </tr>
-                `;
+                tableBody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">Nenhum participante inscrito ainda.</td></tr>`;
                 return;
             }
 
             tableBody.innerHTML = members.map(m => {
-                const isPaid = m.paid;
                 const delivered = m.delivered || 0;
-                const remaining = 10 - delivered;
+                const remaining = Math.max(0, 10 - delivered);
 
                 return `
                     <tr class="hover:bg-gray-50 transition">
@@ -742,24 +917,26 @@
                         </td>
                         <td class="p-4">
                             <div class="flex flex-wrap gap-1">
-                                ${m.items.map(item => `<span class="bg-earth-200 text-earth-800 text-xs px-2 py-0.5 rounded-md">${item}</span>`).join('')}
+                                ${(m.items || []).map(item => `<span class="bg-earth-200 text-earth-800 text-xs px-2 py-0.5 rounded-md">${item}</span>`).join('')}
                             </div>
                         </td>
                         <td class="p-4">
-                            <button onclick="togglePaidStatus(${m.id})" class="px-3 py-1 rounded-full text-xs font-bold transition ${isPaid ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-amber-100 text-amber-800 hover:bg-amber-200'}">
-                                ${isPaid ? '<i class="fa-solid fa-circle-check mr-1"></i> Pago (R$ 100)' : '<i class="fa-solid fa-clock mr-1"></i> Pendente'}
+                            <button onclick="togglePaidStatus('${m.id}')" class="px-3 py-1.5 rounded-full text-xs font-bold transition ${m.paid ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-amber-100 text-amber-800 hover:bg-amber-200'}">
+                                ${m.paid ? `<i class="fa-solid fa-circle-check mr-1"></i> Pago (${m.paidDate || 'OK'})` : '<i class="fa-solid fa-clock mr-1"></i> Confirmar Pix'}
                             </button>
                         </td>
                         <td class="p-4">
-                            <div class="flex items-center space-x-2">
-                                <button onclick="updateDelivered(${m.id}, -1)" class="w-6 h-6 rounded bg-gray-200 hover:bg-gray-300 flex items-center justify-center text-gray-700 font-bold">-</button>
-                                <span class="font-bold text-gray-800 text-sm w-12 text-center">${delivered} / 10</span>
-                                <button onclick="updateDelivered(${m.id}, 1)" class="w-6 h-6 rounded bg-gray-200 hover:bg-gray-300 flex items-center justify-center text-gray-700 font-bold">+</button>
-                            </div>
-                            <div class="text-xs text-gray-500 mt-1">Faltam ${remaining} potes</div>
+                            <div class="font-bold text-gray-800 text-sm">${delivered} / 10 entregues</div>
+                            <div class="text-xs text-gray-500">Faltam ${remaining} potes</div>
                         </td>
-                        <td class="p-4 text-right">
-                            <button onclick="deleteMember(${m.id})" class="text-red-600 hover:text-red-800 text-sm p-1">
+                        <td class="p-4 text-right space-x-1">
+                            <button onclick="openDeliveryModal('${m.id}')" class="bg-brand-700 hover:bg-brand-800 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm" title="Registrar entrega de potes">
+                                <i class="fa-solid fa-jar mr-1"></i> Entregar
+                            </button>
+                            <button onclick="notifyParticipantWhatsApp('${m.id}')" class="bg-green-600 hover:bg-green-700 text-white text-xs font-semibold px-2.5 py-1.5 rounded-lg shadow-sm" title="Enviar comprovante no WhatsApp">
+                                <i class="fa-brands fa-whatsapp"></i>
+                            </button>
+                            <button onclick="deleteMember('${m.id}')" class="text-red-600 hover:text-red-800 text-sm p-1.5" title="Excluir">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </td>
@@ -768,62 +945,109 @@
             }).join('');
         }
 
-        // Admin Action Handlers
-        function togglePaidStatus(id) {
-            members = members.map(m => m.id === id ? { ...m, paid: !m.paid } : m);
-            saveMembers();
-        }
+        window.togglePaidStatus = async function(id) {
+            const m = members.find(item => String(item.id) === String(id));
+            if (!m) return;
+            const today = new Date().toLocaleDateString('pt-BR');
+            const updated = {
+                ...m,
+                paid: !m.paid,
+                paidDate: !m.paid ? today : null
+            };
+            await saveOrUpdateMember(updated);
+        };
 
-        function updateDelivered(id, change) {
-            members = members.map(m => {
-                if (m.id === id) {
-                    const current = m.delivered || 0;
-                    const next = Math.min(10, Math.max(0, current + change));
-                    return { ...m, delivered: next };
-                }
-                return m;
-            });
-            saveMembers();
-        }
+        window.openDeliveryModal = function(id) {
+            const m = members.find(item => String(item.id) === String(id));
+            if (!m) return;
+            document.getElementById('delivery-member-id').value = m.id;
+            document.getElementById('delivery-member-name').innerText = `Participante: ${m.name} (Faltam ${10 - (m.delivered || 0)} potes)`;
+            document.getElementById('delivery-qty').value = 2;
+            document.getElementById('delivery-details').value = '';
+            document.getElementById('modal-register-delivery').classList.remove('hidden');
+        };
 
-        function deleteMember(id) {
-            if (confirm("Tem certeza que deseja remover este participante do consórcio?")) {
-                members = members.filter(m => m.id !== id);
-                saveMembers();
+        window.closeDeliveryModal = function() {
+            document.getElementById('modal-register-delivery').classList.add('hidden');
+        };
+
+        window.confirmDeliveryRegistration = async function(event) {
+            event.preventDefault();
+            const id = document.getElementById('delivery-member-id').value;
+            const qty = parseInt(document.getElementById('delivery-qty').value, 10);
+            const details = document.getElementById('delivery-details').value.trim();
+
+            const m = members.find(item => String(item.id) === String(id));
+            if (!m) return;
+
+            const today = new Date().toLocaleDateString('pt-BR');
+            const newDelivered = Math.min(10, (m.delivered || 0) + qty);
+            const deliveries = [...(m.deliveries || []), { date: today, qty, details }];
+
+            const updated = { ...m, delivered: newDelivered, deliveries };
+            await saveOrUpdateMember(updated);
+            closeDeliveryModal();
+
+            if (confirm("Entrega registrada com sucesso! Deseja enviar o comprovante desta entrega no WhatsApp do participante agora?")) {
+                notifyParticipantWhatsApp(id);
             }
-        }
+        };
 
-        function openAddParticipantModal() {
+        window.notifyParticipantWhatsApp = function(id) {
+            const m = members.find(item => String(item.id) === String(id));
+            if (!m) return;
+            const phone = normalizePhone(m.phone);
+            const targetPhone = phone.startsWith('55') ? phone : `55${phone}`;
+            const lastDelivery = (m.deliveries || []).slice(-1)[0];
+
+            let msg = `Olá *${m.name}*! Atualização do seu *Consórcio de Conservas*:\n\n`;
+            if (lastDelivery) {
+                msg += `✅ *Última Entrega (${lastDelivery.date}):* +${lastDelivery.qty} pote(s) (${lastDelivery.details})\n`;
+            }
+            msg += `💰 *Pagamento:* ${m.paid ? 'Confirmado (R$ 100,00)' : 'Pendente'}\n` +
+                   `📊 *Seu Saldo:* ${m.delivered || 0} de 10 potes entregues (Faltam ${10 - (m.delivered || 0)})\n\n` +
+                   `Acesse seu comprovante completo a qualquer momento usando seu número de WhatsApp no link:\n${CONFIG.linkSiteGit}`;
+
+            window.open(`https://api.whatsapp.com/send?phone=${targetPhone}&text=${encodeURIComponent(msg)}`, '_blank');
+        };
+
+        window.deleteMember = async function(id) {
+            if (confirm("Tem certeza que deseja remover este participante?")) {
+                await removeMemberById(id);
+            }
+        };
+
+        window.openAddParticipantModal = function() {
             document.getElementById('modal-add-member').classList.remove('hidden');
-        }
+        };
 
-        function closeAddParticipantModal() {
+        window.closeAddParticipantModal = function() {
             document.getElementById('modal-add-member').classList.add('hidden');
             document.getElementById('admin-add-form').reset();
-        }
+        };
 
-        function saveAdminMember(event) {
+        window.saveAdminMember = async function(event) {
             event.preventDefault();
             const name = document.getElementById('admin-name').value.trim();
-            const phone = document.getElementById('admin-phone').value.trim();
+            const phone = normalizePhone(document.getElementById('admin-phone').value);
             const paid = document.getElementById('admin-paid').value === 'true';
             const itemsRaw = document.getElementById('admin-items').value.trim();
-
             const items = itemsRaw ? itemsRaw.split(',').map(i => i.trim()) : ['Diversos'];
 
             const newMember = {
-                id: Date.now(),
+                id: String(Date.now()),
                 name,
                 phone,
                 items,
                 paid,
-                delivered: 0
+                paidDate: paid ? new Date().toLocaleDateString('pt-BR') : null,
+                delivered: 0,
+                deliveries: []
             };
 
-            members.push(newMember);
-            saveMembers();
+            await saveOrUpdateMember(newMember);
             closeAddParticipantModal();
-        }
+        };
     </script>
 </body>
 </html>
