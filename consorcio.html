@@ -143,11 +143,9 @@
                         Você investe <strong>R$ 100,00</strong> e garante <strong>10 potes de 500 ml</strong> montados conforme sua preferência, com recibo digital e acompanhamento online das entregas!
                     </p>
                     <div class="flex flex-wrap gap-4">
-                        <!-- Botão corrigido com data-tab -->
                         <button data-tab="inscricao" class="tab-trigger bg-amber-700 hover:bg-amber-800 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
                             Quero me Inscrever (R$ 100)
                         </button>
-                        <!-- Botão corrigido com data-tab -->
                         <button data-tab="extrato" class="tab-trigger bg-white/15 hover:bg-white/25 text-white font-semibold px-6 py-3 rounded-xl border border-white/30 backdrop-blur-sm transition">
                             <i class="fa-solid fa-receipt mr-1.5"></i> Consultar Minha Cota
                         </button>
@@ -517,6 +515,20 @@
             { id: 'cenoura', name: 'Cenoura', method: 'Picles Crocante', icon: 'fa-carrot', color: 'bg-amber-100 text-amber-900', desc: 'Cenoura em palitos ou rodelas branqueadas, preservadas no vinagre com pimenta-do-reino.', tip: 'Combinação clássica e super colorida.' }
         ];
 
+        // Tornando funções acessíveis globalmente fora do escopo do módulo
+        window.switchTab = function(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active-tab'));
+            
+            const activeTab = document.getElementById(`tab-${tabId}`);
+            if (activeTab) activeTab.classList.remove('hidden');
+            
+            document.querySelectorAll(`.nav-btn[data-tab="${tabId}"]`).forEach(btn => btn.classList.add('active-tab'));
+            
+            document.getElementById('mobile-menu').classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
         // Inicialização
         window.addEventListener('DOMContentLoaded', () => {
             renderHomeVegetables();
@@ -580,52 +592,33 @@
             }
         }
 
-        // Navegação por Abas
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active-tab'));
-            
-            const activeTab = document.getElementById(`tab-${tabId}`);
-            if (activeTab) activeTab.classList.remove('hidden');
-            
-            document.querySelectorAll(`.nav-btn[data-tab="${tabId}"]`).forEach(btn => btn.classList.add('active-tab'));
-            
-            document.getElementById('mobile-menu').classList.add('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
         // Configuração de Eventos Globais
         function setupEventListeners() {
-            // Navegação (todos os elementos com data-tab)
             document.querySelectorAll('[data-tab]').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const tab = e.currentTarget.getAttribute('data-tab');
-                    switchTab(tab);
+                    window.switchTab(tab);
                 });
             });
 
-            document.getElementById('logo-home-btn').addEventListener('click', () => switchTab('home'));
+            document.getElementById('logo-home-btn').addEventListener('click', () => window.switchTab('home'));
 
-            // Admin Login
             document.getElementById('nav-admin-btn').addEventListener('click', accessAdmin);
             document.getElementById('mobile-admin-btn').addEventListener('click', accessAdmin);
             document.getElementById('logout-admin-btn').addEventListener('click', () => {
                 isAdminAuthenticated = false;
-                switchTab('home');
+                window.switchTab('home');
             });
 
-            // Menu Mobile
             document.getElementById('mobile-menu-btn').addEventListener('click', () => {
                 document.getElementById('mobile-menu').classList.toggle('hidden');
             });
 
-            // Formulário de Inscrição
+            // Formulário de Inscrição corrigido
             document.getElementById('order-form').addEventListener('submit', submitForm);
 
-            // Busca de Cota
             document.getElementById('search-form').addEventListener('submit', searchParticipantQuota);
 
-            // Modais Admin
             document.getElementById('open-add-member-btn').addEventListener('click', () => {
                 document.getElementById('modal-add-member').classList.remove('hidden');
             });
@@ -633,7 +626,6 @@
             document.getElementById('cancel-modal-add-btn').addEventListener('click', closeAddParticipantModal);
             document.getElementById('admin-add-form').addEventListener('submit', saveAdminMember);
 
-            // Modal Entrega
             document.getElementById('close-delivery-modal-btn').addEventListener('click', closeDeliveryModal);
             document.getElementById('cancel-delivery-modal-btn').addEventListener('click', closeDeliveryModal);
             document.getElementById('delivery-form').addEventListener('submit', confirmDeliveryRegistration);
@@ -641,19 +633,18 @@
 
         function accessAdmin() {
             if (isAdminAuthenticated) {
-                switchTab('admin');
+                window.switchTab('admin');
                 return;
             }
             const pass = prompt("Digite a senha do Organizador:");
             if (pass === CONFIG.senhaAdmin) {
                 isAdminAuthenticated = true;
-                switchTab('admin');
+                window.switchTab('admin');
             } else if (pass !== null) {
                 alert("Senha incorreta!");
             }
         }
 
-        // Renderizadores Visuais
         function renderHomeVegetables() {
             document.getElementById('home-vegetables-grid').innerHTML = VEGETABLES.map(v => `
                 <div class="bg-earth-100 p-3.5 rounded-xl border border-earth-200 flex flex-col items-center text-center">
@@ -772,7 +763,7 @@
             document.getElementById('veg-count').innerText = 'Selecionados: 0/5';
 
             document.getElementById('search-phone-input').value = cleanPhone;
-            switchTab('extrato');
+            window.switchTab('extrato');
             renderQuotaCard(newMember);
         }
 
