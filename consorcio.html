@@ -289,7 +289,7 @@
                             <p class="text-xs text-brand-700 font-medium mt-0.5"><i class="fa-solid fa-check-circle"></i> Acompanhamento online liberado após inscrição</p>
                         </div>
                         <button type="submit" id="btn-submit-form" class="w-full sm:w-auto bg-amber-700 hover:bg-amber-800 text-white font-bold px-8 py-4 rounded-xl shadow-md transition flex items-center justify-center gap-2">
-                            <i class="fa-brands fa-whatsapp text-lg"></i>
+                            <i class="fa-solid fa-check-to-slot text-lg"></i>
                             Reservar e Ver Dados do Pix
                         </button>
                     </div>
@@ -297,7 +297,7 @@
             </div>
         </section>
 
-        <!-- 5. NOVA ABA: CONSULTAR MINHA COTA / COMPROVANTE -->
+        <!-- 5. ABA: CONSULTAR MINHA COTA / COMPROVANTE -->
         <section id="tab-extrato" class="tab-content hidden space-y-8">
             <div class="max-w-2xl mx-auto space-y-6">
                 <!-- Caixa de Busca -->
@@ -472,7 +472,7 @@
     <!-- FIREBASE SDK + LÓGICA DO SISTEMA -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getFirestore, collection, doc, setDoc, updateDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+        import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
         // =========================================================================
         // 1. CONFIGURAÇÕES DO ORGANIZADOR
@@ -742,13 +742,11 @@
 
             await saveOrUpdateMember(newMember);
 
-            // Limpa o formulário
             document.getElementById('order-form').reset();
             selectedVegIds = [];
             renderFormCheckboxes();
             document.getElementById('veg-count').innerText = 'Selecionados: 0/5';
 
-            // Vai direto para a aba de extrato e mostra o cartão com o PIX
             document.getElementById('search-phone-input').value = cleanPhone;
             window.switchTab('extrato');
             renderQuotaCard(newMember);
@@ -873,11 +871,11 @@
                             ${historyHtml}
                         </div>
 
-                        <div class="space-y-2 pt-2">
-                            <p class="text-xs text-gray-600 text-center font-medium">Deseja enviar seu comprovante ou falar com o organizador?</p>
-                            <button id="share-whatsapp-btn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl shadow transition flex items-center justify-center gap-2 text-sm">
-                                <i class="fa-brands fa-whatsapp text-lg"></i> Falar com o Organizador no WhatsApp
-                            </button>
+                        <div class="space-y-3 pt-2">
+                            <p class="text-xs text-gray-700 text-center font-medium">Toque abaixo para enviar seu comprovante ou falar com o organizador:</p>
+                            <a id="share-whatsapp-btn" href="#" target="_blank" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl shadow transition flex items-center justify-center gap-2 text-sm text-center">
+                                <i class="fa-brands fa-whatsapp text-lg"></i> Abrir WhatsApp com os Dados da Cota
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -890,18 +888,24 @@
                 });
             }
 
-            document.getElementById('share-whatsapp-btn').addEventListener('click', () => {
-                const statusText = m.paid ? `PAGO (Confirmado em ${m.paidDate || 'OK'})` : 'PENDENTE';
-                const hist = (m.deliveries || []).map(d => `- ${d.date}: +${d.qty} pote(s) [${d.details}]`).join('\n') || 'Nenhuma entrega ainda.';
+            document.getElementById('share-whatsapp-btn').addEventListener('click', (e) => {
+                e.preventDefault();
+                const statusText = m.paid ? `PAGO (Confirmado em ${m.paidDate || 'OK'})` : 'PENDENTE (Aguardando Pix)';
 
                 const text = `*INSCRIÇÃO - CONSÓRCIO DE CONSERVAS*\n` +
                     `Participante: *${m.name}*\n` +
                     `WhatsApp: ${m.phone}\n` +
                     `Status Cota (R$ 100): *${statusText}*\n` +
                     `Preferências: ${(m.items || []).join(', ')}\n\n` +
+                    `Chave Pix para pagamento: ${CONFIG.chavePix} (${CONFIG.nomeRecebedorPix})\n\n` +
                     `Consulte online: ${CONFIG.linkSiteGit}`;
 
-                window.open(`https://api.whatsapp.com/send?phone=${CONFIG.organizadorWhatsApp}&text=${encodeURIComponent(text)}`, '_blank');
+                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                const whatsappUrl = isMobile 
+                    ? `https://api.whatsapp.com/send?phone=${CONFIG.organizadorWhatsApp}&text=${encodeURIComponent(text)}`
+                    : `https://web.whatsapp.com/send?phone=${CONFIG.organizadorWhatsApp}&text=${encodeURIComponent(text)}`;
+
+                window.open(whatsappUrl, '_blank');
             });
         }
 
