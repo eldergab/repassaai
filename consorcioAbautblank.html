@@ -974,12 +974,14 @@
             const tableBody = document.getElementById('members-table-body');
             if (!tableBody) return;
 
-            const totalMembers = members.length;
-            const paidMembers = members.filter(m => m.paid).length;
-            const totalCash = paidMembers * 100;
-            const totalPotesContratados = totalMembers * 10;
-            const totalPotesEntregues = members.reduce((acc, m) => acc + (m.delivered || 0), 0);
-            const potesSobraOrganizador = totalMembers * 3;
+         const totalMembers = members.length;
+const paidMembers = members.filter(m => m.paid).length;
+const totalCash = paidMembers * 100;
+const totalPotesContratados = totalMembers * 10;
+const totalPotesEntregues = members.reduce((acc, m) => acc + (m.delivered || 0), 0);
+
+// A cada cota paga (R$ 100): compra 30 vidros, entrega 10 ao cliente = 20 vidros livres de lucro
+const potesSobraOrganizador = paidMembers * 20;
 
             document.getElementById('metric-total-members').innerText = totalMembers;
             document.getElementById('metric-total-cash').innerText = `R$ ${totalCash}`;
