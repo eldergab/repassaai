@@ -979,7 +979,7 @@
             const totalCash = paidMembers * 100;
             const totalPotesContratados = totalMembers * 10;
             const totalPotesEntregues = members.reduce((acc, m) => acc + (m.delivered || 0), 0);
-            const potesSobraOrganizador = totalMembers * 3;
+            const potesSobraOrganizador = totalMembers * 20;
 
             document.getElementById('metric-total-members').innerText = totalMembers;
             document.getElementById('metric-total-cash').innerText = `R$ ${totalCash}`;
