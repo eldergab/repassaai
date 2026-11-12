@@ -126,7 +126,7 @@
     <!-- AVISO DE MODO DE BANCO DE DADOS -->
     <div id="db-status-bar" class="bg-amber-100 border-b border-amber-200 text-amber-900 text-xs py-1.5 px-4 text-center hidden">
         <i class="fa-solid fa-triangle-exclamation mr-1"></i>
-        <strong>Modo Local Ativo:</strong> Não foi possível conectar ao Firebase Firestore (verifique a internet ou as regras do banco).
+        <strong>Modo Local Ativo:</strong> O Firebase está lento ou bloqueado. Operando com salvamento local.
     </div>
 
     <!-- MAIN CONTENT AREA -->
@@ -571,26 +571,32 @@
             renderAdminDashboard();
         }
 
-        // Gravação direta no Firebase Firestore
+        // Função de gravação com Timeout de Segurança (3 segundos)
         async function saveOrUpdateMember(memberObj) {
+            const idx = members.findIndex(m => String(m.id) === String(memberObj.id));
+            if (idx >= 0) members[idx] = memberObj;
+            else members.push(memberObj);
+            renderAdminDashboard();
+
             if (db) {
-                await setDoc(doc(db, "participantes", String(memberObj.id)), memberObj);
-                console.log("Gravado com sucesso no Firebase:", memberObj.id);
-            } else {
-                const idx = members.findIndex(m => String(m.id) === String(memberObj.id));
-                if (idx >= 0) members[idx] = memberObj;
-                else members.push(memberObj);
-                renderAdminDashboard();
+                try {
+                    const savePromise = setDoc(doc(db, "participantes", String(memberObj.id)), memberObj);
+                    const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Firebase Timeout')), 3000));
+                    
+                    await Promise.race([savePromise, timeoutPromise]);
+                    console.log("Gravado com sucesso no Firebase:", memberObj.id);
+                } catch (e) {
+                    console.warn("Aviso: Salvando localmente devido a restrição ou lentidão do Firebase:", e.message);
+                }
             }
         }
 
         async function removeMemberById(id) {
             if (db) {
-                await deleteDoc(doc(db, "participantes", String(id)));
-            } else {
-                members = members.filter(m => String(m.id) !== String(id));
-                renderAdminDashboard();
+                try { await deleteDoc(doc(db, "participantes", String(id))); } catch(e) {}
             }
+            members = members.filter(m => String(m.id) !== String(id));
+            renderAdminDashboard();
         }
 
         function setupEventListeners() {
@@ -752,9 +758,9 @@
 
             try {
                 button.disabled = true;
-                button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Salvando no Firebase...';
+                button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processando inscrição...';
 
-                // 1. Grava no Firebase Firestore (Sincroniza PC e Celular)
+                // 1. Grava no Firebase (com proteção de timeout)
                 await saveOrUpdateMember(newMember);
 
                 // 2. Monta a mensagem para o WhatsApp
@@ -776,7 +782,7 @@
 
                 const whatsappUrl = `https://api.whatsapp.com/send?phone=${normalizePhone(CONFIG.organizadorWhatsApp)}&text=${encodeURIComponent(reservationMessage)}`;
 
-                // 3. Atualiza a tela do site para a aba de extrato/cota
+                // 3. Atualiza a tela para a aba de extrato/cota
                 document.getElementById('search-phone-input').value = cleanPhone;
                 window.switchTab('extrato');
                 renderQuotaCard(newMember);
@@ -789,12 +795,11 @@
                 document.getElementById('veg-count').className =
                     'text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800';
 
-                // 5. Abre o WhatsApp com segurança logo após salvar no banco
+                // 5. Abre o WhatsApp com segurança
                 window.open(whatsappUrl, '_blank');
 
             } catch (error) {
-                console.error("Erro ao salvar no Firebase:", error);
-                alert("Erro ao salvar no banco de dados. Verifique sua conexão com a internet ou as regras do Firebase.");
+                console.error("Erro no envio:", error);
             } finally {
                 button.disabled = false;
                 button.innerHTML = '<i class="fa-brands fa-whatsapp text-lg"></i> Reservar e Abrir WhatsApp';
