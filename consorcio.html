@@ -369,10 +369,10 @@
                     </div>
 
                     <div class="bg-purple-50 p-5 rounded-2xl border border-purple-100">
-                        <span class="text-xs font-bold text-purple-800 uppercase">Rendimento Extra</span>
+                        <span class="text-xs font-bold text-purple-800 uppercase">Lucro em Vidros</span>
                         <div class="flex items-baseline justify-between mt-2">
                             <span id="metric-potes-sobra" class="text-3xl font-extrabold text-purple-900">0</span>
-                            <span class="text-xs text-purple-700">Potes do organizador</span>
+                            <span class="text-xs text-purple-700">20 potes livres / cota</span>
                         </div>
                     </div>
                 </div>
@@ -571,7 +571,7 @@
             renderAdminDashboard();
         }
 
-        // Gravação direta e garantida no Firebase Firestore
+        // Gravação direta no Firebase Firestore
         async function saveOrUpdateMember(memberObj) {
             if (db) {
                 await setDoc(doc(db, "participantes", String(memberObj.id)), memberObj);
@@ -738,12 +738,6 @@
                 return;
             }
 
-            // Reserva a aba do WhatsApp no momento do clique para o navegador não bloquear
-            const whatsappWindow = window.open('', '_blank');
-            if (whatsappWindow) {
-                whatsappWindow.document.write('<p style="font-family:sans-serif;padding:20px;">Registrando sua cota no sistema, aguarde um instante...</p>');
-            }
-
             const newMember = {
                 id: String(Date.now()),
                 name: name,
@@ -758,12 +752,12 @@
 
             try {
                 button.disabled = true;
-                button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Gravando no sistema...';
+                button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Salvando no Firebase...';
 
-                // 1. Grava primeiro no Firebase e espera confirmação real
+                // 1. Grava no Firebase Firestore (Sincroniza PC e Celular)
                 await saveOrUpdateMember(newMember);
 
-                // 2. Monta a mensagem do WhatsApp
+                // 2. Monta a mensagem para o WhatsApp
                 const reservationMessage =
                     `*NOVA RESERVA - CONSÓRCIO DE CONSERVAS*\n\n` +
                     `*Participante:* ${newMember.name}\n` +
@@ -782,7 +776,7 @@
 
                 const whatsappUrl = `https://api.whatsapp.com/send?phone=${normalizePhone(CONFIG.organizadorWhatsApp)}&text=${encodeURIComponent(reservationMessage)}`;
 
-                // 3. Atualiza a tela do site para "Minha Cota"
+                // 3. Atualiza a tela do site para a aba de extrato/cota
                 document.getElementById('search-phone-input').value = cleanPhone;
                 window.switchTab('extrato');
                 renderQuotaCard(newMember);
@@ -795,17 +789,12 @@
                 document.getElementById('veg-count').className =
                     'text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800';
 
-                // 5. Envia a aba aberta para o WhatsApp
-                if (whatsappWindow && !whatsappWindow.closed) {
-                    whatsappWindow.location.href = whatsappUrl;
-                } else {
-                    window.open(whatsappUrl, '_blank');
-                }
+                // 5. Abre o WhatsApp com segurança logo após salvar no banco
+                window.open(whatsappUrl, '_blank');
 
             } catch (error) {
-                console.error("Erro ao gravar no Firebase:", error);
-                if (whatsappWindow && !whatsappWindow.closed) whatsappWindow.close();
-                alert("Erro ao salvar no banco de dados. Verifique sua conexão ou as regras de permissão do Firebase Firestore.");
+                console.error("Erro ao salvar no Firebase:", error);
+                alert("Erro ao salvar no banco de dados. Verifique sua conexão com a internet ou as regras do Firebase.");
             } finally {
                 button.disabled = false;
                 button.innerHTML = '<i class="fa-brands fa-whatsapp text-lg"></i> Reservar e Abrir WhatsApp';
@@ -979,7 +968,9 @@
             const totalCash = paidMembers * 100;
             const totalPotesContratados = totalMembers * 10;
             const totalPotesEntregues = members.reduce((acc, m) => acc + (m.delivered || 0), 0);
-            const potesSobraOrganizador = totalMembers * 20;
+            
+            // Lucro de 20 potes vazios por cota paga
+            const potesSobraOrganizador = paidMembers * 20;
 
             document.getElementById('metric-total-members').innerText = totalMembers;
             document.getElementById('metric-total-cash').innerText = `R$ ${totalCash}`;
