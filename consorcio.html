@@ -467,4 +467,631 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-sm">
             <p class="font-serif text-white font-semibold mb-2">Consórcio Solidário de Conservas Caseiras</p>
             <p class="text-xs text-brand-100 max-w-xl mx-auto">Iniciativa artesanal comunitária. Economia doméstica e valorização dos alimentos frescos do Ceasa.</p>
-            <div class="mt-4 text-xs text-earth-300
+            <div class="mt-4 text-xs text-earth-300">&copy; 2026 - Produção Artesanal e Comunitária.</div>
+        </div>
+    </footer>
+
+    <!-- FIREBASE SDK + LÓGICA DO SISTEMA -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getFirestore, collection, doc, setDoc, updateDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+        // =========================================================================
+        // 1. CONFIGURAÇÕES DO ORGANIZADOR
+        // =========================================================================
+        const CONFIG = {
+            organizadorWhatsApp: "5562920026981",
+            chavePix: "62920026981",
+            nomeRecebedorPix: "Emerson Charles Gabriel",
+            senhaAdmin: "1234",
+            linkSiteGit: window.location.href.split('#')[0]
+        };
+
+        // 2. SUAS CHAVES DO FIREBASE
+        const firebaseConfig = {
+            apiKey: "AIzaSyDrRooq7X34TcQu71DHW5RYcsgNj3dPjkY",
+            authDomain: "conservas-beb76.firebaseapp.com",
+            projectId: "conservas-beb76",
+            storageBucket: "conservas-beb76.firebasestorage.app",
+            messagingSenderId: "871697782410",
+            appId: "1:871697782410:web:91cfe7b2d06395e2d33f73",
+            measurementId: "G-CPGQXZR16G"
+        };
+        // =========================================================================
+
+        let db = null;
+        let members = [];
+        let selectedVegIds = [];
+        let isAdminAuthenticated = false;
+
+        const VEGETABLES = [
+            { id: 'abobrinha', name: 'Abobrinha', method: 'Escabeche Ácido', icon: 'fa-pepper-hot', color: 'bg-green-100 text-green-800', desc: 'Fatiada em lâminas finas ou rodelas. Branqueamento rápido e conserva com azeite, alho e orégano.', tip: 'Tira-se a água no sal antes do escabeche.' },
+            { id: 'pepino', name: 'Pepino', method: 'Avinagrado Crocante', icon: 'fa-seedling', color: 'bg-emerald-100 text-emerald-800', desc: 'Estilo picles tradicional com endro, alho e sementes de mostarda em vinagre de álcool.', tip: 'Ponto bem crocante!' },
+            { id: 'tomate', name: 'Tomate', method: 'Tomate Seco / Confit', icon: 'fa-apple-whole', color: 'bg-red-100 text-red-800', desc: 'Desidratado no forno com ervas finas e imerso em óleo temperado ou molho concentrado.', tip: 'Apenas tomates firmes selecionados.' },
+            { id: 'cebola', name: 'Cebola', method: 'Conserva Avinagrada', icon: 'fa-circle-dot', color: 'bg-purple-100 text-purple-800', desc: 'Cebolinhas pequenas ou fatiadas com folha de louro, pimenta em grão e vinagre refinado.', tip: 'Ótima para petisco e acompanhamento.' },
+            { id: 'batata', name: 'Batata', method: 'Conserva de Vinagrete', icon: 'fa-cubes', color: 'bg-amber-100 text-amber-800', desc: 'Batatinhas bolinha cozidas al dente, temperadas com bastante salsa, alho e vinagre.', tip: 'Perfeita para churrasco.' },
+            { id: 'jilo', name: 'Jiló', method: 'Escabeche Temperado', icon: 'fa-lemon', color: 'bg-lime-100 text-lime-800', desc: 'Cozimento rápido para retirar o amargor excessivo e temperado com azeite, pimenta e vinagre.', tip: 'Favorito dos apreciadores de petisco raíz.' },
+            { id: 'berinjela', name: 'Berinjela', method: 'Caponata / Escabeche', icon: 'fa-eggplant', color: 'bg-indigo-100 text-indigo-800', desc: 'Desfiada ou em cubos com pimentões, passas, orégano e azeite de boa qualidade.', tip: 'Fica ainda mais gostosa depois de alguns dias.' },
+            { id: 'batata-doce', name: 'Batata Doce', method: 'Conserva Azedo-Doce', icon: 'fa-carrot', color: 'bg-orange-100 text-orange-800', desc: 'Cozida firme em rodelas com vinagre, um toque de açúcar e cravos da índia.', tip: 'Excelente para acompanhamento de refeições.' },
+            { id: 'mandioca', name: 'Mandioca', method: 'Conserva Temperada', icon: 'fa-bone', color: 'bg-yellow-100 text-yellow-800', desc: 'Mandioca cozida em cubos no ponto exato, imersa em tempero de vinagre, alho e cheiro-verde.', tip: 'Exige esterilização rigorosa.' },
+            { id: 'cenoura', name: 'Cenoura', method: 'Picles Crocante', icon: 'fa-carrot', color: 'bg-amber-100 text-amber-900', desc: 'Cenoura em palitos ou rodelas branqueadas, preservadas no vinagre com pimenta-do-reino.', tip: 'Combinação clássica e super colorida.' }
+        ];
+
+        // Inicialização
+        window.addEventListener('DOMContentLoaded', () => {
+            renderHomeVegetables();
+            renderVegetableDetails();
+            renderFormCheckboxes();
+            setupEventListeners();
+
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                onSnapshot(collection(db, "participantes"), (snapshot) => {
+                    members = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    renderAdminDashboard();
+                }, (error) => {
+                    console.error("Erro ao conectar no Firestore:", error);
+                    showLocalMode();
+                });
+            } catch(e) {
+                console.error("Erro Firebase:", e);
+                showLocalMode();
+            }
+        });
+
+        function showLocalMode() {
+            document.getElementById('db-status-bar').classList.remove('hidden');
+            members = [
+                {
+                    id: "1001",
+                    name: "Carlos Eduardo (Exemplo)",
+                    phone: "62981112233",
+                    items: ["Pepino", "Abobrinha", "Cebola"],
+                    paid: true,
+                    paidDate: "10/11/2026",
+                    delivered: 4,
+                    deliveries: [
+                        { date: "11/11/2026", qty: 2, details: "2 Pepinos" },
+                        { date: "12/11/2026", qty: 2, details: "1 Abobrinha, 1 Cebola" }
+                    ]
+                }
+            ];
+            renderAdminDashboard();
+        }
+
+        async function saveOrUpdateMember(memberObj) {
+            if (db) {
+                await setDoc(doc(db, "participantes", String(memberObj.id)), memberObj);
+            } else {
+                const idx = members.findIndex(m => String(m.id) === String(memberObj.id));
+                if (idx >= 0) members[idx] = memberObj;
+                else members.push(memberObj);
+                renderAdminDashboard();
+            }
+        }
+
+        async function removeMemberById(id) {
+            if (db) {
+                await deleteDoc(doc(db, "participantes", String(id)));
+            } else {
+                members = members.filter(m => String(m.id) !== String(id));
+                renderAdminDashboard();
+            }
+        }
+
+        // Navegação por Abas
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active-tab'));
+            
+            const activeTab = document.getElementById(`tab-${tabId}`);
+            if (activeTab) activeTab.classList.remove('hidden');
+            
+            document.querySelectorAll(`.nav-btn[data-tab="${tabId}"]`).forEach(btn => btn.classList.add('active-tab'));
+            
+            document.getElementById('mobile-menu').classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Configuração de Eventos Globais
+        function setupEventListeners() {
+            // Navegação (todos os elementos com data-tab)
+            document.querySelectorAll('[data-tab]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tab = e.currentTarget.getAttribute('data-tab');
+                    switchTab(tab);
+                });
+            });
+
+            document.getElementById('logo-home-btn').addEventListener('click', () => switchTab('home'));
+
+            // Admin Login
+            document.getElementById('nav-admin-btn').addEventListener('click', accessAdmin);
+            document.getElementById('mobile-admin-btn').addEventListener('click', accessAdmin);
+            document.getElementById('logout-admin-btn').addEventListener('click', () => {
+                isAdminAuthenticated = false;
+                switchTab('home');
+            });
+
+            // Menu Mobile
+            document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.toggle('hidden');
+            });
+
+            // Formulário de Inscrição
+            document.getElementById('order-form').addEventListener('submit', submitForm);
+
+            // Busca de Cota
+            document.getElementById('search-form').addEventListener('submit', searchParticipantQuota);
+
+            // Modais Admin
+            document.getElementById('open-add-member-btn').addEventListener('click', () => {
+                document.getElementById('modal-add-member').classList.remove('hidden');
+            });
+            document.getElementById('close-modal-add-btn').addEventListener('click', closeAddParticipantModal);
+            document.getElementById('cancel-modal-add-btn').addEventListener('click', closeAddParticipantModal);
+            document.getElementById('admin-add-form').addEventListener('submit', saveAdminMember);
+
+            // Modal Entrega
+            document.getElementById('close-delivery-modal-btn').addEventListener('click', closeDeliveryModal);
+            document.getElementById('cancel-delivery-modal-btn').addEventListener('click', closeDeliveryModal);
+            document.getElementById('delivery-form').addEventListener('submit', confirmDeliveryRegistration);
+        }
+
+        function accessAdmin() {
+            if (isAdminAuthenticated) {
+                switchTab('admin');
+                return;
+            }
+            const pass = prompt("Digite a senha do Organizador:");
+            if (pass === CONFIG.senhaAdmin) {
+                isAdminAuthenticated = true;
+                switchTab('admin');
+            } else if (pass !== null) {
+                alert("Senha incorreta!");
+            }
+        }
+
+        // Renderizadores Visuais
+        function renderHomeVegetables() {
+            document.getElementById('home-vegetables-grid').innerHTML = VEGETABLES.map(v => `
+                <div class="bg-earth-100 p-3.5 rounded-xl border border-earth-200 flex flex-col items-center text-center">
+                    <span class="w-10 h-10 rounded-full ${v.color} flex items-center justify-center text-lg mb-2 shadow-sm">
+                        <i class="fa-solid ${v.icon}"></i>
+                    </span>
+                    <span class="font-bold text-gray-800 text-sm">${v.name}</span>
+                    <span class="text-xs text-gray-500 mt-0.5">${v.method.split(' ')[0]}</span>
+                </div>
+            `).join('');
+        }
+
+        function renderVegetableDetails() {
+            document.getElementById('veg-details-grid').innerHTML = VEGETABLES.map(v => `
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-earth-200 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div class="w-12 h-12 rounded-2xl ${v.color} flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-solid ${v.icon}"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-900">${v.name}</h3>
+                                <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-earth-200 text-earth-800">${v.method}</span>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-4 leading-relaxed">${v.desc}</p>
+                    </div>
+                    <div class="bg-earth-100 p-3 rounded-xl border border-earth-200 text-xs text-earth-800 flex items-start space-x-2">
+                        <i class="fa-solid fa-lightbulb text-amber-700 mt-0.5"></i>
+                        <span><strong>Segredo:</strong> ${v.tip}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderFormCheckboxes() {
+            document.getElementById('veg-checkboxes-container').innerHTML = VEGETABLES.map(v => `
+                <label class="cursor-pointer">
+                    <input type="checkbox" value="${v.name}" class="veg-checkbox peer hidden">
+                    <div class="p-3 rounded-xl border border-gray-200 bg-white peer-checked:border-brand-600 peer-checked:bg-brand-50 peer-checked:text-brand-800 transition flex items-center space-x-2 text-sm font-medium text-gray-700">
+                        <i class="fa-solid fa-check text-brand-700 opacity-0 peer-checked:opacity-100"></i>
+                        <span>${v.name}</span>
+                    </div>
+                </label>
+            `).join('');
+
+            document.querySelectorAll('.veg-checkbox').forEach(chk => {
+                chk.addEventListener('change', (e) => handleVegSelection(e.target));
+            });
+        }
+
+        function handleVegSelection(checkbox) {
+            const val = checkbox.value;
+            if (checkbox.checked) {
+                if (selectedVegIds.length >= 5) {
+                    checkbox.checked = false;
+                    alert('Você pode escolher no máximo 5 vegetais favoritos!');
+                    return;
+                }
+                selectedVegIds.push(val);
+            } else {
+                selectedVegIds = selectedVegIds.filter(item => item !== val);
+            }
+            const badge = document.getElementById('veg-count');
+            badge.innerText = `Selecionados: ${selectedVegIds.length}/5`;
+            badge.className = selectedVegIds.length >= 3
+                ? 'text-xs font-semibold px-2.5 py-1 rounded-full bg-green-100 text-green-800'
+                : 'text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800';
+        }
+
+        function normalizePhone(phone) {
+            return String(phone).replace(/\D/g, '');
+        }
+
+        async function submitForm(event) {
+            event.preventDefault();
+            const name = document.getElementById('participant-name').value.trim();
+            const rawPhone = document.getElementById('participant-phone').value.trim();
+            const cleanPhone = normalizePhone(rawPhone);
+
+            if (cleanPhone.length < 10) {
+                alert('Por favor, digite um número de WhatsApp válido com DDD.');
+                return;
+            }
+            if (selectedVegIds.length < 3) {
+                alert('Por favor, escolha pelo menos 3 vegetais de sua preferência.');
+                return;
+            }
+
+            const newMember = {
+                id: String(Date.now()),
+                name: name,
+                phone: cleanPhone,
+                items: [...selectedVegIds],
+                paid: false,
+                paidDate: null,
+                delivered: 0,
+                deliveries: []
+            };
+
+            await saveOrUpdateMember(newMember);
+
+            const message = `Olá! Acabei de reservar minha cota no *Consórcio de Conservas Artesanais*.\n\n` +
+                `*Nome:* ${name}\n` +
+                `*WhatsApp:* ${cleanPhone}\n` +
+                `*Cota:* 10 potes de 500ml (R$ 100,00)\n` +
+                `*Preferências:* ${selectedVegIds.join(', ')}\n\n` +
+                `Vou fazer o Pix de R$ 100,00 para ativar meu comprovante!`;
+
+            const whatsappUrl = `https://api.whatsapp.com/send?phone=${CONFIG.organizadorWhatsApp}&text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+
+            document.getElementById('order-form').reset();
+            selectedVegIds = [];
+            renderFormCheckboxes();
+            document.getElementById('veg-count').innerText = 'Selecionados: 0/5';
+
+            document.getElementById('search-phone-input').value = cleanPhone;
+            switchTab('extrato');
+            renderQuotaCard(newMember);
+        }
+
+        function searchParticipantQuota(event) {
+            event.preventDefault();
+            const inputPhone = normalizePhone(document.getElementById('search-phone-input').value);
+            const found = members.find(m => normalizePhone(m.phone).endsWith(inputPhone) && inputPhone.length >= 8);
+
+            const container = document.getElementById('quota-result-container');
+            container.classList.remove('hidden');
+
+            if (!found) {
+                container.innerHTML = `
+                    <div class="bg-white p-6 rounded-2xl border border-red-200 text-center space-y-3">
+                        <i class="fa-solid fa-circle-xmark text-red-500 text-3xl"></i>
+                        <h3 class="font-bold text-gray-900">Nenhuma cota encontrada para este número</h3>
+                        <p class="text-sm text-gray-600">Verifique se digitou com o DDD ou faça sua inscrição na aba Participar.</p>
+                    </div>
+                `;
+                return;
+            }
+            renderQuotaCard(found);
+        }
+
+        function renderQuotaCard(m) {
+            const container = document.getElementById('quota-result-container');
+            container.classList.remove('hidden');
+
+            const delivered = m.delivered || 0;
+            const remaining = Math.max(0, 10 - delivered);
+            const progressPct = Math.min(100, (delivered / 10) * 100);
+            const deliveriesList = m.deliveries || [];
+
+            const paymentSection = m.paid
+                ? `
+                    <div class="bg-green-50 border border-green-200 rounded-2xl p-4 flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-full bg-green-600 text-white flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-bold uppercase text-green-800 block">Comprovante de Quitação</span>
+                                <span class="font-bold text-green-900 text-base">Cota Paga — R$ 100,00</span>
+                                <span class="text-xs text-green-700 block">Confirmado em: ${m.paidDate || 'Confirmado pelo organizador'}</span>
+                            </div>
+                        </div>
+                        <span class="bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full">ATIVO</span>
+                    </div>
+                `
+                : `
+                    <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span class="text-xs font-bold uppercase text-amber-800 block">Status Financeiro</span>
+                                <span class="font-bold text-amber-900 text-base">Aguardando Pagamento (R$ 100,00)</span>
+                            </div>
+                            <span class="bg-amber-600 text-white text-xs font-bold px-3 py-1 rounded-full">PENDENTE</span>
+                        </div>
+                        <div class="bg-white p-3 rounded-xl border border-amber-200 text-xs space-y-1">
+                            <p class="text-gray-600">Para validar sua cota, faça o Pix de <strong>R$ 100,00</strong>:</p>
+                            <p class="font-mono font-bold text-sm text-gray-900">Chave Pix: ${CONFIG.chavePix}</p>
+                            <p class="text-gray-500">Favorecido: ${CONFIG.nomeRecebedorPix}</p>
+                            <button id="copy-pix-btn" class="mt-2 bg-amber-700 hover:bg-amber-800 text-white font-semibold px-3 py-1.5 rounded-lg text-xs inline-flex items-center gap-1.5">
+                                <i class="fa-regular fa-copy"></i> Copiar Chave Pix
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+            const historyHtml = deliveriesList.length > 0
+                ? deliveriesList.map(d => `
+                    <div class="flex items-center justify-between py-2.5 border-b border-gray-100 last:border-0 text-sm">
+                        <div>
+                            <span class="font-bold text-gray-800">+${d.qty} pote(s)</span>
+                            <span class="text-gray-600 ml-1">(${d.details})</span>
+                        </div>
+                        <span class="text-xs font-medium bg-earth-200 text-earth-800 px-2.5 py-0.5 rounded-full">${d.date}</span>
+                    </div>
+                `).join('')
+                : `<p class="text-xs text-gray-500 italic py-2">Nenhuma entrega registrada ainda. Você será avisado assim que o primeiro lote ficar pronto!</p>`;
+
+            container.innerHTML = `
+                <div class="bg-white rounded-3xl shadow-lg border border-earth-300 overflow-hidden">
+                    <div class="bg-brand-800 text-white p-6 flex justify-between items-center">
+                        <div>
+                            <span class="text-[11px] uppercase tracking-widest text-earth-300">Cartão Digital do Participante</span>
+                            <h3 class="font-serif text-xl font-bold mt-0.5">${m.name}</h3>
+                            <p class="text-xs text-brand-100">Cota #${String(m.id).slice(-4)} • WhatsApp: ${m.phone}</p>
+                        </div>
+                        <i class="fa-solid fa-jar text-3xl text-amber-400"></i>
+                    </div>
+
+                    <div class="p-6 space-y-6">
+                        ${paymentSection}
+
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm font-bold">
+                                <span class="text-gray-700">Saldo de Conservas (500ml)</span>
+                                <span class="text-brand-700">${delivered} de 10 entregues</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                                <div class="bg-brand-600 h-3 rounded-full transition-all" style="width: ${progressPct}%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 text-right">Faltam <strong>${remaining} potes</strong> para concluir sua cota.</p>
+                        </div>
+
+                        <div>
+                            <span class="text-xs font-bold uppercase text-gray-500 block mb-1.5">Sabores Escolhidos</span>
+                            <div class="flex flex-wrap gap-1.5">
+                                ${(m.items || []).map(i => `<span class="bg-earth-200 text-earth-800 text-xs font-medium px-2.5 py-1 rounded-lg">${i}</span>`).join('')}
+                            </div>
+                        </div>
+
+                        <div class="bg-earth-100 p-4 rounded-2xl border border-earth-200">
+                            <h4 class="text-xs font-bold uppercase text-gray-700 mb-2 flex items-center gap-1.5">
+                                <i class="fa-solid fa-clock-rotate-left text-brand-700"></i> Histórico de Entregas Comprovadas
+                            </h4>
+                            ${historyHtml}
+                        </div>
+
+                        <button id="share-whatsapp-btn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl shadow transition flex items-center justify-center gap-2 text-sm">
+                            <i class="fa-brands fa-whatsapp text-lg"></i> Salvar / Enviar Comprovante no Meu WhatsApp
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            if (!m.paid) {
+                document.getElementById('copy-pix-btn').addEventListener('click', () => {
+                    navigator.clipboard.writeText(CONFIG.chavePix);
+                    alert("Chave Pix copiada: " + CONFIG.chavePix);
+                });
+            }
+
+            document.getElementById('share-whatsapp-btn').addEventListener('click', () => {
+                const statusText = m.paid ? `PAGO (Confirmado em ${m.paidDate || 'OK'})` : 'PENDENTE';
+                const hist = (m.deliveries || []).map(d => `- ${d.date}: +${d.qty} pote(s) [${d.details}]`).join('\n') || 'Nenhuma entrega ainda.';
+
+                const text = `*EXTRATO - CONSÓRCIO DE CONSERVAS*\n` +
+                    `Participante: *${m.name}*\n` +
+                    `Status Cota (R$ 100): *${statusText}*\n` +
+                    `Saldo de Potes: *${m.delivered || 0}/10 entregues* (Faltam ${10 - (m.delivered || 0)})\n\n` +
+                    `*Histórico de Entregas:*\n${hist}\n\n` +
+                    `Consulte online: ${CONFIG.linkSiteGit}`;
+
+                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+            });
+        }
+
+        // Painel do Organizador (Admin)
+        function renderAdminDashboard() {
+            const tableBody = document.getElementById('members-table-body');
+            if (!tableBody) return;
+
+            const totalMembers = members.length;
+            const paidMembers = members.filter(m => m.paid).length;
+            const totalCash = paidMembers * 100;
+            const totalPotesContratados = totalMembers * 10;
+            const totalPotesEntregues = members.reduce((acc, m) => acc + (m.delivered || 0), 0);
+            const potesSobraOrganizador = totalMembers * 3;
+
+            document.getElementById('metric-total-members').innerText = totalMembers;
+            document.getElementById('metric-total-cash').innerText = `R$ ${totalCash}`;
+            document.getElementById('metric-potes-entrega').innerText = `${totalPotesEntregues} / ${totalPotesContratados}`;
+            document.getElementById('metric-potes-sobra').innerText = `+${potesSobraOrganizador} potes`;
+
+            if (members.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">Nenhum participante inscrito ainda.</td></tr>`;
+                return;
+            }
+
+            tableBody.innerHTML = members.map(m => {
+                const delivered = m.delivered || 0;
+                const remaining = Math.max(0, 10 - delivered);
+
+                return `
+                    <tr class="hover:bg-gray-50 transition">
+                        <td class="p-4">
+                            <div class="font-bold text-gray-900">${m.name}</div>
+                            <div class="text-xs text-gray-500">${m.phone}</div>
+                        </td>
+                        <td class="p-4">
+                            <div class="flex flex-wrap gap-1">
+                                ${(m.items || []).map(item => `<span class="bg-earth-200 text-earth-800 text-xs px-2 py-0.5 rounded-md">${item}</span>`).join('')}
+                            </div>
+                        </td>
+                        <td class="p-4">
+                            <button data-action="toggle-paid" data-id="${m.id}" class="px-3 py-1.5 rounded-full text-xs font-bold transition ${m.paid ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-amber-100 text-amber-800 hover:bg-amber-200'}">
+                                ${m.paid ? `<i class="fa-solid fa-circle-check mr-1"></i> Pago (${m.paidDate || 'OK'})` : '<i class="fa-solid fa-clock mr-1"></i> Confirmar Pix'}
+                            </button>
+                        </td>
+                        <td class="p-4">
+                            <div class="font-bold text-gray-800 text-sm">${delivered} / 10 entregues</div>
+                            <div class="text-xs text-gray-500">Faltam ${remaining} potes</div>
+                        </td>
+                        <td class="p-4 text-right space-x-1">
+                            <button data-action="deliver" data-id="${m.id}" class="bg-brand-700 hover:bg-brand-800 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm">
+                                <i class="fa-solid fa-jar mr-1"></i> Entregar
+                            </button>
+                            <button data-action="notify" data-id="${m.id}" class="bg-green-600 hover:bg-green-700 text-white text-xs font-semibold px-2.5 py-1.5 rounded-lg shadow-sm">
+                                <i class="fa-brands fa-whatsapp"></i>
+                            </button>
+                            <button data-action="delete" data-id="${m.id}" class="text-red-600 hover:text-red-800 text-sm p-1.5">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            tableBody.querySelectorAll('button[data-action]').forEach(btn => {
+                const action = btn.getAttribute('data-action');
+                const id = btn.getAttribute('data-id');
+                if (action === 'toggle-paid') btn.addEventListener('click', () => togglePaidStatus(id));
+                if (action === 'deliver') btn.addEventListener('click', () => openDeliveryModal(id));
+                if (action === 'notify') btn.addEventListener('click', () => notifyParticipantWhatsApp(id));
+                if (action === 'delete') btn.addEventListener('click', () => deleteMember(id));
+            });
+        }
+
+        async function togglePaidStatus(id) {
+            const m = members.find(item => String(item.id) === String(id));
+            if (!m) return;
+            const today = new Date().toLocaleDateString('pt-BR');
+            const updated = {
+                ...m,
+                paid: !m.paid,
+                paidDate: !m.paid ? today : null
+            };
+            await saveOrUpdateMember(updated);
+        }
+
+        function openDeliveryModal(id) {
+            const m = members.find(item => String(item.id) === String(id));
+            if (!m) return;
+            document.getElementById('delivery-member-id').value = m.id;
+            document.getElementById('delivery-member-name').innerText = `Participante: ${m.name} (Faltam ${10 - (m.delivered || 0)} potes)`;
+            document.getElementById('delivery-qty').value = 2;
+            document.getElementById('delivery-details').value = '';
+            document.getElementById('modal-register-delivery').classList.remove('hidden');
+        }
+
+        function closeDeliveryModal() {
+            document.getElementById('modal-register-delivery').classList.add('hidden');
+        }
+
+        async function confirmDeliveryRegistration(event) {
+            event.preventDefault();
+            const id = document.getElementById('delivery-member-id').value;
+            const qty = parseInt(document.getElementById('delivery-qty').value, 10);
+            const details = document.getElementById('delivery-details').value.trim();
+
+            const m = members.find(item => String(item.id) === String(id));
+            if (!m) return;
+
+            const today = new Date().toLocaleDateString('pt-BR');
+            const newDelivered = Math.min(10, (m.delivered || 0) + qty);
+            const deliveries = [...(m.deliveries || []), { date: today, qty, details }];
+
+            const updated = { ...m, delivered: newDelivered, deliveries };
+            await saveOrUpdateMember(updated);
+            closeDeliveryModal();
+
+            if (confirm("Entrega registrada com sucesso! Deseja enviar o comprovante desta entrega no WhatsApp do participante agora?")) {
+                notifyParticipantWhatsApp(id);
+            }
+        }
+
+        function notifyParticipantWhatsApp(id) {
+            const m = members.find(item => String(item.id) === String(id));
+            if (!m) return;
+            const phone = normalizePhone(m.phone);
+            const targetPhone = phone.startsWith('55') ? phone : `55${phone}`;
+            const lastDelivery = (m.deliveries || []).slice(-1)[0];
+
+            let msg = `Olá *${m.name}*! Atualização do seu *Consórcio de Conservas*:\n\n`;
+            if (lastDelivery) {
+                msg += `✅ *Última Entrega (${lastDelivery.date}):* +${lastDelivery.qty} pote(s) (${lastDelivery.details})\n`;
+            }
+            msg += `💰 *Pagamento:* ${m.paid ? 'Confirmado (R$ 100,00)' : 'Pendente'}\n` +
+                   `📊 *Seu Saldo:* ${m.delivered || 0} de 10 potes entregues (Faltam ${10 - (m.delivered || 0)})\n\n` +
+                   `Acesse seu comprovante completo a qualquer momento usando seu número de WhatsApp no link:\n${CONFIG.linkSiteGit}`;
+
+            window.open(`https://api.whatsapp.com/send?phone=${targetPhone}&text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        async function deleteMember(id) {
+            if (confirm("Tem certeza que deseja remover este participante?")) {
+                await removeMemberById(id);
+            }
+        }
+
+        function closeAddParticipantModal() {
+            document.getElementById('modal-add-member').classList.add('hidden');
+            document.getElementById('admin-add-form').reset();
+        }
+
+        async function saveAdminMember(event) {
+            event.preventDefault();
+            const name = document.getElementById('admin-name').value.trim();
+            const phone = normalizePhone(document.getElementById('admin-phone').value);
+            const paid = document.getElementById('admin-paid').value === 'true';
+            const itemsRaw = document.getElementById('admin-items').value.trim();
+            const items = itemsRaw ? itemsRaw.split(',').map(i => i.trim()) : ['Diversos'];
+
+            const newMember = {
+                id: String(Date.now()),
+                name,
+                phone,
+                items,
+                paid,
+                paidDate: paid ? new Date().toLocaleDateString('pt-BR') : null,
+                delivered: 0,
+                deliveries: []
+            };
+
+            await saveOrUpdateMember(newMember);
+            closeAddParticipantModal();
+        }
+    </script>
+</body>
+</html>
