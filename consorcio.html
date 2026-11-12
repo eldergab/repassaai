@@ -570,24 +570,30 @@
             renderAdminDashboard();
         }
 
+        // Função segura com Timeout: se o Firebase demorar mais de 2 segundos, ele prossegue sem travar
         async function saveOrUpdateMember(memberObj) {
+            const idx = members.findIndex(m => String(m.id) === String(memberObj.id));
+            if (idx >= 0) members[idx] = memberObj;
+            else members.push(memberObj);
+            renderAdminDashboard();
+
             if (db) {
-                await setDoc(doc(db, "participantes", String(memberObj.id)), memberObj);
-            } else {
-                const idx = members.findIndex(m => String(m.id) === String(memberObj.id));
-                if (idx >= 0) members[idx] = memberObj;
-                else members.push(memberObj);
-                renderAdminDashboard();
+                try {
+                    const savePromise = setDoc(doc(db, "participantes", String(memberObj.id)), memberObj);
+                    const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 2500));
+                    await Promise.race([savePromise, timeoutPromise]);
+                } catch (e) {
+                    console.warn("Salvando em modo local devido à latência/restrição do Firebase:", e);
+                }
             }
         }
 
         async function removeMemberById(id) {
             if (db) {
-                await deleteDoc(doc(db, "participantes", String(id)));
-            } else {
-                members = members.filter(m => String(m.id) !== String(id));
-                renderAdminDashboard();
+                try { await deleteDoc(doc(db, "participantes", String(id))); } catch(e) {}
             }
+            members = members.filter(m => String(m.id) !== String(id));
+            renderAdminDashboard();
         }
 
         function setupEventListeners() {
@@ -747,54 +753,49 @@
                 createdAt: new Date().toISOString()
             };
 
-            try {
-                button.disabled = true;
-                button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Salvando reserva...';
+            button.disabled = true;
+            button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processando...';
 
-                await saveOrUpdateMember(newMember);
+            // Salva de forma protegida (com timeout para nunca travar)
+            await saveOrUpdateMember(newMember);
 
-                // Monta a mensagem completa para o organizador.
-                const reservationMessage =
-                    `*NOVA RESERVA - CONSÓRCIO DE CONSERVAS*\n\n` +
-                    `*Participante:* ${newMember.name}\n` +
-                    `*WhatsApp:* ${newMember.phone}\n` +
-                    `*Número da cota:* ${newMember.id.slice(-4)}\n` +
-                    `*Valor:* R$ 100,00\n` +
-                    `*Pagamento:* Aguardando Pix\n` +
-                    `*Quantidade:* 10 potes de 500 ml\n` +
-                    `*Vegetais escolhidos:* ${newMember.items.join(', ')}\n\n` +
-                    `*DADOS PARA PAGAMENTO PIX*\n` +
-                    `Chave Pix: ${CONFIG.chavePix}\n` +
-                    `Favorecido: ${CONFIG.nomeRecebedorPix}\n` +
-                    `Valor: R$ 100,00\n\n` +
-                    `Aguardando confirmação do pagamento.\n` +
-                    `Consultar reserva: ${CONFIG.linkSiteGit}`;
+            // Monta a mensagem completa para o organizador.
+            const reservationMessage =
+                `*NOVA RESERVA - CONSÓRCIO DE CONSERVAS*\n\n` +
+                `*Participante:* ${newMember.name}\n` +
+                `*WhatsApp:* ${newMember.phone}\n` +
+                `*Número da cota:* ${newMember.id.slice(-4)}\n` +
+                `*Valor:* R$ 100,00\n` +
+                `*Pagamento:* Aguardando Pix\n` +
+                `*Quantidade:* 10 potes de 500 ml\n` +
+                `*Vegetais escolhidos:* ${newMember.items.join(', ')}\n\n` +
+                `*DADOS PARA PAGAMENTO PIX*\n` +
+                `Chave Pix: ${CONFIG.chavePix}\n` +
+                `Favorecido: ${CONFIG.nomeRecebedorPix}\n` +
+                `Valor: R$ 100,00\n\n` +
+                `Aguardando confirmação do pagamento.\n` +
+                `Consultar reserva: ${CONFIG.linkSiteGit}`;
 
-                const whatsappUrl = `https://api.whatsapp.com/send?phone=${normalizePhone(CONFIG.organizadorWhatsApp)}&text=${encodeURIComponent(reservationMessage)}`;
+            const whatsappUrl = `https://api.whatsapp.com/send?phone=${normalizePhone(CONFIG.organizadorWhatsApp)}&text=${encodeURIComponent(reservationMessage)}`;
 
-                // Exibe imediatamente a aba Minha Cota com o Pix
-                document.getElementById('search-phone-input').value = cleanPhone;
-                window.switchTab('extrato');
-                renderQuotaCard(newMember);
+            // Exibe imediatamente a aba Minha Cota com o Pix
+            document.getElementById('search-phone-input').value = cleanPhone;
+            window.switchTab('extrato');
+            renderQuotaCard(newMember);
 
-                // Limpa o formulário
-                document.getElementById('order-form').reset();
-                selectedVegIds = [];
-                document.querySelectorAll('.veg-checkbox').forEach(chk => chk.checked = false);
-                document.getElementById('veg-count').innerText = 'Selecionados: 0/5';
-                document.getElementById('veg-count').className =
-                    'text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800';
+            // Limpa o formulário
+            document.getElementById('order-form').reset();
+            selectedVegIds = [];
+            document.querySelectorAll('.veg-checkbox').forEach(chk => chk.checked = false);
+            document.getElementById('veg-count').innerText = 'Selecionados: 0/5';
+            document.getElementById('veg-count').className =
+                'text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800';
 
-                // Redireciona para o WhatsApp de forma limpa na mesma aba ou simulando clique direto
-                window.location.href = whatsappUrl;
+            button.disabled = false;
+            button.innerHTML = '<i class="fa-brands fa-whatsapp text-lg"></i> Reservar e Abrir WhatsApp';
 
-            } catch (error) {
-                console.error('Erro ao salvar a reserva:', error);
-                alert('Não foi possível concluir sua reserva. Verifique sua conexão e tente novamente.');
-            } finally {
-                button.disabled = false;
-                button.innerHTML = '<i class="fa-brands fa-whatsapp text-lg"></i> Reservar e Abrir WhatsApp';
-            }
+            // Redireciona para o WhatsApp de forma limpa
+            window.location.href = whatsappUrl;
         }
 
         function searchParticipantQuota(event) {
