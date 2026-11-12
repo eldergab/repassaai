@@ -288,9 +288,9 @@
                             <p class="text-sm text-gray-600">Investimento: <strong class="text-gray-900">R$ 100,00</strong> (10 potes de 500ml)</p>
                             <p class="text-xs text-brand-700 font-medium mt-0.5"><i class="fa-solid fa-check-circle"></i> Acompanhamento online liberado após inscrição</p>
                         </div>
-                        <button type="submit" id="btn-submit-form" class="w-full sm:w-auto bg-amber-700 hover:bg-amber-800 text-white font-bold px-8 py-4 rounded-xl shadow-md transition flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-check-to-slot text-lg"></i>
-                            Reservar e Ver Dados do Pix
+                        <button type="submit" id="btn-submit-form" class="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-4 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                            <i class="fa-brands fa-whatsapp text-lg"></i>
+                            Reservar e Abrir WhatsApp
                         </button>
                     </div>
                 </form>
@@ -735,10 +735,6 @@
                 return;
             }
 
-            // Abre a janela durante o clique do usuário para evitar bloqueio de pop-up
-            // enquanto o sistema aguarda a gravação no Firebase.
-            const whatsappWindow = window.open('about:blank', '_blank');
-
             const newMember = {
                 id: String(Date.now()),
                 name: name,
@@ -774,26 +770,14 @@
                     `Aguardando confirmação do pagamento.\n` +
                     `Consultar reserva: ${CONFIG.linkSiteGit}`;
 
-                // Codifica a mensagem inteira para preservar acentos, espaços, &, + e quebras de linha.
                 const whatsappUrl = `https://api.whatsapp.com/send?phone=${normalizePhone(CONFIG.organizadorWhatsApp)}&text=${encodeURIComponent(reservationMessage)}`;
 
-                // Mostra imediatamente a cota e os dados do Pix.
+                // Exibe imediatamente a aba Minha Cota com o Pix
                 document.getElementById('search-phone-input').value = cleanPhone;
                 window.switchTab('extrato');
                 renderQuotaCard(newMember);
 
-                // Direciona a janela previamente aberta para o WhatsApp.
-                if (whatsappWindow && !whatsappWindow.closed) {
-                    whatsappWindow.location.replace(whatsappUrl);
-                } else {
-                    // Alternativa caso o navegador bloqueie a nova janela.
-                    const fallback = document.createElement('a');
-                    fallback.href = whatsappUrl;
-                    fallback.target = '_blank';
-                    fallback.rel = 'noopener';
-                    fallback.click();
-                }
-
+                // Limpa o formulário
                 document.getElementById('order-form').reset();
                 selectedVegIds = [];
                 document.querySelectorAll('.veg-checkbox').forEach(chk => chk.checked = false);
@@ -801,13 +785,15 @@
                 document.getElementById('veg-count').className =
                     'text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800';
 
+                // Redireciona para o WhatsApp de forma limpa na mesma aba ou simulando clique direto
+                window.location.href = whatsappUrl;
+
             } catch (error) {
                 console.error('Erro ao salvar a reserva:', error);
-                if (whatsappWindow && !whatsappWindow.closed) whatsappWindow.close();
-                alert('Não foi possível concluir sua reserva. Verifique sua conexão e tente novamente. Se o problema continuar, confira as regras de acesso do Firebase Firestore.');
+                alert('Não foi possível concluir sua reserva. Verifique sua conexão e tente novamente.');
             } finally {
                 button.disabled = false;
-                button.innerHTML = '<i class="fa-solid fa-check-to-slot text-lg"></i> Reservar e Ver Dados do Pix';
+                button.innerHTML = '<i class="fa-brands fa-whatsapp text-lg"></i> Reservar e Abrir WhatsApp';
             }
         }
 
