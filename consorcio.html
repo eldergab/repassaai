@@ -324,4 +324,147 @@
         </section>
 
         <!-- 6. ABA PAINEL ORGANIZADOR (ADMIN) -->
-        <section id="tab-admin" class="tab-content hidden
+        <section id="tab-admin" class="tab-content hidden space-y-8">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-lg border border-earth-200">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-200 pb-6 mb-6">
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span class="bg-amber-100 text-amber-800 font-bold text-xs px-2.5 py-1 rounded-full">Painel Interno</span>
+                            <h2 class="font-serif text-2xl sm:text-3xl font-bold text-gray-900">Gestão do Consórcio</h2>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-1">Confirme pagamentos, registre entregas com data/sabores e notifique os participantes.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button id="open-add-member-btn" class="bg-brand-700 hover:bg-brand-800 text-white px-4 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-2">
+                            <i class="fa-solid fa-plus"></i> Novo Participante
+                        </button>
+                        <button id="logout-admin-btn" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-xl text-xs font-semibold border transition">
+                            <i class="fa-solid fa-right-from-bracket"></i> Sair
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Métricas -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                    <div class="bg-brand-50 p-5 rounded-2xl border border-brand-100">
+                        <span class="text-xs font-bold text-brand-700 uppercase">Participantes</span>
+                        <div class="flex items-baseline justify-between mt-2">
+                            <span id="metric-total-members" class="text-3xl font-extrabold text-brand-800">0</span>
+                            <span class="text-xs text-brand-600">Meta: 10 cotas</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-amber-50 p-5 rounded-2xl border border-amber-100">
+                        <span class="text-xs font-bold text-amber-800 uppercase">Caixa Confirmado</span>
+                        <div class="flex items-baseline justify-between mt-2">
+                            <span id="metric-total-cash" class="text-3xl font-extrabold text-amber-900">R$ 0</span>
+                            <span class="text-xs text-amber-700">Cotas pagas</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 p-5 rounded-2xl border border-blue-100">
+                        <span class="text-xs font-bold text-blue-800 uppercase">Potes Entregues</span>
+                        <div class="flex items-baseline justify-between mt-2">
+                            <span id="metric-potes-entrega" class="text-3xl font-extrabold text-blue-900">0 / 0</span>
+                            <span class="text-xs text-blue-700">Entregues / Total</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-purple-50 p-5 rounded-2xl border border-purple-100">
+                        <span class="text-xs font-bold text-purple-800 uppercase">Rendimento Extra</span>
+                        <div class="flex items-baseline justify-between mt-2">
+                            <span id="metric-potes-sobra" class="text-3xl font-extrabold text-purple-900">0</span>
+                            <span class="text-xs text-purple-700">Potes do organizador</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabela de Participantes -->
+                <div class="overflow-x-auto rounded-2xl border border-gray-200">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-earth-200 text-gray-700 text-xs font-bold uppercase tracking-wider">
+                                <th class="p-4">Participante</th>
+                                <th class="p-4">Preferências</th>
+                                <th class="p-4">Pagamento</th>
+                                <th class="p-4">Saldo & Entregas</th>
+                                <th class="p-4 text-right">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="members-table-body" class="divide-y divide-gray-200 text-sm"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL: ADICIONAR PARTICIPANTE (ADMIN) -->
+    <div id="modal-add-member" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-6">
+            <div class="flex justify-between items-center border-b pb-4">
+                <h3 class="font-serif font-bold text-xl text-gray-900">Adicionar Participante</h3>
+                <button id="close-modal-add-btn" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <form id="admin-add-form" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Nome *</label>
+                    <input type="text" id="admin-name" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-700 mb-1">WhatsApp *</label>
+                    <input type="tel" id="admin-phone" required placeholder="62999998888" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Status Pagamento</label>
+                    <select id="admin-paid" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm bg-white">
+                        <option value="true">Pago (R$ 100,00)</option>
+                        <option value="false">Pendente</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Itens de Preferência</label>
+                    <input type="text" id="admin-items" placeholder="Ex: Pepino, Abobrinha, Cebola" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm">
+                </div>
+                <div class="pt-4 flex justify-end space-x-3">
+                    <button type="button" id="cancel-modal-add-btn" class="px-4 py-2.5 rounded-xl border border-gray-300 text-sm font-semibold text-gray-600">Cancelar</button>
+                    <button type="submit" class="px-6 py-2.5 rounded-xl bg-brand-700 hover:bg-brand-800 text-white text-sm font-semibold shadow">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: REGISTRAR ENTREGA DETALHADA (ADMIN) -->
+    <div id="modal-register-delivery" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl space-y-5">
+            <div class="flex justify-between items-center border-b pb-3">
+                <div>
+                    <h3 class="font-serif font-bold text-xl text-gray-900">Registrar Entrega</h3>
+                    <p id="delivery-member-name" class="text-xs text-brand-700 font-semibold"></p>
+                </div>
+                <button id="close-delivery-modal-btn" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <form id="delivery-form" class="space-y-4">
+                <input type="hidden" id="delivery-member-id">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Quantidade de Potes Entregues Hoje *</label>
+                    <input type="number" id="delivery-qty" min="1" max="10" value="2" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm font-bold">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Quais sabores foram entregues? *</label>
+                    <input type="text" id="delivery-details" required placeholder="Ex: 1 Pepino, 1 Abobrinha" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm">
+                </div>
+                <div class="pt-2 flex justify-end space-x-3">
+                    <button type="button" id="cancel-delivery-modal-btn" class="px-4 py-2.5 rounded-xl border border-gray-300 text-sm font-semibold text-gray-600">Cancelar</button>
+                    <button type="submit" class="px-6 py-2.5 rounded-xl bg-brand-700 hover:bg-brand-800 text-white text-sm font-semibold shadow">Confirmar Entrega</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-brand-800 text-earth-300 mt-16 border-t border-brand-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-sm">
+            <p class="font-serif text-white font-semibold mb-2">Consórcio Solidário de Conservas Caseiras</p>
+            <p class="text-xs text-brand-100 max-w-xl mx-auto">Iniciativa artesanal comunitária. Economia doméstica e valorização dos alimentos frescos do Ceasa.</p>
+            <div class="mt-4 text-xs text-earth-300
