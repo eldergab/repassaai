@@ -475,26 +475,27 @@
         import { getFirestore, collection, doc, setDoc, updateDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
         // =========================================================================
-        // 1. CONFIGURAÇÕES DO ORGANIZADOR (EDITE AQUI ANTES DE SUBIR NO GIT)
+        // 1. CONFIGURAÇÕES DO ORGANIZADOR
         // =========================================================================
         const CONFIG = {
-            organizadorWhatsApp: "5562920026981", // Seu WhatsApp com 55 + DDD + Número
-            chavePix: "62920026981",              // Sua chave Pix para aparecer no recibo pendente
+            organizadorWhatsApp: "5562920026981",
+            chavePix: "62920026981",
             nomeRecebedorPix: "Emerson Charles Gabriel",
-            senhaAdmin: "1234",                   // Senha para abrir o Painel Organizador
+            senhaAdmin: "1234",
             linkSiteGit: window.location.href.split('#')[0]
         };
 
-        // 2. COLE AQUI AS CHAVES DO SEU PROJETO FIREBASE (Firestore)
-        // Enquanto estiver "COLE_AQUI", o sistema funciona em modo local no navegador.
+        // 2. SUAS CHAVES DO FIREBASE (Já preenchidas corretamente por você!)
         const firebaseConfig = {
-            apiKey: "COLE_AQUI",
-            authDomain: "COLE_AQUI",
-            projectId: "COLE_AQUI",
-            storageBucket: "COLE_AQUI",
-            messagingSenderId: "COLE_AQUI",
-            appId: "COLE_AQUI"
+            apiKey: "AIzaSyDrRooq7X34TcQu71DHW5RYcsgNj3dPjkY",
+            authDomain: "conservas-beb76.firebaseapp.com",
+            projectId: "conservas-beb76",
+            storageBucket: "conservas-beb76.firebasestorage.app",
+            messagingSenderId: "871697782410",
+            appId: "1:871697782410:web:91cfe7b2d06395e2d33f73",
+            measurementId: "G-CPGQXZR16G"
         };
+        // =========================================================================
         // =========================================================================
 
         const useFirebase = firebaseConfig.apiKey !== "COLE_AQUI";
