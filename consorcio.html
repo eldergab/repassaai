@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consórcio Solidário de Conservas Caseiras</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Inter + Merriweather) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,400;0,700;1,300&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f4f7f4',
+                            100: '#e3ebe3',
+                            500: '#3a6b4c',
+                            600: '#2d533b',
+                            700: '#23412e',
+                            800: '#1c3324',
+                        },
+                        amber: {
+                            700: '#b45309',
+                            800: '#92400e',
+                        },
+                        earth: {
+                            100: '#fdfbf7',
+                            200: '#f5efe6',
+                            300: '#e8decb',
+                            800: '#5c4632',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .active-tab {
+            background-color: #2d533b;
+            color: #ffffff !important;
+        }
+    </style>
+</head>
+<body class="bg-earth-100 text-gray-800 font-sans min-h-screen flex flex-col">
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="bg-brand-700 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer" id="logo-home-btn">
+                    <div class="w-12 h-12 rounded-full bg-earth-200 text-brand-700 flex items-center justify-center font-bold text-2xl shadow-inner border-2 border-brand-500">
+                        <i class="fa-solid fa-jar text-amber-700"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-serif font-bold text-lg sm:text-xl leading-tight">Consórcio de Conservas</h1>
+                        <p class="text-xs text-earth-300">Hortifrúti Selecionado • Artesanal • Sustentável</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex space-x-1 font-medium text-sm">
+                    <button data-tab="home" class="nav-btn active-tab px-3.5 py-2 rounded-lg transition-colors hover:bg-brand-600">
+                        <i class="fa-solid fa-house mr-1"></i> Início
+                    </button>
+                    <button data-tab="guia" class="nav-btn px-3.5 py-2 rounded-lg transition-colors hover:bg-brand-600">
+                        <i class="fa-solid fa-book-open mr-1"></i> Como Funciona
+                    </button>
+                    <button data-tab="itens" class="nav-btn px-3.5 py-2 rounded-lg transition-colors hover:bg-brand-600">
+                        <i class="fa-solid fa-carrot mr-1"></i> Cardápio
+                    </button>
+                    <button data-tab="inscricao" class="nav-btn px-3.5 py-2 rounded-lg transition-colors hover:bg-brand-600">
+                        <i class="fa-solid fa-clipboard-check mr-1"></i> Participar
+                    </button>
+                    <button data-tab="extrato" class="nav-btn px-3.5 py-2 rounded-lg transition-colors hover:bg-brand-600 bg-brand-600/60 border border-brand-500">
+                        <i class="fa-solid fa-receipt mr-1"></i> Minha Cota
+                    </button>
+                    <button id="nav-admin-btn" class="nav-btn px-3.5 py-2 rounded-lg transition-colors hover:bg-amber-700 bg-amber-800 text-white font-semibold ml-2">
+                        <i class="fa-solid fa-lock mr-1"></i> Organizador
+                    </button>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="p-2 rounded-md text-white hover:bg-brand-600 focus:outline-none">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-brand-800 border-t border-brand-600 px-4 pt-2 pb-4 space-y-1">
+            <button data-tab="home" class="w-full text-left px-3 py-2 rounded-md font-medium text-white hover:bg-brand-600 flex items-center tab-trigger">
+                <i class="fa-solid fa-house w-6"></i> Início
+            </button>
+            <button data-tab="guia" class="w-full text-left px-3 py-2 rounded-md font-medium text-white hover:bg-brand-600 flex items-center tab-trigger">
+                <i class="fa-solid fa-book-open w-6"></i> Como Funciona
+            </button>
+            <button data-tab="itens" class="w-full text-left px-3 py-2 rounded-md font-medium text-white hover:bg-brand-600 flex items-center tab-trigger">
+                <i class="fa-solid fa-carrot w-6"></i> Cardápio de Legumes
+            </button>
+            <button data-tab="inscricao" class="w-full text-left px-3 py-2 rounded-md font-medium text-white hover:bg-brand-600 flex items-center tab-trigger">
+                <i class="fa-solid fa-clipboard-check w-6"></i> Participar (R$ 100)
+            </button>
+            <button data-tab="extrato" class="w-full text-left px-3 py-2 rounded-md font-medium text-white bg-brand-700 hover:bg-brand-600 flex items-center tab-trigger">
+                <i class="fa-solid fa-receipt w-6"></i> Consultar Minha Cota / Recibo
+            </button>
+            <button id="mobile-admin-btn" class="w-full text-left px-3 py-2 rounded-md font-semibold bg-amber-700 text-white hover:bg-amber-800 flex items-center mt-2">
+                <i class="fa-solid fa-lock w-6"></i> Painel Organizador
+            </button>
+        </div>
+    </header>
+
+    <!-- AVISO DE MODO DE BANCO DE DADOS -->
+    <div id="db-status-bar" class="bg-amber-100 border-b border-amber-200 text-amber-900 text-xs py-1.5 px-4 text-center hidden">
+        <i class="fa-solid fa-triangle-exclamation mr-1"></i>
+        <strong>Modo Local Ativo:</strong> Conectando ao Firebase Firestore...
+    </div>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- 1. ABA INÍCIO -->
+        <section id="tab-home" class="tab-content space-y-10">
+            <div class="relative bg-brand-600 rounded-3xl overflow-hidden shadow-xl text-white">
+                <div class="absolute inset-0 bg-cover bg-center opacity-20" style="background-image: url('https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80');"></div>
+                <div class="relative z-10 p-8 sm:p-12 lg:p-16 max-w-3xl">
+                    <span class="bg-amber-700 text-amber-100 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-4 inline-block">Consórcio Solidário</span>
+                    <h2 class="font-serif text-3xl sm:text-5xl font-bold leading-tight mb-4">Conservas artesanais com vegetais frescos selecionados no Ceasa.</h2>
+                    <p class="text-lg text-brand-100 mb-8 leading-relaxed">
+                        Você investe <strong>R$ 100,00</strong> e garante <strong>10 potes de 500 ml</strong> montados conforme sua preferência, com recibo digital e acompanhamento online das entregas!
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <button data-tab="inscricao" class="tab-trigger bg-amber-700 hover:bg-amber-800 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
+                            Quero me Inscrever (R$ 100)
+                        </button>
+                        <button data-tab="extrato" class="tab-trigger bg-white/15 hover:bg-white/25 text-white font-semibold px-6 py-3 rounded-xl border border-white/30 backdrop-blur-sm transition">
+                            <i class="fa-solid fa-receipt mr-1.5"></i> Consultar Minha Cota
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vantagens -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-2xl shadow-md border border-earth-200 flex items-start space-x-4">
+                    <div class="w-12 h-12 bg-green-100 text-brand-700 rounded-xl flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-piggy-bank"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg mb-1 text-gray-900">Economia Garantida</h3>
+                        <p class="text-sm text-gray-600">Potes de 500ml de conservas nobres saem por apenas <strong>R$ 10,00 cada</strong> no consórcio.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-md border border-earth-200 flex items-start space-x-4">
+                    <div class="w-12 h-12 bg-amber-100 text-amber-800 rounded-xl flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg mb-1 text-gray-900">Controle e Transparência</h3>
+                        <p class="text-sm text-gray-600">Acompanhe seu pagamento confirmado e o histórico detalhado de cada pote entregue pelo seu WhatsApp.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-md border border-earth-200 flex items-start space-x-4">
+                    <div class="w-12 h-12 bg-earth-200 text-earth-800 rounded-xl flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-leaf"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg mb-1 text-gray-900">Qualidade & Tempero</h3>
+                        <p class="text-sm text-gray-600">Higienização rigorosa, esterilização térmica e vedação a vácuo para durabilidade de até 6 meses.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resumo dos Itens -->
+            <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-md border border-earth-200">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                    <div>
+                        <h3 class="font-serif font-bold text-2xl text-gray-900">Seleção de Legumes e Raízes</h3>
+                        <p class="text-sm text-gray-600">Alimentos selecionados no Ceasa preparados com receita e técnica artesanal</p>
+                    </div>
+                    <button data-tab="itens" class="tab-trigger text-brand-700 font-semibold text-sm hover:underline flex items-center">
+                        Ver detalhes do preparo <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-4" id="home-vegetables-grid"></div>
+            </div>
+        </section>
+
+        <!-- 2. ABA GUIA DO PARTICIPANTE -->
+        <section id="tab-guia" class="tab-content hidden space-y-8">
+            <div class="bg-white p-8 rounded-3xl shadow-md border border-earth-200 max-w-4xl mx-auto">
+                <div class="text-center max-w-2xl mx-auto mb-10">
+                    <span class="text-amber-700 text-sm font-bold uppercase tracking-widest">Transparência total</span>
+                    <h2 class="font-serif text-3xl font-bold text-gray-900 mt-1">Como Funciona o Consórcio?</h2>
+                    <p class="text-gray-600 mt-2">Um modelo colaborativo onde todos ganham e acompanham cada etapa.</p>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="flex flex-col sm:flex-row items-start space-y-4 sm:space-y-0 sm:space-x-6 p-6 rounded-2xl bg-earth-100 border border-earth-200">
+                        <div class="w-12 h-12 rounded-2xl bg-brand-700 text-white font-bold text-xl flex items-center justify-center shrink-0">1</div>
+                        <div>
+                            <h4 class="font-bold text-lg text-gray-900">Cota Única de R$ 100,00</h4>
+                            <p class="text-gray-600 text-sm mt-1">Cada participante adquire uma cota de R$ 100,00 via Pix. Assim que o pagamento é confirmado, seu recibo digital fica liberado na aba "Minha Cota".</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row items-start space-y-4 sm:space-y-0 sm:space-x-6 p-6 rounded-2xl bg-earth-100 border border-earth-200">
+                        <div class="w-12 h-12 rounded-2xl bg-brand-700 text-white font-bold text-xl flex items-center justify-center shrink-0">2</div>
+                        <div>
+                            <h4 class="font-bold text-lg text-gray-900">Retorno de 10 Potes de 500ml</h4>
+                            <p class="text-gray-600 text-sm mt-1">Você recebe <strong>10 potes cheios de conserva</strong> (R$ 10,00 por vidro) entregues em lotes conforme os vegetais frescos são selecionados e preparados.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row items-start space-y-4 sm:space-y-0 sm:space-x-6 p-6 rounded-2xl bg-earth-100 border border-earth-200">
+                        <div class="w-12 h-12 rounded-2xl bg-brand-700 text-white font-bold text-xl flex items-center justify-center shrink-0">3</div>
+                        <div>
+                            <h4 class="font-bold text-lg text-gray-900">Comprovação Mútua das Entregas</h4>
+                            <p class="text-gray-600 text-sm mt-1">A cada entrega realizada, o organizador dá baixa no sistema registrando a data e os sabores entregues, enviando também uma confirmação direto no seu WhatsApp.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. ABA CARDÁPIO -->
+        <section id="tab-itens" class="tab-content hidden space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="font-serif text-3xl font-bold text-gray-900">Cardápio de Legumes & Métodos de Conserva</h2>
+                    <p class="text-gray-600 text-sm">Conheça os vegetais frescos do Ceasa e nossas técnicas de preparo artesanal.</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="veg-details-grid"></div>
+        </section>
+
+        <!-- 4. ABA INSCRIÇÃO -->
+        <section id="tab-inscricao" class="tab-content hidden space-y-8">
+            <div class="bg-white rounded-3xl shadow-lg border border-earth-200 overflow-hidden max-w-4xl mx-auto">
+                <div class="bg-brand-700 text-white p-6 sm:p-8">
+                    <h2 class="font-serif text-2xl sm:text-3xl font-bold">Ficha de Adesão ao Consórcio</h2>
+                    <p class="text-brand-100 text-sm mt-1">Preencha seus dados e escolha seus legumes favoritos para reservar sua cota de 10 potes.</p>
+                </div>
+
+                <form id="order-form" class="p-6 sm:p-8 space-y-8">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">Seu Nome Completo *</label>
+                            <input type="text" id="participant-name" required placeholder="Ex: Maria Silva" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">Seu WhatsApp (com DDD) *</label>
+                            <input type="tel" id="participant-phone" required placeholder="Ex: 62999998888" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none">
+                            <p class="text-[11px] text-gray-500 mt-1">Você usará este número para consultar seu comprovante e saldo de potes.</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-700">
+                                Selecione de 3 a 5 vegetais da sua preferência *
+                            </label>
+                            <span id="veg-count" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800">
+                                Selecionados: 0/5
+                            </span>
+                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3" id="veg-checkboxes-container"></div>
+                    </div>
+
+                    <div class="bg-earth-100 p-6 rounded-2xl border border-earth-300 flex flex-col sm:flex-row justify-between items-center gap-4">
+                        <div>
+                            <h4 class="font-bold text-gray-900">Resumo da sua cota:</h4>
+                            <p class="text-sm text-gray-600">Investimento: <strong class="text-gray-900">R$ 100,00</strong> (10 potes de 500ml)</p>
+                            <p class="text-xs text-brand-700 font-medium mt-0.5"><i class="fa-solid fa-check-circle"></i> Acompanhamento online liberado após inscrição</p>
+                        </div>
+                        <button type="submit" id="btn-submit-form" class="w-full sm:w-auto bg-amber-700 hover:bg-amber-800 text-white font-bold px-8 py-4 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-check-to-slot text-lg"></i>
+                            Reservar e Ver Dados do Pix
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- 5. ABA: CONSULTAR MINHA COTA / COMPROVANTE -->
+        <section id="tab-extrato" class="tab-content hidden space-y-8">
+            <div class="max-w-2xl mx-auto space-y-6">
+                <!-- Caixa de Busca -->
+                <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-md border border-earth-200 text-center">
+                    <div class="w-14 h-14 bg-brand-100 text-brand-700 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4">
+                        <i class="fa-solid fa-receipt"></i>
+                    </div>
+                    <h2 class="font-serif text-2xl sm:text-3xl font-bold text-gray-900">Consultar Minha Cota</h2>
+                    <p class="text-sm text-gray-600 mt-1 mb-6">Digite o número do seu WhatsApp cadastrado para visualizar seu comprovante de pagamento e extrato de entregas.</p>
+
+                    <form id="search-form" class="flex flex-col sm:flex-row gap-3">
+                        <input type="tel" id="search-phone-input" required placeholder="Digite seu WhatsApp (Ex: 62981112233)" class="flex-grow px-4 py-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-center sm:text-left font-medium">
+                        <button type="submit" class="bg-brand-700 hover:bg-brand-800 text-white font-bold px-6 py-3.5 rounded-xl shadow transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-magnifying-glass"></i> Consultar
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Resultado / Cartão Comprovante -->
+                <div id="quota-result-container" class="hidden"></div>
+            </div>
+        </section>
+
+        <!-- 6. ABA PAINEL ORGANIZADOR (ADMIN) -->
+        <section id="tab-admin" class="tab-content hidden space-y-8">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-lg border border-earth-200">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-200 pb-6 mb-6">
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span class="bg-amber-100 text-amber-800 font-bold text-xs px-2.5 py-1 rounded-full">Painel Interno</span>
+                            <h2 class="font-serif text-2xl sm:text-3xl font-bold text-gray-900">Gestão do Consórcio</h2>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-1">Confirme pagamentos, registre entregas com data/sabores e notifique os participantes.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button id="open-add-member-btn" class="bg-brand-700 hover:bg-brand-800 text-white px-4 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-2">
+                            <i class="fa-solid fa-plus"></i> Novo Participante
+                        </button>
+                        <button id="logout-admin-btn" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-xl text-xs font-semibold border transition">
+                            <i class="fa-solid fa-right-from-bracket"></i> Sair
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Métricas -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                    <div class="bg-brand-50 p-5 rounded-2xl border border-brand-100">
+                        <span class="text-xs font-bold text-brand-700 uppercase">Participantes</span>
+                        <div class="flex items-baseline justify-between mt-2">
+                            <span id="metric-total-members" class="text-3xl font-extrabold text-brand-800">0</span>
+                            <span class="text-xs text-brand-600">Meta: 10 cotas</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-amber-50 p-5 rounded-2xl border border-amber-100">
+                        <span class="text-xs font-bold text-amber-800 uppercase">Caixa Confirmado</span>
+                        <div class="flex items-baseline justify-between mt-2">
+                            <span id="metric-total-cash" class="text-3xl font-extrabold text-amber-900">R$ 0</span>
+                            <span class="text-xs text-amber-700">Cotas pagas</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 p-5 rounded-2xl border border-blue-100">
+                        <span class="text-xs font-bold text-blue-800 uppercase">Potes Entregues</span>
+                        <div class="flex items-baseline justify-between mt-2">
+                            <span id="metric-potes-entrega" class="text-3xl font-extrabold text-blue-900">0 / 0</span>
+                            <span class="text-xs text-blue-700">Entregues / Total</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-purple-50 p-5 rounded-2xl border border-purple-100">
+                        <span class="text-xs font-bold text-purple-800 uppercase">Rendimento Extra</span>
+                        <div class="flex items-baseline justify-between mt-2">
+                            <span id="metric-potes-sobra" class="text-3xl font-extrabold text-purple-900">0</span>
+                            <span class="text-xs text-purple-700">Potes do organizador</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabela de Participantes -->
+                <div class="overflow-x-auto rounded-2xl border border-gray-200">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-earth-200 text-gray-700 text-xs font-bold uppercase tracking-wider">
+                                <th class="p-4">Participante</th>
+                                <th class="p-4">Preferências</th>
+                                <th class="p-4">Pagamento</th>
+                                <th class="p-4">Saldo & Entregas</th>
+                                <th class="p-4 text-right">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="members-table-body" class="divide-y divide-gray-200 text-sm"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL: ADICIONAR PARTICIPANTE (ADMIN) -->
+    <div id="modal-add-member" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-6">
+            <div class="flex justify-between items-center border-b pb-4">
+                <h3 class="font-serif font-bold text-xl text-gray-900">Adicionar Participante</h3>
+                <button id="close-modal-add-btn" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <form id="admin-add-form" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Nome *</label>
+                    <input type="text" id="admin-name" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-700 mb-1">WhatsApp *</label>
+                    <input type="tel" id="admin-phone" required placeholder="62999998888" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Status Pagamento</label>
+                    <select id="admin-paid" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm bg-white">
+                        <option value="true">Pago (R$ 100,00)</option>
+                        <option value="false">Pendente</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Itens de Preferência</label>
+                    <input type="text" id="admin-items" placeholder="Ex: Pepino, Abobrinha, Cebola" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm">
+                </div>
+                <div class="pt-4 flex justify-end space-x-3">
+                    <button type="button" id="cancel-modal-add-btn" class="px-4 py-2.5 rounded-xl border border-gray-300 text-sm font-semibold text-gray-600">Cancelar</button>
+                    <button type="submit" class="px-6 py-2.5 rounded-xl bg-brand-700 hover:bg-brand-800 text-white text-sm font-semibold shadow">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: REGISTRAR ENTREGA DETALHADA (ADMIN) -->
+    <div id="modal-register-delivery" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl space-y-5">
+            <div class="flex justify-between items-center border-b pb-3">
+                <div>
+                    <h3 class="font-serif font-bold text-xl text-gray-900">Registrar Entrega</h3>
+                    <p id="delivery-member-name" class="text-xs text-brand-700 font-semibold"></p>
+                </div>
+                <button id="close-delivery-modal-btn" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <form id="delivery-form" class="space-y-4">
+                <input type="hidden" id="delivery-member-id">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Quantidade de Potes Entregues Hoje *</label>
+                    <input type="number" id="delivery-qty" min="1" max="10" value="2" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm font-bold">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Quais sabores foram entregues? *</label>
+                    <input type="text" id="delivery-details" required placeholder="Ex: 1 Pepino, 1 Abobrinha" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm">
+                </div>
+                <div class="pt-2 flex justify-end space-x-3">
+                    <button type="button" id="cancel-delivery-modal-btn" class="px-4 py-2.5 rounded-xl border border-gray-300 text-sm font-semibold text-gray-600">Cancelar</button>
+                    <button type="submit" class="px-6 py-2.5 rounded-xl bg-brand-700 hover:bg-brand-800 text-white text-sm font-semibold shadow">Confirmar Entrega</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-brand-800 text-earth-300 mt-16 border-t border-brand-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-sm">
+            <p class="font-serif text-white font-semibold mb-2">Consórcio Solidário de Conservas Caseiras</p>
+            <p class="text-xs text-brand-100 max-w-xl mx-auto">Iniciativa artesanal comunitária. Economia doméstica e valorização dos alimentos frescos do Ceasa.</p>
+            <div class="mt-4 text-xs text-earth-300">&copy; 2026 - Produção Artesanal e Comunitária.</div>
+        </div>
+    </footer>
+
+    <!-- FIREBASE SDK + LÓGICA DO SISTEMA -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+        // =========================================================================
+        // 1. CONFIGURAÇÕES DO ORGANIZADOR
+        // =========================================================================
+        const CONFIG = {
+            organizadorWhatsApp: "5562920026981",
+            chavePix: "62920026981",
+            nomeRecebedorPix: "Emerson Charles Gabriel",
+            senhaAdmin: "1234",
+            linkSiteGit: window.location.href.split('#')[0]
+        };
+
+        // 2. SUAS CHAVES DO FIREBASE
+        const firebaseConfig = {
+            apiKey: "AIzaSyDrRooq7X34TcQu71DHW5RYcsgNj3dPjkY",
+            authDomain: "conservas-beb76.firebaseapp.com",
+            projectId: "conservas-beb76",
+            storageBucket: "conservas-beb76.firebasestorage.app",
+            messagingSenderId: "871697782410",
+            appId: "1:871697782410:web:91cfe7b2d06395e2d33f73",
+            measurementId: "G-CPGQXZR16G"
+        };
+        // =========================================================================
+
+        let db = null;
+        let members = [];
+        let selectedVegIds = [];
+        let isAdminAuthenticated = false;
+
+        const VEGETABLES = [
+            { id: 'abobrinha', name: 'Abobrinha', method: 'Escabeche Ácido', icon: 'fa-pepper-hot', color: 'bg-green-100 text-green-800', desc: 'Fatiada em lâminas finas ou rodelas. Branqueamento rápido e conserva com azeite, alho e orégano.', tip: 'Tira-se a água no sal antes do escabeche.' },
+            { id: 'pepino', name: 'Pepino', method: 'Avinagrado Crocante', icon: 'fa-seedling', color: 'bg-emerald-100 text-emerald-800', desc: 'Estilo picles tradicional com endro, alho e sementes de mostarda em vinagre de álcool.', tip: 'Ponto bem crocante!' },
+            { id: 'tomate', name: 'Tomate', method: 'Tomate Seco / Confit', icon: 'fa-apple-whole', color: 'bg-red-100 text-red-800', desc: 'Desidratado no forno com ervas finas e imerso em óleo temperado ou molho concentrado.', tip: 'Apenas tomates firmes selecionados.' },
+            { id: 'cebola', name: 'Cebola', method: 'Conserva Avinagrada', icon: 'fa-circle-dot', color: 'bg-purple-100 text-purple-800', desc: 'Cebolinhas pequenas ou fatiadas com folha de louro, pimenta em grão e vinagre refinado.', tip: 'Ótima para petisco e acompanhamento.' },
+            { id: 'batata', name: 'Batata', method: 'Conserva de Vinagrete', icon: 'fa-cubes', color: 'bg-amber-100 text-amber-800', desc: 'Batatinhas bolinha cozidas al dente, temperadas com bastante salsa, alho e vinagre.', tip: 'Perfeita para churrasco.' },
+            { id: 'jilo', name: 'Jiló', method: 'Escabeche Temperado', icon: 'fa-lemon', color: 'bg-lime-100 text-lime-800', desc: 'Cozimento rápido para retirar o amargor excessivo e temperado com azeite, pimenta e vinagre.', tip: 'Favorito dos apreciadores de petisco raíz.' },
+            { id: 'berinjela', name: 'Berinjela', method: 'Caponata / Escabeche', icon: 'fa-eggplant', color: 'bg-indigo-100 text-indigo-800', desc: 'Desfiada ou em cubos com pimentões, passas, orégano e azeite de boa qualidade.', tip: 'Fica ainda mais gostosa depois de alguns dias.' },
+            { id: 'batata-doce', name: 'Batata Doce', method: 'Conserva Azedo-Doce', icon: 'fa-carrot', color: 'bg-orange-100 text-orange-800', desc: 'Cozida firme em rodelas com vinagre, um toque de açúcar e cravos da índia.', tip: 'Excelente para acompanhamento de refeições.' },
+            { id: 'mandioca', name: 'Mandioca', method: 'Conserva Temperada', icon: 'fa-bone', color: 'bg-yellow-100 text-yellow-800', desc: 'Mandioca cozida em cubos no ponto exato, imersa em tempero de vinagre, alho e cheiro-verde.', tip: 'Exige esterilização rigorosa.' },
+            { id: 'cenoura', name: 'Cenoura', method: 'Picles Crocante', icon: 'fa-carrot', color: 'bg-amber-100 text-amber-900', desc: 'Cenoura em palitos ou rodelas branqueadas, preservadas no vinagre com pimenta-do-reino.', tip: 'Combinação clássica e super colorida.' }
+        ];
+
+        window.switchTab = function(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active-tab'));
+            
+            const activeTab = document.getElementById(`tab-${tabId}`);
+            if (activeTab) activeTab.classList.remove('hidden');
+            
+            document.querySelectorAll(`.nav-btn[data-tab="${tabId}"]`).forEach(btn => btn.classList.add('active-tab'));
+            
+            document.getElementById('mobile-menu').classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderHomeVegetables();
+            renderVegetableDetails();
+            renderFormCheckboxes();
+            setupEventListeners();
+
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                onSnapshot(collection(db, "participantes"), (snapshot) => {
+                    members = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    renderAdminDashboard();
+                }, (error) => {
+                    console.error("Erro ao conectar no Firestore:", error);
+                    showLocalMode();
+                });
+            } catch(e) {
+                console.error("Erro Firebase:", e);
+                showLocalMode();
+            }
+        });
+
+        function showLocalMode() {
+            document.getElementById('db-status-bar').classList.remove('hidden');
+            members = [
+                {
+                    id: "1001",
+                    name: "Carlos Eduardo (Exemplo)",
+                    phone: "62981112233",
+                    items: ["Pepino", "Abobrinha", "Cebola"],
+                    paid: true,
+                    paidDate: "10/11/2026",
+                    delivered: 4,
+                    deliveries: [
+                        { date: "11/11/2026", qty: 2, details: "2 Pepinos" },
+                        { date: "12/11/2026", qty: 2, details: "1 Abobrinha, 1 Cebola" }
+                    ]
+                }
+            ];
+            renderAdminDashboard();
+        }
+
+        async function saveOrUpdateMember(memberObj) {
+            if (db) {
+                await setDoc(doc(db, "participantes", String(memberObj.id)), memberObj);
+            } else {
+                const idx = members.findIndex(m => String(m.id) === String(memberObj.id));
+                if (idx >= 0) members[idx] = memberObj;
+                else members.push(memberObj);
+                renderAdminDashboard();
+            }
+        }
+
+        async function removeMemberById(id) {
+            if (db) {
+                await deleteDoc(doc(db, "participantes", String(id)));
+            } else {
+                members = members.filter(m => String(m.id) !== String(id));
+                renderAdminDashboard();
+            }
+        }
+
+        function setupEventListeners() {
+            document.querySelectorAll('[data-tab]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tab = e.currentTarget.getAttribute('data-tab');
+                    window.switchTab(tab);
+                });
+            });
+
+            document.getElementById('logo-home-btn').addEventListener('click', () => window.switchTab('home'));
+
+            document.getElementById('nav-admin-btn').addEventListener('click', accessAdmin);
+            document.getElementById('mobile-admin-btn').addEventListener('click', accessAdmin);
+            document.getElementById('logout-admin-btn').addEventListener('click', () => {
+                isAdminAuthenticated = false;
+                window.switchTab('home');
+            });
+
+            document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.toggle('hidden');
+            });
+
+            document.getElementById('order-form').addEventListener('submit', submitForm);
+            document.getElementById('search-form').addEventListener('submit', searchParticipantQuota);
+
+            document.getElementById('open-add-member-btn').addEventListener('click', () => {
+                document.getElementById('modal-add-member').classList.remove('hidden');
+            });
+            document.getElementById('close-modal-add-btn').addEventListener('click', closeAddParticipantModal);
+            document.getElementById('cancel-modal-add-btn').addEventListener('click', closeAddParticipantModal);
+            document.getElementById('admin-add-form').addEventListener('submit', saveAdminMember);
+
+            document.getElementById('close-delivery-modal-btn').addEventListener('click', closeDeliveryModal);
+            document.getElementById('cancel-delivery-modal-btn').addEventListener('click', closeDeliveryModal);
+            document.getElementById('delivery-form').addEventListener('submit', confirmDeliveryRegistration);
+        }
+
+        function accessAdmin() {
+            if (isAdminAuthenticated) {
+                window.switchTab('admin');
+                return;
+            }
+            const pass = prompt("Digite a senha do Organizador:");
+            if (pass === CONFIG.senhaAdmin) {
+                isAdminAuthenticated = true;
+                window.switchTab('admin');
+            } else if (pass !== null) {
+                alert("Senha incorreta!");
+            }
+        }
+
+        function renderHomeVegetables() {
+            document.getElementById('home-vegetables-grid').innerHTML = VEGETABLES.map(v => `
+                <div class="bg-earth-100 p-3.5 rounded-xl border border-earth-200 flex flex-col items-center text-center">
+                    <span class="w-10 h-10 rounded-full ${v.color} flex items-center justify-center text-lg mb-2 shadow-sm">
+                        <i class="fa-solid ${v.icon}"></i>
+                    </span>
+                    <span class="font-bold text-gray-800 text-sm">${v.name}</span>
+                    <span class="text-xs text-gray-500 mt-0.5">${v.method.split(' ')[0]}</span>
+                </div>
+            `).join('');
+        }
+
+        function renderVegetableDetails() {
+            document.getElementById('veg-details-grid').innerHTML = VEGETABLES.map(v => `
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-earth-200 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div class="w-12 h-12 rounded-2xl ${v.color} flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-solid ${v.icon}"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-900">${v.name}</h3>
+                                <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-earth-200 text-earth-800">${v.method}</span>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-4 leading-relaxed">${v.desc}</p>
+                    </div>
+                    <div class="bg-earth-100 p-3 rounded-xl border border-earth-200 text-xs text-earth-800 flex items-start space-x-2">
+                        <i class="fa-solid fa-lightbulb text-amber-700 mt-0.5"></i>
+                        <span><strong>Segredo:</strong> ${v.tip}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderFormCheckboxes() {
+            document.getElementById('veg-checkboxes-container').innerHTML = VEGETABLES.map(v => `
+                <label class="cursor-pointer">
+                    <input type="checkbox" value="${v.name}" class="veg-checkbox peer hidden">
+                    <div class="p-3 rounded-xl border border-gray-200 bg-white peer-checked:border-brand-600 peer-checked:bg-brand-50 peer-checked:text-brand-800 transition flex items-center space-x-2 text-sm font-medium text-gray-700">
+                        <i class="fa-solid fa-check text-brand-700 opacity-0 peer-checked:opacity-100"></i>
+                        <span>${v.name}</span>
+                    </div>
+                </label>
+            `).join('');
+
+            document.querySelectorAll('.veg-checkbox').forEach(chk => {
+                chk.addEventListener('change', (e) => handleVegSelection(e.target));
+            });
+        }
+
+        function handleVegSelection(checkbox) {
+            const val = checkbox.value;
+            if (checkbox.checked) {
+                if (selectedVegIds.length >= 5) {
+                    checkbox.checked = false;
+                    alert('Você pode escolher no máximo 5 vegetais favoritos!');
+                    return;
+                }
+                selectedVegIds.push(val);
+            } else {
+                selectedVegIds = selectedVegIds.filter(item => item !== val);
+            }
+            const badge = document.getElementById('veg-count');
+            badge.innerText = `Selecionados: ${selectedVegIds.length}/5`;
+            badge.className = selectedVegIds.length >= 3
+                ? 'text-xs font-semibold px-2.5 py-1 rounded-full bg-green-100 text-green-800'
+                : 'text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800';
+        }
+
+        function normalizePhone(phone) {
+            return String(phone).replace(/\D/g, '');
+        }
+
+        async function submitForm(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('participant-name').value.trim();
+            const rawPhone = document.getElementById('participant-phone').value.trim();
+            const cleanPhone = normalizePhone(rawPhone);
+            const button = document.getElementById('btn-submit-form');
+
+            if (!name) {
+                alert('Por favor, informe seu nome completo.');
+                return;
+            }
+            if (cleanPhone.length < 10) {
+                alert('Por favor, digite um número de WhatsApp válido com DDD.');
+                return;
+            }
+            if (selectedVegIds.length < 3) {
+                alert('Por favor, escolha pelo menos 3 vegetais de sua preferência.');
+                return;
+            }
+
+            // Abre a janela durante o clique do usuário para evitar bloqueio de pop-up
+            // enquanto o sistema aguarda a gravação no Firebase.
+            const whatsappWindow = window.open('about:blank', '_blank');
+
+            const newMember = {
+                id: String(Date.now()),
+                name: name,
+                phone: cleanPhone,
+                items: [...selectedVegIds],
+                paid: false,
+                paidDate: null,
+                delivered: 0,
+                deliveries: [],
+                createdAt: new Date().toISOString()
+            };
+
+            try {
+                button.disabled = true;
+                button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Salvando reserva...';
+
+                await saveOrUpdateMember(newMember);
+
+                // Monta a mensagem completa para o organizador.
+                const reservationMessage =
+                    `*NOVA RESERVA - CONSÓRCIO DE CONSERVAS*%0A%0A` +
+                    `*Participante:* ${newMember.name}%0A` +
+                    `*WhatsApp:* ${newMember.phone}%0A` +
+                    `*Número da cota:* ${newMember.id.slice(-4)}%0A` +
+                    `*Valor:* R$ 100,00%0A` +
+                    `*Pagamento:* Aguardando Pix%0A` +
+                    `*Quantidade:* 10 potes de 500 ml%0A` +
+                    `*Vegetais escolhidos:* ${newMember.items.join(', ')}%0A%0A` +
+                    `*DADOS PARA PAGAMENTO PIX*%0A` +
+                    `Chave Pix: ${CONFIG.chavePix}%0A` +
+                    `Favorecido: ${CONFIG.nomeRecebedorPix}%0A` +
+                    `Valor: R$ 100,00%0A%0A` +
+                    `Aguardando confirmação do pagamento.%0A` +
+                    `Consultar reserva: ${CONFIG.linkSiteGit}`;
+
+                const whatsappUrl = `https://api.whatsapp.com/send?phone=${CONFIG.organizadorWhatsApp}&text=${reservationMessage}`;
+
+                // Mostra imediatamente a cota e os dados do Pix.
+                document.getElementById('search-phone-input').value = cleanPhone;
+                window.switchTab('extrato');
+                renderQuotaCard(newMember);
+
+                // Direciona a janela previamente aberta para o WhatsApp.
+                if (whatsappWindow && !whatsappWindow.closed) {
+                    whatsappWindow.location.href = whatsappUrl;
+                } else {
+                    // Alternativa caso o navegador bloqueie a nova janela.
+                    const fallback = document.createElement('a');
+                    fallback.href = whatsappUrl;
+                    fallback.target = '_blank';
+                    fallback.rel = 'noopener';
+                    fallback.click();
+                }
+
+                document.getElementById('order-form').reset();
+                selectedVegIds = [];
+                document.querySelectorAll('.veg-checkbox').forEach(chk => chk.checked = false);
+                document.getElementById('veg-count').innerText = 'Selecionados: 0/5';
+                document.getElementById('veg-count').className =
+                    'text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800';
+
+            } catch (error) {
+                console.error('Erro ao salvar a reserva:', error);
+                if (whatsappWindow && !whatsappWindow.closed) whatsappWindow.close();
+                alert('Não foi possível concluir sua reserva. Verifique sua conexão e tente novamente. Se o problema continuar, confira as regras de acesso do Firebase Firestore.');
+            } finally {
+                button.disabled = false;
+                button.innerHTML = '<i class="fa-solid fa-check-to-slot text-lg"></i> Reservar e Ver Dados do Pix';
+            }
+        }
+
+        function searchParticipantQuota(event) {
+            event.preventDefault();
+            const inputPhone = normalizePhone(document.getElementById('search-phone-input').value);
+            const found = members.find(m => normalizePhone(m.phone).endsWith(inputPhone) && inputPhone.length >= 8);
+
+            const container = document.getElementById('quota-result-container');
+            container.classList.remove('hidden');
+
+            if (!found) {
+                container.innerHTML = `
+                    <div class="bg-white p-6 rounded-2xl border border-red-200 text-center space-y-3">
+                        <i class="fa-solid fa-circle-xmark text-red-500 text-3xl"></i>
+                        <h3 class="font-bold text-gray-900">Nenhuma cota encontrada para este número</h3>
+                        <p class="text-sm text-gray-600">Verifique se digitou com o DDD ou faça sua inscrição na aba Participar.</p>
+                    </div>
+                `;
+                return;
+            }
+            renderQuotaCard(found);
+        }
+
+        function renderQuotaCard(m) {
+            const container = document.getElementById('quota-result-container');
+            container.classList.remove('hidden');
+
+            const delivered = m.delivered || 0;
+            const remaining = Math.max(0, 10 - delivered);
+            const progressPct = Math.min(100, (delivered / 10) * 100);
+            const deliveriesList = m.deliveries || [];
+
+            const paymentSection = m.paid
+                ? `
+                    <div class="bg-green-50 border border-green-200 rounded-2xl p-4 flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-full bg-green-600 text-white flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-bold uppercase text-green-800 block">Comprovante de Quitação</span>
+                                <span class="font-bold text-green-900 text-base">Cota Paga — R$ 100,00</span>
+                                <span class="text-xs text-green-700 block">Confirmado em: ${m.paidDate || 'Confirmado pelo organizador'}</span>
+                            </div>
+                        </div>
+                        <span class="bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full">ATIVO</span>
+                    </div>
+                `
+                : `
+                    <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span class="text-xs font-bold uppercase text-amber-800 block">Status Financeiro</span>
+                                <span class="font-bold text-amber-900 text-base">Aguardando Pagamento (R$ 100,00)</span>
+                            </div>
+                            <span class="bg-amber-600 text-white text-xs font-bold px-3 py-1 rounded-full">PENDENTE</span>
+                        </div>
+                        <div class="bg-white p-3.5 rounded-xl border border-amber-200 text-xs space-y-2">
+                            <p class="text-gray-700">Para ativar sua cota, faça o Pix de <strong>R$ 100,00</strong>:</p>
+                            <div class="bg-earth-100 p-2.5 rounded-lg border border-earth-300 flex items-center justify-between">
+                                <span class="font-mono font-bold text-sm text-gray-900">${CONFIG.chavePix}</span>
+                                <button id="copy-pix-btn" class="bg-amber-700 hover:bg-amber-800 text-white font-semibold px-3 py-1.5 rounded-lg text-xs inline-flex items-center gap-1.5 shadow">
+                                    <i class="fa-regular fa-copy"></i> Copiar Chave Pix
+                                </button>
+                            </div>
+                            <p class="text-gray-500 text-[11px]">Favorecido: <strong>${CONFIG.nomeRecebedorPix}</strong></p>
+                        </div>
+                    </div>
+                `;
+
+            const historyHtml = deliveriesList.length > 0
+                ? deliveriesList.map(d => `
+                    <div class="flex items-center justify-between py-2.5 border-b border-gray-100 last:border-0 text-sm">
+                        <div>
+                            <span class="font-bold text-gray-800">+${d.qty} pote(s)</span>
+                            <span class="text-gray-600 ml-1">(${d.details})</span>
+                        </div>
+                        <span class="text-xs font-medium bg-earth-200 text-earth-800 px-2.5 py-0.5 rounded-full">${d.date}</span>
+                    </div>
+                `).join('')
+                : `<p class="text-xs text-gray-500 italic py-2">Nenhuma entrega registrada ainda. Você será avisado assim que o primeiro lote ficar pronto!</p>`;
+
+            container.innerHTML = `
+                <div class="bg-white rounded-3xl shadow-lg border border-earth-300 overflow-hidden">
+                    <div class="bg-brand-800 text-white p-6 flex justify-between items-center">
+                        <div>
+                            <span class="text-[11px] uppercase tracking-widest text-earth-300">Cartão Digital do Participante</span>
+                            <h3 class="font-serif text-xl font-bold mt-0.5">${m.name}</h3>
+                            <p class="text-xs text-brand-100">Cota #${String(m.id).slice(-4)} • WhatsApp: ${m.phone}</p>
+                        </div>
+                        <i class="fa-solid fa-jar text-3xl text-amber-400"></i>
+                    </div>
+
+                    <div class="p-6 space-y-6">
+                        ${paymentSection}
+
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm font-bold">
+                                <span class="text-gray-700">Saldo de Conservas (500ml)</span>
+                                <span class="text-brand-700">${delivered} de 10 entregues</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                                <div class="bg-brand-600 h-3 rounded-full transition-all" style="width: ${progressPct}%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 text-right">Faltam <strong>${remaining} potes</strong> para concluir sua cota.</p>
+                        </div>
+
+                        <div>
+                            <span class="text-xs font-bold uppercase text-gray-500 block mb-1.5">Sabores Escolhidos</span>
+                            <div class="flex flex-wrap gap-1.5">
+                                ${(m.items || []).map(i => `<span class="bg-earth-200 text-earth-800 text-xs font-medium px-2.5 py-1 rounded-lg">${i}</span>`).join('')}
+                            </div>
+                        </div>
+
+                        <div class="bg-earth-100 p-4 rounded-2xl border border-earth-200">
+                            <h4 class="text-xs font-bold uppercase text-gray-700 mb-2 flex items-center gap-1.5">
+                                <i class="fa-solid fa-clock-rotate-left text-brand-700"></i> Histórico de Entregas Comprovadas
+                            </h4>
+                            ${historyHtml}
+                        </div>
+
+                        <div class="space-y-3 pt-2">
+                            <p class="text-xs text-gray-700 text-center font-medium">Toque abaixo para enviar seu comprovante ou falar com o organizador:</p>
+                            <a id="share-whatsapp-btn" href="#" target="_blank" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl shadow transition flex items-center justify-center gap-2 text-sm text-center">
+                                <i class="fa-brands fa-whatsapp text-lg"></i> Abrir WhatsApp com os Dados da Cota
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            if (!m.paid) {
+                document.getElementById('copy-pix-btn').addEventListener('click', () => {
+                    navigator.clipboard.writeText(CONFIG.chavePix);
+                    alert("Chave Pix copiada com sucesso: " + CONFIG.chavePix);
+                });
+            }
+
+            document.getElementById('share-whatsapp-btn').addEventListener('click', (e) => {
+                e.preventDefault();
+                const statusText = m.paid ? `PAGO (Confirmado em ${m.paidDate || 'OK'})` : 'PENDENTE (Aguardando Pix)';
+
+                const text = `*INSCRIÇÃO - CONSÓRCIO DE CONSERVAS*\n` +
+                    `Participante: *${m.name}*\n` +
+                    `WhatsApp: ${m.phone}\n` +
+                    `Status Cota (R$ 100): *${statusText}*\n` +
+                    `Preferências: ${(m.items || []).join(', ')}\n\n` +
+                    `Chave Pix para pagamento: ${CONFIG.chavePix} (${CONFIG.nomeRecebedorPix})\n\n` +
+                    `Consulte online: ${CONFIG.linkSiteGit}`;
+
+                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                const whatsappUrl = isMobile 
+                    ? `https://api.whatsapp.com/send?phone=${CONFIG.organizadorWhatsApp}&text=${encodeURIComponent(text)}`
+                    : `https://web.whatsapp.com/send?phone=${CONFIG.organizadorWhatsApp}&text=${encodeURIComponent(text)}`;
+
+                window.open(whatsappUrl, '_blank');
+            });
+        }
+
+        // Painel do Organizador (Admin)
+        function renderAdminDashboard() {
+            const tableBody = document.getElementById('members-table-body');
+            if (!tableBody) return;
+
+            const totalMembers = members.length;
+            const paidMembers = members.filter(m => m.paid).length;
+            const totalCash = paidMembers * 100;
+            const totalPotesContratados = totalMembers * 10;
+            const totalPotesEntregues = members.reduce((acc, m) => acc + (m.delivered || 0), 0);
+            const potesSobraOrganizador = totalMembers * 3;
+
+            document.getElementById('metric-total-members').innerText = totalMembers;
+            document.getElementById('metric-total-cash').innerText = `R$ ${totalCash}`;
+            document.getElementById('metric-potes-entrega').innerText = `${totalPotesEntregues} / ${totalPotesContratados}`;
+            document.getElementById('metric-potes-sobra').innerText = `+${potesSobraOrganizador} potes`;
+
+            if (members.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">Nenhum participante inscrito ainda.</td></tr>`;
+                return;
+            }
+
+            tableBody.innerHTML = members.map(m => {
+                const delivered = m.delivered || 0;
+                const remaining = Math.max(0, 10 - delivered);
+
+                return `
+                    <tr class="hover:bg-gray-50 transition">
+                        <td class="p-4">
+                            <div class="font-bold text-gray-900">${m.name}</div>
+                            <div class="text-xs text-gray-500">${m.phone}</div>
+                        </td>
+                        <td class="p-4">
+                            <div class="flex flex-wrap gap-1">
+                                ${(m.items || []).map(item => `<span class="bg-earth-200 text-earth-800 text-xs px-2 py-0.5 rounded-md">${item}</span>`).join('')}
+                            </div>
+                        </td>
+                        <td class="p-4">
+                            <button data-action="toggle-paid" data-id="${m.id}" class="px-3 py-1.5 rounded-full text-xs font-bold transition ${m.paid ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-amber-100 text-amber-800 hover:bg-amber-200'}">
+                                ${m.paid ? `<i class="fa-solid fa-circle-check mr-1"></i> Pago (${m.paidDate || 'OK'})` : '<i class="fa-solid fa-clock mr-1"></i> Confirmar Pix'}
+                            </button>
+                        </td>
+                        <td class="p-4">
+                            <div class="font-bold text-gray-800 text-sm">${delivered} / 10 entregues</div>
+                            <div class="text-xs text-gray-500">Faltam ${remaining} potes</div>
+                        </td>
+                        <td class="p-4 text-right space-x-1">
+                            <button data-action="deliver" data-id="${m.id}" class="bg-brand-700 hover:bg-brand-800 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm">
+                                <i class="fa-solid fa-jar mr-1"></i> Entregar
+                            </button>
+                            <button data-action="notify" data-id="${m.id}" class="bg-green-600 hover:bg-green-700 text-white text-xs font-semibold px-2.5 py-1.5 rounded-lg shadow-sm">
+                                <i class="fa-brands fa-whatsapp"></i>
+                            </button>
+                            <button data-action="delete" data-id="${m.id}" class="text-red-600 hover:text-red-800 text-sm p-1.5">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            tableBody.querySelectorAll('button[data-action]').forEach(btn => {
+                const action = btn.getAttribute('data-action');
+                const id = btn.getAttribute('data-id');
+                if (action === 'toggle-paid') btn.addEventListener('click', () => togglePaidStatus(id));
+                if (action === 'deliver') btn.addEventListener('click', () => openDeliveryModal(id));
+                if (action === 'notify') btn.addEventListener('click', () => notifyParticipantWhatsApp(id));
+                if (action === 'delete') btn.addEventListener('click', () => deleteMember(id));
+            });
+        }
+
+        async function togglePaidStatus(id) {
+            const m = members.find(item => String(item.id) === String(id));
+            if (!m) return;
+            const today = new Date().toLocaleDateString('pt-BR');
+            const updated = {
+                ...m,
+                paid: !m.paid,
+                paidDate: !m.paid ? today : null
+            };
+            await saveOrUpdateMember(updated);
+        }
+
+        function openDeliveryModal(id) {
+            const m = members.find(item => String(item.id) === String(id));
+            if (!m) return;
+            document.getElementById('delivery-member-id').value = m.id;
+            document.getElementById('delivery-member-name').innerText = `Participante: ${m.name} (Faltam ${10 - (m.delivered || 0)} potes)`;
+            document.getElementById('delivery-qty').value = 2;
+            document.getElementById('delivery-details').value = '';
+            document.getElementById('modal-register-delivery').classList.remove('hidden');
+        }
+
+        function closeDeliveryModal() {
+            document.getElementById('modal-register-delivery').classList.add('hidden');
+        }
+
+        async function confirmDeliveryRegistration(event) {
+            event.preventDefault();
+            const id = document.getElementById('delivery-member-id').value;
+            const qty = parseInt(document.getElementById('delivery-qty').value, 10);
+            const details = document.getElementById('delivery-details').value.trim();
+
+            const m = members.find(item => String(item.id) === String(id));
+            if (!m) return;
+
+            const today = new Date().toLocaleDateString('pt-BR');
+            const newDelivered = Math.min(10, (m.delivered || 0) + qty);
+            const deliveries = [...(m.deliveries || []), { date: today, qty, details }];
+
+            const updated = { ...m, delivered: newDelivered, deliveries };
+            await saveOrUpdateMember(updated);
+            closeDeliveryModal();
+
+            if (confirm("Entrega registrada com sucesso! Deseja enviar o comprovante desta entrega no WhatsApp do participante agora?")) {
+                notifyParticipantWhatsApp(id);
+            }
+        }
+
+        function notifyParticipantWhatsApp(id) {
+            const m = members.find(item => String(item.id) === String(id));
+            if (!m) return;
+            const phone = normalizePhone(m.phone);
+            const targetPhone = phone.startsWith('55') ? phone : `55${phone}`;
+            const lastDelivery = (m.deliveries || []).slice(-1)[0];
+
+            let msg = `Olá *${m.name}*! Atualização do seu *Consórcio de Conservas*:\n\n`;
+            if (lastDelivery) {
+                msg += `✅ *Última Entrega (${lastDelivery.date}):* +${lastDelivery.qty} pote(s) (${lastDelivery.details})\n`;
+            }
+            msg += `💰 *Pagamento:* ${m.paid ? 'Confirmado (R$ 100,00)' : 'Pendente'}\n` +
+                   `📊 *Seu Saldo:* ${m.delivered || 0} de 10 potes entregues (Faltam ${10 - (m.delivered || 0)})\n\n` +
+                   `Acesse seu comprovante completo a qualquer momento usando seu número de WhatsApp no link:\n${CONFIG.linkSiteGit}`;
+
+            window.open(`https://api.whatsapp.com/send?phone=${targetPhone}&text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        async function deleteMember(id) {
+            if (confirm("Tem certeza que deseja remover este participante?")) {
+                await removeMemberById(id);
+            }
+        }
+
+        function closeAddParticipantModal() {
+            document.getElementById('modal-add-member').classList.add('hidden');
+            document.getElementById('admin-add-form').reset();
+        }
+
+        async function saveAdminMember(event) {
+            event.preventDefault();
+            const name = document.getElementById('admin-name').value.trim();
+            const phone = normalizePhone(document.getElementById('admin-phone').value);
+            const paid = document.getElementById('admin-paid').value === 'true';
+            const itemsRaw = document.getElementById('admin-items').value.trim();
+            const items = itemsRaw ? itemsRaw.split(',').map(i => i.trim()) : ['Diversos'];
+
+            const newMember = {
+                id: String(Date.now()),
+                name,
+                phone,
+                items,
+                paid,
+                paidDate: paid ? new Date().toLocaleDateString('pt-BR') : null,
+                delivered: 0,
+                deliveries: []
+            };
+
+            await saveOrUpdateMember(newMember);
+            closeAddParticipantModal();
+        }
+    </script>
+</body>
+</html>
