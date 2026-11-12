@@ -126,7 +126,7 @@
     <!-- AVISO DE MODO DE BANCO DE DADOS -->
     <div id="db-status-bar" class="bg-amber-100 border-b border-amber-200 text-amber-900 text-xs py-1.5 px-4 text-center hidden">
         <i class="fa-solid fa-triangle-exclamation mr-1"></i>
-        <strong>Modo Local Ativo:</strong> Conectando ao Firebase Firestore...
+        <strong>Modo Local Ativo:</strong> Não foi possível conectar ao Firebase Firestore (verifique a internet ou as regras do banco).
     </div>
 
     <!-- MAIN CONTENT AREA -->
@@ -538,6 +538,7 @@
                 const app = initializeApp(firebaseConfig);
                 db = getFirestore(app);
                 onSnapshot(collection(db, "participantes"), (snapshot) => {
+                    document.getElementById('db-status-bar').classList.add('hidden');
                     members = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                     renderAdminDashboard();
                 }, (error) => {
@@ -570,30 +571,26 @@
             renderAdminDashboard();
         }
 
-        // Função segura com Timeout: se o Firebase demorar mais de 2 segundos, ele prossegue sem travar
+        // Gravação direta e garantida no Firebase Firestore
         async function saveOrUpdateMember(memberObj) {
-            const idx = members.findIndex(m => String(m.id) === String(memberObj.id));
-            if (idx >= 0) members[idx] = memberObj;
-            else members.push(memberObj);
-            renderAdminDashboard();
-
             if (db) {
-                try {
-                    const savePromise = setDoc(doc(db, "participantes", String(memberObj.id)), memberObj);
-                    const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 2500));
-                    await Promise.race([savePromise, timeoutPromise]);
-                } catch (e) {
-                    console.warn("Salvando em modo local devido à latência/restrição do Firebase:", e);
-                }
+                await setDoc(doc(db, "participantes", String(memberObj.id)), memberObj);
+                console.log("Gravado com sucesso no Firebase:", memberObj.id);
+            } else {
+                const idx = members.findIndex(m => String(m.id) === String(memberObj.id));
+                if (idx >= 0) members[idx] = memberObj;
+                else members.push(memberObj);
+                renderAdminDashboard();
             }
         }
 
         async function removeMemberById(id) {
             if (db) {
-                try { await deleteDoc(doc(db, "participantes", String(id))); } catch(e) {}
+                await deleteDoc(doc(db, "participantes", String(id)));
+            } else {
+                members = members.filter(m => String(m.id) !== String(id));
+                renderAdminDashboard();
             }
-            members = members.filter(m => String(m.id) !== String(id));
-            renderAdminDashboard();
         }
 
         function setupEventListeners() {
@@ -741,6 +738,12 @@
                 return;
             }
 
+            // Reserva a aba do WhatsApp no momento do clique para o navegador não bloquear
+            const whatsappWindow = window.open('', '_blank');
+            if (whatsappWindow) {
+                whatsappWindow.document.write('<p style="font-family:sans-serif;padding:20px;">Registrando sua cota no sistema, aguarde um instante...</p>');
+            }
+
             const newMember = {
                 id: String(Date.now()),
                 name: name,
@@ -753,49 +756,60 @@
                 createdAt: new Date().toISOString()
             };
 
-            button.disabled = true;
-            button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processando...';
+            try {
+                button.disabled = true;
+                button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Gravando no sistema...';
 
-            // Salva de forma protegida (com timeout para nunca travar)
-            await saveOrUpdateMember(newMember);
+                // 1. Grava primeiro no Firebase e espera confirmação real
+                await saveOrUpdateMember(newMember);
 
-            // Monta a mensagem completa para o organizador.
-            const reservationMessage =
-                `*NOVA RESERVA - CONSÓRCIO DE CONSERVAS*\n\n` +
-                `*Participante:* ${newMember.name}\n` +
-                `*WhatsApp:* ${newMember.phone}\n` +
-                `*Número da cota:* ${newMember.id.slice(-4)}\n` +
-                `*Valor:* R$ 100,00\n` +
-                `*Pagamento:* Aguardando Pix\n` +
-                `*Quantidade:* 10 potes de 500 ml\n` +
-                `*Vegetais escolhidos:* ${newMember.items.join(', ')}\n\n` +
-                `*DADOS PARA PAGAMENTO PIX*\n` +
-                `Chave Pix: ${CONFIG.chavePix}\n` +
-                `Favorecido: ${CONFIG.nomeRecebedorPix}\n` +
-                `Valor: R$ 100,00\n\n` +
-                `Aguardando confirmação do pagamento.\n` +
-                `Consultar reserva: ${CONFIG.linkSiteGit}`;
+                // 2. Monta a mensagem do WhatsApp
+                const reservationMessage =
+                    `*NOVA RESERVA - CONSÓRCIO DE CONSERVAS*\n\n` +
+                    `*Participante:* ${newMember.name}\n` +
+                    `*WhatsApp:* ${newMember.phone}\n` +
+                    `*Número da cota:* ${newMember.id.slice(-4)}\n` +
+                    `*Valor:* R$ 100,00\n` +
+                    `*Pagamento:* Aguardando Pix\n` +
+                    `*Quantidade:* 10 potes de 500 ml\n` +
+                    `*Vegetais escolhidos:* ${newMember.items.join(', ')}\n\n` +
+                    `*DADOS PARA PAGAMENTO PIX*\n` +
+                    `Chave Pix: ${CONFIG.chavePix}\n` +
+                    `Favorecido: ${CONFIG.nomeRecebedorPix}\n` +
+                    `Valor: R$ 100,00\n\n` +
+                    `Aguardando confirmação do pagamento.\n` +
+                    `Consultar reserva: ${CONFIG.linkSiteGit}`;
 
-            const whatsappUrl = `https://api.whatsapp.com/send?phone=${normalizePhone(CONFIG.organizadorWhatsApp)}&text=${encodeURIComponent(reservationMessage)}`;
+                const whatsappUrl = `https://api.whatsapp.com/send?phone=${normalizePhone(CONFIG.organizadorWhatsApp)}&text=${encodeURIComponent(reservationMessage)}`;
 
-            // Exibe imediatamente a aba Minha Cota com o Pix
-            document.getElementById('search-phone-input').value = cleanPhone;
-            window.switchTab('extrato');
-            renderQuotaCard(newMember);
+                // 3. Atualiza a tela do site para "Minha Cota"
+                document.getElementById('search-phone-input').value = cleanPhone;
+                window.switchTab('extrato');
+                renderQuotaCard(newMember);
 
-            // Limpa o formulário
-            document.getElementById('order-form').reset();
-            selectedVegIds = [];
-            document.querySelectorAll('.veg-checkbox').forEach(chk => chk.checked = false);
-            document.getElementById('veg-count').innerText = 'Selecionados: 0/5';
-            document.getElementById('veg-count').className =
-                'text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800';
+                // 4. Limpa o formulário
+                document.getElementById('order-form').reset();
+                selectedVegIds = [];
+                document.querySelectorAll('.veg-checkbox').forEach(chk => chk.checked = false);
+                document.getElementById('veg-count').innerText = 'Selecionados: 0/5';
+                document.getElementById('veg-count').className =
+                    'text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800';
 
-            button.disabled = false;
-            button.innerHTML = '<i class="fa-brands fa-whatsapp text-lg"></i> Reservar e Abrir WhatsApp';
+                // 5. Envia a aba aberta para o WhatsApp
+                if (whatsappWindow && !whatsappWindow.closed) {
+                    whatsappWindow.location.href = whatsappUrl;
+                } else {
+                    window.open(whatsappUrl, '_blank');
+                }
 
-            // Redireciona para o WhatsApp de forma limpa
-            window.location.href = whatsappUrl;
+            } catch (error) {
+                console.error("Erro ao gravar no Firebase:", error);
+                if (whatsappWindow && !whatsappWindow.closed) whatsappWindow.close();
+                alert("Erro ao salvar no banco de dados. Verifique sua conexão ou as regras de permissão do Firebase Firestore.");
+            } finally {
+                button.disabled = false;
+                button.innerHTML = '<i class="fa-brands fa-whatsapp text-lg"></i> Reservar e Abrir WhatsApp';
+            }
         }
 
         function searchParticipantQuota(event) {
