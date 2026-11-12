@@ -59,7 +59,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
                 <!-- Logo -->
-                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+                <div class="flex items-center space-x-3 cursor-pointer" id="logo-home-btn">
                     <div class="w-12 h-12 rounded-full bg-earth-200 text-brand-700 flex items-center justify-center font-bold text-2xl shadow-inner border-2 border-brand-500">
                         <i class="fa-solid fa-jar text-amber-700"></i>
                     </div>
@@ -71,29 +71,29 @@
 
                 <!-- Desktop Nav -->
                 <nav class="hidden md:flex space-x-1 font-medium text-sm">
-                    <button onclick="switchTab('home')" id="nav-home" class="nav-btn active-tab px-3.5 py-2 rounded-lg transition-colors hover:bg-brand-600">
+                    <button data-tab="home" class="nav-btn active-tab px-3.5 py-2 rounded-lg transition-colors hover:bg-brand-600">
                         <i class="fa-solid fa-house mr-1"></i> Início
                     </button>
-                    <button onclick="switchTab('guia')" id="nav-guia" class="nav-btn px-3.5 py-2 rounded-lg transition-colors hover:bg-brand-600">
+                    <button data-tab="guia" class="nav-btn px-3.5 py-2 rounded-lg transition-colors hover:bg-brand-600">
                         <i class="fa-solid fa-book-open mr-1"></i> Como Funciona
                     </button>
-                    <button onclick="switchTab('itens')" id="nav-itens" class="nav-btn px-3.5 py-2 rounded-lg transition-colors hover:bg-brand-600">
+                    <button data-tab="itens" class="nav-btn px-3.5 py-2 rounded-lg transition-colors hover:bg-brand-600">
                         <i class="fa-solid fa-carrot mr-1"></i> Cardápio
                     </button>
-                    <button onclick="switchTab('inscricao')" id="nav-inscricao" class="nav-btn px-3.5 py-2 rounded-lg transition-colors hover:bg-brand-600">
+                    <button data-tab="inscricao" class="nav-btn px-3.5 py-2 rounded-lg transition-colors hover:bg-brand-600">
                         <i class="fa-solid fa-clipboard-check mr-1"></i> Participar
                     </button>
-                    <button onclick="switchTab('extrato')" id="nav-extrato" class="nav-btn px-3.5 py-2 rounded-lg transition-colors hover:bg-brand-600 bg-brand-600/60 border border-brand-500">
+                    <button data-tab="extrato" class="nav-btn px-3.5 py-2 rounded-lg transition-colors hover:bg-brand-600 bg-brand-600/60 border border-brand-500">
                         <i class="fa-solid fa-receipt mr-1"></i> Minha Cota
                     </button>
-                    <button onclick="accessAdmin()" id="nav-admin" class="nav-btn px-3.5 py-2 rounded-lg transition-colors hover:bg-amber-700 bg-amber-800 text-white font-semibold ml-2">
+                    <button id="nav-admin-btn" class="nav-btn px-3.5 py-2 rounded-lg transition-colors hover:bg-amber-700 bg-amber-800 text-white font-semibold ml-2">
                         <i class="fa-solid fa-lock mr-1"></i> Organizador
                     </button>
                 </nav>
 
                 <!-- Mobile Menu Button -->
                 <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="p-2 rounded-md text-white hover:bg-brand-600 focus:outline-none">
+                    <button id="mobile-menu-btn" class="p-2 rounded-md text-white hover:bg-brand-600 focus:outline-none">
                         <i class="fa-solid fa-bars text-xl"></i>
                     </button>
                 </div>
@@ -102,22 +102,22 @@
 
         <!-- Mobile Navigation Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-brand-800 border-t border-brand-600 px-4 pt-2 pb-4 space-y-1">
-            <button onclick="switchTab('home')" class="w-full text-left px-3 py-2 rounded-md font-medium text-white hover:bg-brand-600 flex items-center">
+            <button data-tab="home" class="w-full text-left px-3 py-2 rounded-md font-medium text-white hover:bg-brand-600 flex items-center mobile-nav-link">
                 <i class="fa-solid fa-house w-6"></i> Início
             </button>
-            <button onclick="switchTab('guia')" class="w-full text-left px-3 py-2 rounded-md font-medium text-white hover:bg-brand-600 flex items-center">
+            <button data-tab="guia" class="w-full text-left px-3 py-2 rounded-md font-medium text-white hover:bg-brand-600 flex items-center mobile-nav-link">
                 <i class="fa-solid fa-book-open w-6"></i> Como Funciona
             </button>
-            <button onclick="switchTab('itens')" class="w-full text-left px-3 py-2 rounded-md font-medium text-white hover:bg-brand-600 flex items-center">
+            <button data-tab="itens" class="w-full text-left px-3 py-2 rounded-md font-medium text-white hover:bg-brand-600 flex items-center mobile-nav-link">
                 <i class="fa-solid fa-carrot w-6"></i> Cardápio de Legumes
             </button>
-            <button onclick="switchTab('inscricao')" class="w-full text-left px-3 py-2 rounded-md font-medium text-white hover:bg-brand-600 flex items-center">
+            <button data-tab="inscricao" class="w-full text-left px-3 py-2 rounded-md font-medium text-white hover:bg-brand-600 flex items-center mobile-nav-link">
                 <i class="fa-solid fa-clipboard-check w-6"></i> Participar (R$ 100)
             </button>
-            <button onclick="switchTab('extrato')" class="w-full text-left px-3 py-2 rounded-md font-medium text-white bg-brand-700 hover:bg-brand-600 flex items-center">
+            <button data-tab="extrato" class="w-full text-left px-3 py-2 rounded-md font-medium text-white bg-brand-700 hover:bg-brand-600 flex items-center mobile-nav-link">
                 <i class="fa-solid fa-receipt w-6"></i> Consultar Minha Cota / Recibo
             </button>
-            <button onclick="accessAdmin()" class="w-full text-left px-3 py-2 rounded-md font-semibold bg-amber-700 text-white hover:bg-amber-800 flex items-center mt-2">
+            <button id="mobile-admin-btn" class="w-full text-left px-3 py-2 rounded-md font-semibold bg-amber-700 text-white hover:bg-amber-800 flex items-center mt-2">
                 <i class="fa-solid fa-lock w-6"></i> Painel Organizador
             </button>
         </div>
@@ -126,7 +126,7 @@
     <!-- AVISO DE MODO DE BANCO DE DADOS -->
     <div id="db-status-bar" class="bg-amber-100 border-b border-amber-200 text-amber-900 text-xs py-1.5 px-4 text-center hidden">
         <i class="fa-solid fa-triangle-exclamation mr-1"></i>
-        <strong>Modo Local Ativo:</strong> Cole suas chaves do Firebase no código para sincronizar dados entre celulares na nuvem.
+        <strong>Modo Local Ativo:</strong> Conectando ao Firebase Firestore...
     </div>
 
     <!-- MAIN CONTENT AREA -->
@@ -143,10 +143,10 @@
                         Você investe <strong>R$ 100,00</strong> e garante <strong>10 potes de 500 ml</strong> montados conforme sua preferência, com recibo digital e acompanhamento online das entregas!
                     </p>
                     <div class="flex flex-wrap gap-4">
-                        <button onclick="switchTab('inscricao')" class="bg-amber-700 hover:bg-amber-800 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
+                        <button data-tab="inscricao" class="tab-trigger bg-amber-700 hover:bg-amber-800 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
                             Quero me Inscrever (R$ 100)
                         </button>
-                        <button onclick="switchTab('extrato')" class="bg-white/15 hover:bg-white/25 text-white font-semibold px-6 py-3 rounded-xl border border-white/30 backdrop-blur-sm transition">
+                        <button data-tab="extrato" class="tab-trigger bg-white/15 hover:bg-white/25 text-white font-semibold px-6 py-3 rounded-xl border border-white/30 backdrop-blur-sm transition">
                             <i class="fa-solid fa-receipt mr-1.5"></i> Consultar Minha Cota
                         </button>
                     </div>
@@ -193,7 +193,7 @@
                         <h3 class="font-serif font-bold text-2xl text-gray-900">Seleção de Legumes e Raízes</h3>
                         <p class="text-sm text-gray-600">Alimentos selecionados no Ceasa preparados com receita e técnica artesanal</p>
                     </div>
-                    <button onclick="switchTab('itens')" class="text-brand-700 font-semibold text-sm hover:underline flex items-center">
+                    <button data-tab="itens" class="tab-trigger text-brand-700 font-semibold text-sm hover:underline flex items-center">
                         Ver detalhes do preparo <i class="fa-solid fa-arrow-right ml-1"></i>
                     </button>
                 </div>
@@ -257,7 +257,7 @@
                     <p class="text-brand-100 text-sm mt-1">Preencha seus dados e escolha seus legumes favoritos para reservar sua cota de 10 potes.</p>
                 </div>
 
-                <form id="order-form" onsubmit="submitForm(event)" class="p-6 sm:p-8 space-y-8">
+                <form id="order-form" class="p-6 sm:p-8 space-y-8">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">Seu Nome Completo *</label>
@@ -308,7 +308,7 @@
                     <h2 class="font-serif text-2xl sm:text-3xl font-bold text-gray-900">Consultar Minha Cota</h2>
                     <p class="text-sm text-gray-600 mt-1 mb-6">Digite o número do seu WhatsApp cadastrado para visualizar seu comprovante de pagamento e extrato de entregas.</p>
 
-                    <form onsubmit="searchParticipantQuota(event)" class="flex flex-col sm:flex-row gap-3">
+                    <form id="search-form" class="flex flex-col sm:flex-row gap-3">
                         <input type="tel" id="search-phone-input" required placeholder="Digite seu WhatsApp (Ex: 62981112233)" class="flex-grow px-4 py-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-center sm:text-left font-medium">
                         <button type="submit" class="bg-brand-700 hover:bg-brand-800 text-white font-bold px-6 py-3.5 rounded-xl shadow transition flex items-center justify-center gap-2">
                             <i class="fa-solid fa-magnifying-glass"></i> Consultar
@@ -333,10 +333,10 @@
                         <p class="text-sm text-gray-600 mt-1">Confirme pagamentos, registre entregas com data/sabores e notifique os participantes.</p>
                     </div>
                     <div class="flex flex-wrap gap-2">
-                        <button onclick="openAddParticipantModal()" class="bg-brand-700 hover:bg-brand-800 text-white px-4 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-2">
+                        <button id="open-add-member-btn" class="bg-brand-700 hover:bg-brand-800 text-white px-4 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-2">
                             <i class="fa-solid fa-plus"></i> Novo Participante
                         </button>
-                        <button onclick="logoutAdmin()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-xl text-xs font-semibold border transition">
+                        <button id="logout-admin-btn" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-xl text-xs font-semibold border transition">
                             <i class="fa-solid fa-right-from-bracket"></i> Sair
                         </button>
                     </div>
@@ -402,9 +402,9 @@
         <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-6">
             <div class="flex justify-between items-center border-b pb-4">
                 <h3 class="font-serif font-bold text-xl text-gray-900">Adicionar Participante</h3>
-                <button onclick="closeAddParticipantModal()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+                <button id="close-modal-add-btn" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
-            <form id="admin-add-form" onsubmit="saveAdminMember(event)" class="space-y-4">
+            <form id="admin-add-form" class="space-y-4">
                 <div>
                     <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Nome *</label>
                     <input type="text" id="admin-name" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm">
@@ -425,7 +425,7 @@
                     <input type="text" id="admin-items" placeholder="Ex: Pepino, Abobrinha, Cebola" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm">
                 </div>
                 <div class="pt-4 flex justify-end space-x-3">
-                    <button type="button" onclick="closeAddParticipantModal()" class="px-4 py-2.5 rounded-xl border border-gray-300 text-sm font-semibold text-gray-600">Cancelar</button>
+                    <button type="button" id="cancel-modal-add-btn" class="px-4 py-2.5 rounded-xl border border-gray-300 text-sm font-semibold text-gray-600">Cancelar</button>
                     <button type="submit" class="px-6 py-2.5 rounded-xl bg-brand-700 hover:bg-brand-800 text-white text-sm font-semibold shadow">Salvar</button>
                 </div>
             </form>
@@ -440,9 +440,9 @@
                     <h3 class="font-serif font-bold text-xl text-gray-900">Registrar Entrega</h3>
                     <p id="delivery-member-name" class="text-xs text-brand-700 font-semibold"></p>
                 </div>
-                <button onclick="closeDeliveryModal()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+                <button id="close-delivery-modal-btn" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
-            <form onsubmit="confirmDeliveryRegistration(event)" class="space-y-4">
+            <form id="delivery-form" class="space-y-4">
                 <input type="hidden" id="delivery-member-id">
                 <div>
                     <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Quantidade de Potes Entregues Hoje *</label>
@@ -453,7 +453,7 @@
                     <input type="text" id="delivery-details" required placeholder="Ex: 1 Pepino, 1 Abobrinha" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm">
                 </div>
                 <div class="pt-2 flex justify-end space-x-3">
-                    <button type="button" onclick="closeDeliveryModal()" class="px-4 py-2.5 rounded-xl border border-gray-300 text-sm font-semibold text-gray-600">Cancelar</button>
+                    <button type="button" id="cancel-delivery-modal-btn" class="px-4 py-2.5 rounded-xl border border-gray-300 text-sm font-semibold text-gray-600">Cancelar</button>
                     <button type="submit" class="px-6 py-2.5 rounded-xl bg-brand-700 hover:bg-brand-800 text-white text-sm font-semibold shadow">Confirmar Entrega</button>
                 </div>
             </form>
@@ -485,7 +485,7 @@
             linkSiteGit: window.location.href.split('#')[0]
         };
 
-        // 2. SUAS CHAVES DO FIREBASE (Já preenchidas corretamente por você!)
+        // 2. SUAS CHAVES DO FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyDrRooq7X34TcQu71DHW5RYcsgNj3dPjkY",
             authDomain: "conservas-beb76.firebaseapp.com",
@@ -496,14 +496,11 @@
             measurementId: "G-CPGQXZR16G"
         };
         // =========================================================================
-        // =========================================================================
 
-        const useFirebase = firebaseConfig.apiKey !== "COLE_AQUI";
         let db = null;
         let members = [];
         let selectedVegIds = [];
         let isAdminAuthenticated = false;
-        const STORAGE_KEY = 'consorcio_conservas_v2';
 
         const VEGETABLES = [
             { id: 'abobrinha', name: 'Abobrinha', method: 'Escabeche Ácido', icon: 'fa-pepper-hot', color: 'bg-green-100 text-green-800', desc: 'Fatiada em lâminas finas ou rodelas. Branqueamento rápido e conserva com azeite, alho e orégano.', tip: 'Tira-se a água no sal antes do escabeche.' },
@@ -523,76 +520,124 @@
             renderHomeVegetables();
             renderVegetableDetails();
             renderFormCheckboxes();
+            setupEventListeners();
 
-            if (useFirebase) {
+            try {
                 const app = initializeApp(firebaseConfig);
                 db = getFirestore(app);
                 onSnapshot(collection(db, "participantes"), (snapshot) => {
                     members = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                     renderAdminDashboard();
+                }, (error) => {
+                    console.error("Erro ao conectar no Firestore:", error);
+                    showLocalMode();
                 });
-            } else {
-                document.getElementById('db-status-bar').classList.remove('hidden');
-                const stored = localStorage.getItem(STORAGE_KEY);
-                members = stored ? JSON.parse(stored) : [
-                    {
-                        id: "1001",
-                        name: "Carlos Eduardo (Exemplo)",
-                        phone: "62981112233",
-                        items: ["Pepino", "Abobrinha", "Cebola"],
-                        paid: true,
-                        paidDate: "10/11/2026",
-                        delivered: 4,
-                        deliveries: [
-                            { date: "11/11/2026", qty: 2, details: "2 Pepinos" },
-                            { date: "12/11/2026", qty: 2, details: "1 Abobrinha, 1 Cebola" }
-                        ]
-                    }
-                ];
-                renderAdminDashboard();
+            } catch(e) {
+                console.error("Erro Firebase:", e);
+                showLocalMode();
             }
         });
 
-        // Funções de Persistência (Nuvem ou Local)
+        function showLocalMode() {
+            document.getElementById('db-status-bar').classList.remove('hidden');
+            members = [
+                {
+                    id: "1001",
+                    name: "Carlos Eduardo (Exemplo)",
+                    phone: "62981112233",
+                    items: ["Pepino", "Abobrinha", "Cebola"],
+                    paid: true,
+                    paidDate: "10/11/2026",
+                    delivered: 4,
+                    deliveries: [
+                        { date: "11/11/2026", qty: 2, details: "2 Pepinos" },
+                        { date: "12/11/2026", qty: 2, details: "1 Abobrinha, 1 Cebola" }
+                    ]
+                }
+            ];
+            renderAdminDashboard();
+        }
+
         async function saveOrUpdateMember(memberObj) {
-            if (useFirebase && db) {
+            if (db) {
                 await setDoc(doc(db, "participantes", String(memberObj.id)), memberObj);
             } else {
                 const idx = members.findIndex(m => String(m.id) === String(memberObj.id));
                 if (idx >= 0) members[idx] = memberObj;
                 else members.push(memberObj);
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(members));
                 renderAdminDashboard();
             }
         }
 
         async function removeMemberById(id) {
-            if (useFirebase && db) {
+            if (db) {
                 await deleteDoc(doc(db, "participantes", String(id)));
             } else {
                 members = members.filter(m => String(m.id) !== String(id));
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(members));
                 renderAdminDashboard();
             }
         }
 
-        // Navegação
-        window.switchTab = function(tabId) {
+        // Navegação por Abas
+        function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active-tab'));
+            
             const activeTab = document.getElementById(`tab-${tabId}`);
             if (activeTab) activeTab.classList.remove('hidden');
-            const activeBtn = document.getElementById(`nav-${tabId}`);
-            if (activeBtn) activeBtn.classList.add('active-tab');
+            
+            document.querySelectorAll(`.nav-btn[data-tab="${tabId}"]`).forEach(btn => btn.classList.add('active-tab'));
+            
             document.getElementById('mobile-menu').classList.add('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        };
+        }
 
-        window.toggleMobileMenu = function() {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
-        };
+        // Configuração de Eventos Globais (evitando erros de escopo de módulo)
+        function setupEventListeners() {
+            // Navegação
+            document.querySelectorAll('[data-tab]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tab = e.currentTarget.getAttribute('data-tab');
+                    switchTab(tab);
+                });
+            });
 
-        window.accessAdmin = function() {
+            document.getElementById('logo-home-btn').addEventListener('click', () => switchTab('home'));
+
+            // Admin Login
+            document.getElementById('nav-admin-btn').addEventListener('click', accessAdmin);
+            document.getElementById('mobile-admin-btn').addEventListener('click', accessAdmin);
+            document.getElementById('logout-admin-btn').addEventListener('click', () => {
+                isAdminAuthenticated = false;
+                switchTab('home');
+            });
+
+            // Menu Mobile
+            document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.toggle('hidden');
+            });
+
+            // Formulário de Inscrição
+            document.getElementById('order-form').addEventListener('submit', submitForm);
+
+            // Busca de Cota
+            document.getElementById('search-form').addEventListener('submit', searchParticipantQuota);
+
+            // Modais Admin
+            document.getElementById('open-add-member-btn').addEventListener('click', () => {
+                document.getElementById('modal-add-member').classList.remove('hidden');
+            });
+            document.getElementById('close-modal-add-btn').addEventListener('click', closeAddParticipantModal);
+            document.getElementById('cancel-modal-add-btn').addEventListener('click', closeAddParticipantModal);
+            document.getElementById('admin-add-form').addEventListener('submit', saveAdminMember);
+
+            // Modal Entrega
+            document.getElementById('close-delivery-modal-btn').addEventListener('click', closeDeliveryModal);
+            document.getElementById('cancel-delivery-modal-btn').addEventListener('click', closeDeliveryModal);
+            document.getElementById('delivery-form').addEventListener('submit', confirmDeliveryRegistration);
+        }
+
+        function accessAdmin() {
             if (isAdminAuthenticated) {
                 switchTab('admin');
                 return;
@@ -604,12 +649,7 @@
             } else if (pass !== null) {
                 alert("Senha incorreta!");
             }
-        };
-
-        window.logoutAdmin = function() {
-            isAdminAuthenticated = false;
-            switchTab('home');
-        };
+        }
 
         // Renderizadores Visuais
         function renderHomeVegetables() {
@@ -650,16 +690,20 @@
         function renderFormCheckboxes() {
             document.getElementById('veg-checkboxes-container').innerHTML = VEGETABLES.map(v => `
                 <label class="cursor-pointer">
-                    <input type="checkbox" value="${v.name}" onchange="handleVegSelection(this)" class="peer hidden">
+                    <input type="checkbox" value="${v.name}" class="veg-checkbox peer hidden">
                     <div class="p-3 rounded-xl border border-gray-200 bg-white peer-checked:border-brand-600 peer-checked:bg-brand-50 peer-checked:text-brand-800 transition flex items-center space-x-2 text-sm font-medium text-gray-700">
                         <i class="fa-solid fa-check text-brand-700 opacity-0 peer-checked:opacity-100"></i>
                         <span>${v.name}</span>
                     </div>
                 </label>
             `).join('');
+
+            document.querySelectorAll('.veg-checkbox').forEach(chk => {
+                chk.addEventListener('change', (e) => handleVegSelection(e.target));
+            });
         }
 
-        window.handleVegSelection = function(checkbox) {
+        function handleVegSelection(checkbox) {
             const val = checkbox.value;
             if (checkbox.checked) {
                 if (selectedVegIds.length >= 5) {
@@ -676,15 +720,13 @@
             badge.className = selectedVegIds.length >= 3
                 ? 'text-xs font-semibold px-2.5 py-1 rounded-full bg-green-100 text-green-800'
                 : 'text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800';
-        };
+        }
 
-        // Limpa telefone para apenas números para facilitar busca
         function normalizePhone(phone) {
             return String(phone).replace(/\D/g, '');
         }
 
-        // Submissão do Formulário de Adesão
-        window.submitForm = async function(event) {
+        async function submitForm(event) {
             event.preventDefault();
             const name = document.getElementById('participant-name').value.trim();
             const rawPhone = document.getElementById('participant-phone').value.trim();
@@ -727,14 +769,12 @@
             renderFormCheckboxes();
             document.getElementById('veg-count').innerText = 'Selecionados: 0/5';
 
-            // Já abre a consulta da cota da pessoa
             document.getElementById('search-phone-input').value = cleanPhone;
             switchTab('extrato');
             renderQuotaCard(newMember);
-        };
+        }
 
-        // Consulta da Cota / Extrato do Participante
-        window.searchParticipantQuota = function(event) {
+        function searchParticipantQuota(event) {
             event.preventDefault();
             const inputPhone = normalizePhone(document.getElementById('search-phone-input').value);
             const found = members.find(m => normalizePhone(m.phone).endsWith(inputPhone) && inputPhone.length >= 8);
@@ -753,7 +793,7 @@
                 return;
             }
             renderQuotaCard(found);
-        };
+        }
 
         function renderQuotaCard(m) {
             const container = document.getElementById('quota-result-container');
@@ -793,7 +833,7 @@
                             <p class="text-gray-600">Para validar sua cota, faça o Pix de <strong>R$ 100,00</strong>:</p>
                             <p class="font-mono font-bold text-sm text-gray-900">Chave Pix: ${CONFIG.chavePix}</p>
                             <p class="text-gray-500">Favorecido: ${CONFIG.nomeRecebedorPix}</p>
-                            <button onclick="copyPixKey()" class="mt-2 bg-amber-700 hover:bg-amber-800 text-white font-semibold px-3 py-1.5 rounded-lg text-xs inline-flex items-center gap-1.5">
+                            <button id="copy-pix-btn" class="mt-2 bg-amber-700 hover:bg-amber-800 text-white font-semibold px-3 py-1.5 rounded-lg text-xs inline-flex items-center gap-1.5">
                                 <i class="fa-regular fa-copy"></i> Copiar Chave Pix
                             </button>
                         </div>
@@ -826,7 +866,6 @@
                     <div class="p-6 space-y-6">
                         ${paymentSection}
 
-                        <!-- Progresso dos Potes -->
                         <div class="space-y-2">
                             <div class="flex justify-between text-sm font-bold">
                                 <span class="text-gray-700">Saldo de Conservas (500ml)</span>
@@ -838,7 +877,6 @@
                             <p class="text-xs text-gray-500 text-right">Faltam <strong>${remaining} potes</strong> para concluir sua cota.</p>
                         </div>
 
-                        <!-- Preferências -->
                         <div>
                             <span class="text-xs font-bold uppercase text-gray-500 block mb-1.5">Sabores Escolhidos</span>
                             <div class="flex flex-wrap gap-1.5">
@@ -846,7 +884,6 @@
                             </div>
                         </div>
 
-                        <!-- Histórico de Entregas -->
                         <div class="bg-earth-100 p-4 rounded-2xl border border-earth-200">
                             <h4 class="text-xs font-bold uppercase text-gray-700 mb-2 flex items-center gap-1.5">
                                 <i class="fa-solid fa-clock-rotate-left text-brand-700"></i> Histórico de Entregas Comprovadas
@@ -854,201 +891,30 @@
                             ${historyHtml}
                         </div>
 
-                        <!-- Botão Compartilhar Comprovante -->
-                        <button onclick="shareReceiptWhatsApp('${m.id}')" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl shadow transition flex items-center justify-center gap-2 text-sm">
+                        <button id="share-whatsapp-btn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl shadow transition flex items-center justify-center gap-2 text-sm">
                             <i class="fa-brands fa-whatsapp text-lg"></i> Salvar / Enviar Comprovante no Meu WhatsApp
                         </button>
                     </div>
                 </div>
             `;
-        }
 
-        window.copyPixKey = function() {
-            navigator.clipboard.writeText(CONFIG.chavePix);
-            alert("Chave Pix copiada: " + CONFIG.chavePix);
-        };
-
-        window.shareReceiptWhatsApp = function(id) {
-            const m = members.find(item => String(item.id) === String(id));
-            if (!m) return;
-            const statusText = m.paid ? `PAGO (Confirmado em ${m.paidDate || 'OK'})` : 'PENDENTE';
-            const hist = (m.deliveries || []).map(d => `- ${d.date}: +${d.qty} pote(s) [${d.details}]`).join('\n') || 'Nenhuma entrega ainda.';
-
-            const text = `*EXTRATO - CONSÓRCIO DE CONSERVAS*\n` +
-                `Participante: *${m.name}*\n` +
-                `Status Cota (R$ 100): *${statusText}*\n` +
-                `Saldo de Potes: *${m.delivered || 0}/10 entregues* (Faltam ${10 - (m.delivered || 0)})\n\n` +
-                `*Histórico de Entregas:*\n${hist}\n\n` +
-                `Consulte online: ${CONFIG.linkSiteGit}`;
-
-            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
-        };
-
-        // PAINEL DO ORGANIZADOR (ADMIN)
-        function renderAdminDashboard() {
-            const tableBody = document.getElementById('members-table-body');
-            if (!tableBody) return;
-
-            const totalMembers = members.length;
-            const paidMembers = members.filter(m => m.paid).length;
-            const totalCash = paidMembers * 100;
-            const totalPotesContratados = totalMembers * 10;
-            const totalPotesEntregues = members.reduce((acc, m) => acc + (m.delivered || 0), 0);
-            const potesSobraOrganizador = totalMembers * 3;
-
-            document.getElementById('metric-total-members').innerText = totalMembers;
-            document.getElementById('metric-total-cash').innerText = `R$ ${totalCash}`;
-            document.getElementById('metric-potes-entrega').innerText = `${totalPotesEntregues} / ${totalPotesContratados}`;
-            document.getElementById('metric-potes-sobra').innerText = `+${potesSobraOrganizador} potes`;
-
-            if (members.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">Nenhum participante inscrito ainda.</td></tr>`;
-                return;
+            if (!m.paid) {
+                document.getElementById('copy-pix-btn').addEventListener('click', () => {
+                    navigator.clipboard.writeText(CONFIG.chavePix);
+                    alert("Chave Pix copiada: " + CONFIG.chavePix);
+                });
             }
 
-            tableBody.innerHTML = members.map(m => {
-                const delivered = m.delivered || 0;
-                const remaining = Math.max(0, 10 - delivered);
+            document.getElementById('share-whatsapp-btn').addEventListener('click', () => {
+                const statusText = m.paid ? `PAGO (Confirmado em ${m.paidDate || 'OK'})` : 'PENDENTE';
+                const hist = (m.deliveries || []).map(d => `- ${d.date}: +${d.qty} pote(s) [${d.details}]`).join('\n') || 'Nenhuma entrega ainda.';
 
-                return `
-                    <tr class="hover:bg-gray-50 transition">
-                        <td class="p-4">
-                            <div class="font-bold text-gray-900">${m.name}</div>
-                            <div class="text-xs text-gray-500">${m.phone}</div>
-                        </td>
-                        <td class="p-4">
-                            <div class="flex flex-wrap gap-1">
-                                ${(m.items || []).map(item => `<span class="bg-earth-200 text-earth-800 text-xs px-2 py-0.5 rounded-md">${item}</span>`).join('')}
-                            </div>
-                        </td>
-                        <td class="p-4">
-                            <button onclick="togglePaidStatus('${m.id}')" class="px-3 py-1.5 rounded-full text-xs font-bold transition ${m.paid ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-amber-100 text-amber-800 hover:bg-amber-200'}">
-                                ${m.paid ? `<i class="fa-solid fa-circle-check mr-1"></i> Pago (${m.paidDate || 'OK'})` : '<i class="fa-solid fa-clock mr-1"></i> Confirmar Pix'}
-                            </button>
-                        </td>
-                        <td class="p-4">
-                            <div class="font-bold text-gray-800 text-sm">${delivered} / 10 entregues</div>
-                            <div class="text-xs text-gray-500">Faltam ${remaining} potes</div>
-                        </td>
-                        <td class="p-4 text-right space-x-1">
-                            <button onclick="openDeliveryModal('${m.id}')" class="bg-brand-700 hover:bg-brand-800 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm" title="Registrar entrega de potes">
-                                <i class="fa-solid fa-jar mr-1"></i> Entregar
-                            </button>
-                            <button onclick="notifyParticipantWhatsApp('${m.id}')" class="bg-green-600 hover:bg-green-700 text-white text-xs font-semibold px-2.5 py-1.5 rounded-lg shadow-sm" title="Enviar comprovante no WhatsApp">
-                                <i class="fa-brands fa-whatsapp"></i>
-                            </button>
-                            <button onclick="deleteMember('${m.id}')" class="text-red-600 hover:text-red-800 text-sm p-1.5" title="Excluir">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        }
+                const text = `*EXTRATO - CONSÓRCIO DE CONSERVAS*\n` +
+                    `Participante: *${m.name}*\n` +
+                    `Status Cota (R$ 100): *${statusText}*\n` +
+                    `Saldo de Potes: *${m.delivered || 0}/10 entregues* (Faltam ${10 - (m.delivered || 0)})\n\n` +
+                    `*Histórico de Entregas:*\n${hist}\n\n` +
+                    `Consulte online: ${CONFIG.linkSiteGit}`;
 
-        window.togglePaidStatus = async function(id) {
-            const m = members.find(item => String(item.id) === String(id));
-            if (!m) return;
-            const today = new Date().toLocaleDateString('pt-BR');
-            const updated = {
-                ...m,
-                paid: !m.paid,
-                paidDate: !m.paid ? today : null
-            };
-            await saveOrUpdateMember(updated);
-        };
-
-        window.openDeliveryModal = function(id) {
-            const m = members.find(item => String(item.id) === String(id));
-            if (!m) return;
-            document.getElementById('delivery-member-id').value = m.id;
-            document.getElementById('delivery-member-name').innerText = `Participante: ${m.name} (Faltam ${10 - (m.delivered || 0)} potes)`;
-            document.getElementById('delivery-qty').value = 2;
-            document.getElementById('delivery-details').value = '';
-            document.getElementById('modal-register-delivery').classList.remove('hidden');
-        };
-
-        window.closeDeliveryModal = function() {
-            document.getElementById('modal-register-delivery').classList.add('hidden');
-        };
-
-        window.confirmDeliveryRegistration = async function(event) {
-            event.preventDefault();
-            const id = document.getElementById('delivery-member-id').value;
-            const qty = parseInt(document.getElementById('delivery-qty').value, 10);
-            const details = document.getElementById('delivery-details').value.trim();
-
-            const m = members.find(item => String(item.id) === String(id));
-            if (!m) return;
-
-            const today = new Date().toLocaleDateString('pt-BR');
-            const newDelivered = Math.min(10, (m.delivered || 0) + qty);
-            const deliveries = [...(m.deliveries || []), { date: today, qty, details }];
-
-            const updated = { ...m, delivered: newDelivered, deliveries };
-            await saveOrUpdateMember(updated);
-            closeDeliveryModal();
-
-            if (confirm("Entrega registrada com sucesso! Deseja enviar o comprovante desta entrega no WhatsApp do participante agora?")) {
-                notifyParticipantWhatsApp(id);
-            }
-        };
-
-        window.notifyParticipantWhatsApp = function(id) {
-            const m = members.find(item => String(item.id) === String(id));
-            if (!m) return;
-            const phone = normalizePhone(m.phone);
-            const targetPhone = phone.startsWith('55') ? phone : `55${phone}`;
-            const lastDelivery = (m.deliveries || []).slice(-1)[0];
-
-            let msg = `Olá *${m.name}*! Atualização do seu *Consórcio de Conservas*:\n\n`;
-            if (lastDelivery) {
-                msg += `✅ *Última Entrega (${lastDelivery.date}):* +${lastDelivery.qty} pote(s) (${lastDelivery.details})\n`;
-            }
-            msg += `💰 *Pagamento:* ${m.paid ? 'Confirmado (R$ 100,00)' : 'Pendente'}\n` +
-                   `📊 *Seu Saldo:* ${m.delivered || 0} de 10 potes entregues (Faltam ${10 - (m.delivered || 0)})\n\n` +
-                   `Acesse seu comprovante completo a qualquer momento usando seu número de WhatsApp no link:\n${CONFIG.linkSiteGit}`;
-
-            window.open(`https://api.whatsapp.com/send?phone=${targetPhone}&text=${encodeURIComponent(msg)}`, '_blank');
-        };
-
-        window.deleteMember = async function(id) {
-            if (confirm("Tem certeza que deseja remover este participante?")) {
-                await removeMemberById(id);
-            }
-        };
-
-        window.openAddParticipantModal = function() {
-            document.getElementById('modal-add-member').classList.remove('hidden');
-        };
-
-        window.closeAddParticipantModal = function() {
-            document.getElementById('modal-add-member').classList.add('hidden');
-            document.getElementById('admin-add-form').reset();
-        };
-
-        window.saveAdminMember = async function(event) {
-            event.preventDefault();
-            const name = document.getElementById('admin-name').value.trim();
-            const phone = normalizePhone(document.getElementById('admin-phone').value);
-            const paid = document.getElementById('admin-paid').value === 'true';
-            const itemsRaw = document.getElementById('admin-items').value.trim();
-            const items = itemsRaw ? itemsRaw.split(',').map(i => i.trim()) : ['Diversos'];
-
-            const newMember = {
-                id: String(Date.now()),
-                name,
-                phone,
-                items,
-                paid,
-                paidDate: paid ? new Date().toLocaleDateString('pt-BR') : null,
-                delivered: 0,
-                deliveries: []
-            };
-
-            await saveOrUpdateMember(newMember);
-            closeAddParticipantModal();
-        };
-    </script>
-</body>
-</html>
+                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+            });
