@@ -290,7 +290,7 @@
                         </div>
                         <button type="submit" id="btn-submit-form" class="w-full sm:w-auto bg-amber-700 hover:bg-amber-800 text-white font-bold px-8 py-4 rounded-xl shadow-md transition flex items-center justify-center gap-2">
                             <i class="fa-brands fa-whatsapp text-lg"></i>
-                            Reservar e Enviar no WhatsApp
+                            Reservar e Ver Dados do Pix
                         </button>
                     </div>
                 </form>
@@ -515,7 +515,6 @@
             { id: 'cenoura', name: 'Cenoura', method: 'Picles Crocante', icon: 'fa-carrot', color: 'bg-amber-100 text-amber-900', desc: 'Cenoura em palitos ou rodelas branqueadas, preservadas no vinagre com pimenta-do-reino.', tip: 'Combinação clássica e super colorida.' }
         ];
 
-        // Tornando funções acessíveis globalmente fora do escopo do módulo
         window.switchTab = function(tabId) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active-tab'));
@@ -529,7 +528,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
-        // Inicialização
         window.addEventListener('DOMContentLoaded', () => {
             renderHomeVegetables();
             renderVegetableDetails();
@@ -592,7 +590,6 @@
             }
         }
 
-        // Configuração de Eventos Globais
         function setupEventListeners() {
             document.querySelectorAll('[data-tab]').forEach(btn => {
                 btn.addEventListener('click', (e) => {
@@ -614,9 +611,7 @@
                 document.getElementById('mobile-menu').classList.toggle('hidden');
             });
 
-            // Formulário de Inscrição corrigido
             document.getElementById('order-form').addEventListener('submit', submitForm);
-
             document.getElementById('search-form').addEventListener('submit', searchParticipantQuota);
 
             document.getElementById('open-add-member-btn').addEventListener('click', () => {
@@ -747,21 +742,13 @@
 
             await saveOrUpdateMember(newMember);
 
-            const message = `Olá! Acabei de reservar minha cota no *Consórcio de Conservas Artesanais*.\n\n` +
-                `*Nome:* ${name}\n` +
-                `*WhatsApp:* ${cleanPhone}\n` +
-                `*Cota:* 10 potes de 500ml (R$ 100,00)\n` +
-                `*Preferências:* ${selectedVegIds.join(', ')}\n\n` +
-                `Vou fazer o Pix de R$ 100,00 para ativar meu comprovante!`;
-
-            const whatsappUrl = `https://api.whatsapp.com/send?phone=${CONFIG.organizadorWhatsApp}&text=${encodeURIComponent(message)}`;
-            window.open(whatsappUrl, '_blank');
-
+            // Limpa o formulário
             document.getElementById('order-form').reset();
             selectedVegIds = [];
             renderFormCheckboxes();
             document.getElementById('veg-count').innerText = 'Selecionados: 0/5';
 
+            // Vai direto para a aba de extrato e mostra o cartão com o PIX
             document.getElementById('search-phone-input').value = cleanPhone;
             window.switchTab('extrato');
             renderQuotaCard(newMember);
@@ -822,13 +809,15 @@
                             </div>
                             <span class="bg-amber-600 text-white text-xs font-bold px-3 py-1 rounded-full">PENDENTE</span>
                         </div>
-                        <div class="bg-white p-3 rounded-xl border border-amber-200 text-xs space-y-1">
-                            <p class="text-gray-600">Para validar sua cota, faça o Pix de <strong>R$ 100,00</strong>:</p>
-                            <p class="font-mono font-bold text-sm text-gray-900">Chave Pix: ${CONFIG.chavePix}</p>
-                            <p class="text-gray-500">Favorecido: ${CONFIG.nomeRecebedorPix}</p>
-                            <button id="copy-pix-btn" class="mt-2 bg-amber-700 hover:bg-amber-800 text-white font-semibold px-3 py-1.5 rounded-lg text-xs inline-flex items-center gap-1.5">
-                                <i class="fa-regular fa-copy"></i> Copiar Chave Pix
-                            </button>
+                        <div class="bg-white p-3.5 rounded-xl border border-amber-200 text-xs space-y-2">
+                            <p class="text-gray-700">Para ativar sua cota, faça o Pix de <strong>R$ 100,00</strong>:</p>
+                            <div class="bg-earth-100 p-2.5 rounded-lg border border-earth-300 flex items-center justify-between">
+                                <span class="font-mono font-bold text-sm text-gray-900">${CONFIG.chavePix}</span>
+                                <button id="copy-pix-btn" class="bg-amber-700 hover:bg-amber-800 text-white font-semibold px-3 py-1.5 rounded-lg text-xs inline-flex items-center gap-1.5 shadow">
+                                    <i class="fa-regular fa-copy"></i> Copiar Chave Pix
+                                </button>
+                            </div>
+                            <p class="text-gray-500 text-[11px]">Favorecido: <strong>${CONFIG.nomeRecebedorPix}</strong></p>
                         </div>
                     </div>
                 `;
@@ -884,9 +873,12 @@
                             ${historyHtml}
                         </div>
 
-                        <button id="share-whatsapp-btn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl shadow transition flex items-center justify-center gap-2 text-sm">
-                            <i class="fa-brands fa-whatsapp text-lg"></i> Salvar / Enviar Comprovante no Meu WhatsApp
-                        </button>
+                        <div class="space-y-2 pt-2">
+                            <p class="text-xs text-gray-600 text-center font-medium">Deseja enviar seu comprovante ou falar com o organizador?</p>
+                            <button id="share-whatsapp-btn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl shadow transition flex items-center justify-center gap-2 text-sm">
+                                <i class="fa-brands fa-whatsapp text-lg"></i> Falar com o Organizador no WhatsApp
+                            </button>
+                        </div>
                     </div>
                 </div>
             `;
@@ -894,7 +886,7 @@
             if (!m.paid) {
                 document.getElementById('copy-pix-btn').addEventListener('click', () => {
                     navigator.clipboard.writeText(CONFIG.chavePix);
-                    alert("Chave Pix copiada: " + CONFIG.chavePix);
+                    alert("Chave Pix copiada com sucesso: " + CONFIG.chavePix);
                 });
             }
 
@@ -902,14 +894,14 @@
                 const statusText = m.paid ? `PAGO (Confirmado em ${m.paidDate || 'OK'})` : 'PENDENTE';
                 const hist = (m.deliveries || []).map(d => `- ${d.date}: +${d.qty} pote(s) [${d.details}]`).join('\n') || 'Nenhuma entrega ainda.';
 
-                const text = `*EXTRATO - CONSÓRCIO DE CONSERVAS*\n` +
+                const text = `*INSCRIÇÃO - CONSÓRCIO DE CONSERVAS*\n` +
                     `Participante: *${m.name}*\n` +
+                    `WhatsApp: ${m.phone}\n` +
                     `Status Cota (R$ 100): *${statusText}*\n` +
-                    `Saldo de Potes: *${m.delivered || 0}/10 entregues* (Faltam ${10 - (m.delivered || 0)})\n\n` +
-                    `*Histórico de Entregas:*\n${hist}\n\n` +
+                    `Preferências: ${(m.items || []).join(', ')}\n\n` +
                     `Consulte online: ${CONFIG.linkSiteGit}`;
 
-                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+                window.open(`https://api.whatsapp.com/send?phone=${CONFIG.organizadorWhatsApp}&text=${encodeURIComponent(text)}`, '_blank');
             });
         }
 
