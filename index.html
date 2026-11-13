@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Repassa Aí | Localização Bazar de Garagem (Dia 14/11) - Rua Antonio Sabino Qd. 15, Lt. 16 Parque das Primavera - Anapolis Gois</title>
+    <title>Repassa Aí | Localização Bazar de Garagem (Dia 14/11) - Qd. 15, Lt. 16</title>
     <meta name="description" content="Endereço e localização no Google Maps do Bazar de Garagem (Dia 14/11): Rua Antônio Sabino Rodrigues, Quadra 15, Lote 16 - Parque das Primaveras, Anápolis - GO.">
     
     <!-- Google Fonts: Fredoka e Inter -->
@@ -104,11 +104,11 @@
             <div class="bg-gradient-to-r from-bazarBlue via-bazarRoyal to-bazarBlue px-4 py-4 sm:px-7 sm:py-5 text-center text-white">
                 <div class="inline-block wood-badge px-4 py-1 rounded-xl mb-1.5 transform -rotate-1">
                     <span class="font-display text-lg sm:text-2xl font-bold text-bazarRed text-stroke-white tracking-wide">
-                        BAZAR DE GARAGEM • DIA 14/11
+                        BAZAR DE GARAGEM • REPASSA AÍ • DIA 14/11
                     </span>
                 </div>
-                <h1 class="text-lg sm:text-2xl font-extrabold tracking-tight text-bazarYellow mt-1">
-                    <i class="fa-solid fa-map-location-dot mr-1.5"></i> Localização Oficial — Como Chegar
+                <h1 class="text-xl sm:text-3xl font-black tracking-tight text-bazarYellow mt-1 uppercase">
+                    <i class="fa-solid fa-map-location-dot mr-1.5"></i> ONDE VAI SER O BAZAR
                 </h1>
             </div>
 
@@ -116,9 +116,9 @@
             <div class="p-4 sm:p-7 space-y-5">
 
                 <!-- Caixa de Alto Contraste com o Endereço Completo -->
-                <div class="bg-amber-50 border-2 border-amber-400 rounded-2xl p-4 sm:p-6 text-center shadow-inner">
-                    <span class="inline-flex items-center gap-1.5 bg-bazarRed text-white text-xs sm:text-sm font-black uppercase tracking-wider px-3.5 py-1 rounded-full mb-3 shadow-sm">
-                        <i class="fa-solid fa-house-chimney"></i> Atenção ao número: QUADRA 15, LOTE 16
+                <div class="bg-amber-50 border-2 border-amber-400 rounded-2xl p-4 sm:p-6 text-center shadow-inner space-y-3">
+                    <span class="inline-flex items-center gap-1.5 bg-bazarRed text-white text-xs sm:text-sm font-black uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-sm">
+                        <i class="fa-solid fa-house-chimney"></i> Atenção: A casa é o Lote 16 (ao lado do ponto marcado no mapa)
                     </span>
 
                     <p id="endereco-completo" class="text-xl sm:text-3xl font-black text-slate-900 leading-snug tracking-tight">
@@ -126,56 +126,60 @@
                         <span class="bg-bazarYellow text-bazarBlue px-2.5 py-0.5 rounded-lg inline-block my-1 border border-amber-500">
                             Quadra 15, Lote 16
                         </span><br>
-                        Parque das Primaveras, Anápolis - GO
+                        Parque das Primaveras, Anápolis - GO<br>
+                        <span class="text-base sm:text-xl font-extrabold text-slate-700">(CEP: 75124-810)</span>
                     </p>
                 </div>
 
-                <!-- BOTÃO GIGANTE PRINCIPAL: ABRIR NO GOOGLE MAPS -->
+                <!-- BOTÃO GIGANTE PRINCIPAL: ABRIR NO GOOGLE MAPS (LINK OFICIAL EXCLUSIVO) -->
                 <div class="space-y-3">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Rua+Antonio+Sabino+Rodrigues,+Quadra+15,+Lote+16,+Parque+das+Primaveras,+Anapolis+-+GO" 
+                    <a href="https://maps.app.goo.gl/TWSF6WuQYNKJn6K68" 
                        target="_blank" 
                        rel="noopener noreferrer" 
-                       class="btn-maps-hero w-full flex items-center justify-center gap-3 bg-mapsBlue hover:bg-blue-700 active:scale-[0.99] text-white font-black text-lg sm:text-2xl py-5 px-5 rounded-2xl transition-all text-center leading-tight border-2 border-blue-900">
+                       class="btn-maps-hero w-full flex items-center justify-center gap-3 bg-gradient-to-r from-mapsBlue to-emerald-600 hover:from-blue-700 hover:to-emerald-700 active:scale-[0.99] text-white font-black text-lg sm:text-2xl py-5 px-5 rounded-2xl transition-all text-center leading-tight border-2 border-blue-950">
                         <span class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white text-bazarRed flex items-center justify-center shrink-0 shadow-md">
                             <i class="fa-solid fa-location-dot text-xl sm:text-2xl"></i>
                         </span>
-                        <span>ABRIR LOCALIZAÇÃO NO GOOGLE MAPS</span>
+                        <span>ABRIR LOCALIZAÇÃO EXATA NO GOOGLE MAPS</span>
                     </a>
 
-                    <!-- Linha Secundária: Copiar Endereço (Uber/99/Waze) + Link Curto Pin -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <button onclick="copiarEndereco()" 
-                                id="btn-copiar" 
-                                class="w-full flex items-center justify-center gap-2.5 bg-slate-900 hover:bg-slate-800 active:scale-[0.99] text-white font-extrabold text-sm sm:text-base py-4 px-4 rounded-2xl shadow-md transition-all cursor-pointer">
-                            <i class="fa-solid fa-copy text-bazarYellow text-lg"></i>
-                            <span>COPIAR ENDEREÇO COMPLETO</span>
-                        </button>
+                    <!-- Botão Secundário: Copiar Endereço Completo (Uber/99/Waze) -->
+                    <button onclick="copiarEndereco()" 
+                            id="btn-copiar" 
+                            class="w-full flex items-center justify-center gap-2.5 bg-slate-900 hover:bg-slate-800 active:scale-[0.99] text-white font-extrabold text-sm sm:text-base py-4 px-4 rounded-2xl shadow-md transition-all cursor-pointer">
+                        <i class="fa-solid fa-copy text-bazarYellow text-lg"></i>
+                        <span>COPIAR ENDEREÇO COMPLETO (UBER / 99 / WAZE)</span>
+                    </button>
+                </div>
 
+                <!-- Mapa Interativo Embutido Centralizado no CEP 75124-810 com Overlay Clicável Oficial -->
+                <div class="rounded-2xl overflow-hidden border-2 border-slate-300 shadow-md bg-slate-200 relative group">
+                    <div class="bg-slate-800 text-white text-xs sm:text-sm font-bold px-4 py-2 flex items-center justify-between">
+                        <span><i class="fa-solid fa-street-view text-bazarYellow mr-1.5"></i> Parque das Primaveras — CEP 75124-810 (Qd. 15, Lt. 16)</span>
+                        <a href="https://maps.app.goo.gl/TWSF6WuQYNKJn6K68" target="_blank" rel="noopener noreferrer" class="text-bazarYellow underline">
+                            Abrir Pin Oficial
+                        </a>
+                    </div>
+                    <div class="relative">
+                        <iframe 
+                            title="Mapa - Rua Antônio Sabino Rodrigues, Parque das Primaveras, Anápolis - GO, CEP 75124-810"
+                            src="https://maps.google.com/maps?q=Rua%20Antonio%20Sabino%20Rodrigues,%20Parque%20das%20Primaveras,%20Anapolis%20-%20GO,%2075124-810&t=&z=16&ie=UTF8&iwloc=&output=embed" 
+                            class="w-full h-56 sm:h-72 border-0" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                        <!-- Overlay clicável que garante redirecionamento para o pin oficial -->
                         <a href="https://maps.app.goo.gl/TWSF6WuQYNKJn6K68" 
                            target="_blank" 
                            rel="noopener noreferrer" 
-                           class="w-full flex items-center justify-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-950 font-extrabold text-sm sm:text-base py-4 px-4 rounded-2xl border-2 border-emerald-500 transition-all">
-                            <i class="fa-solid fa-map-pin text-bazarRed text-lg"></i>
-                            <span>ABRIR PIN DIRETO NO MAPS</span>
+                           aria-label="Abrir pin exato no Google Maps"
+                           class="absolute inset-0 bg-slate-900/10 hover:bg-slate-900/25 transition-colors flex items-end justify-center p-3">
+                            <span class="bg-white/95 text-bazarBlue font-black text-xs sm:text-sm px-4 py-2 rounded-full shadow-lg border-2 border-mapsBlue flex items-center gap-2">
+                                <i class="fa-solid fa-up-right-from-square text-mapsBlue"></i>
+                                Toque no mapa para abrir a rota oficial no Google Maps
+                            </span>
                         </a>
                     </div>
-                </div>
-
-                <!-- Mapa Interativo Embutido para Visualização Imediata da Rua -->
-                <div class="rounded-2xl overflow-hidden border-2 border-slate-300 shadow-md bg-slate-200">
-                    <div class="bg-slate-800 text-white text-xs sm:text-sm font-bold px-4 py-2 flex items-center justify-between">
-                        <span><i class="fa-solid fa-street-view text-bazarYellow mr-1.5"></i> Mapa da Rua (Parque das Primaveras - Qd. 15, Lt. 16)</span>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Rua+Antonio+Sabino+Rodrigues,+Quadra+15,+Lote+16,+Parque+das+Primaveras,+Anapolis+-+GO" target="_blank" rel="noopener noreferrer" class="text-bazarYellow underline">
-                            Expandir GPS
-                        </a>
-                    </div>
-                    <iframe 
-                        title="Mapa - Rua Antônio Sabino Rodrigues, Quadra 15, Lote 16, Parque das Primaveras, Anápolis - GO"
-                        src="https://maps.google.com/maps?q=Rua%20Antonio%20Sabino%20Rodrigues,%20Quadra%2015,%20Lote%2016,%20Parque%20das%20Primaveras,%20Anapolis%20-%20GO&t=&z=16&ie=UTF8&iwloc=&output=embed" 
-                        class="w-full h-56 sm:h-72 border-0" 
-                        loading="lazy" 
-                        referrerpolicy="no-referrer-when-downgrade">
-                    </iframe>
                 </div>
 
             </div>
@@ -235,13 +239,13 @@
                 
                 <div class="space-y-2.5 text-center md:text-left">
                     <span class="inline-flex items-center gap-1.5 bg-bazarYellow text-bazarBlue font-extrabold text-xs uppercase tracking-wider px-3 py-1 rounded-full">
-                        <i class="fa-solid fa-jar"></i> Promoção Especial no Local
+                        <i class="fa-solid fa-jar"></i> Oferta Especial no Local
                     </span>
-                    <h2 class="font-display text-3xl sm:text-4xl font-bold leading-tight">
-                        Conservas Artesanais
+                    <h2 class="font-display text-2xl sm:text-4xl font-bold leading-tight">
+                        CONSERVAS ARTESANAIS — PROMOÇÃO: 10 POR R$ 100,00
                     </h2>
                     <p class="text-emerald-100 text-sm sm:text-base max-w-xl font-medium">
-                        Tempero caseiro irresistível e ingredientes selecionados! Aproveite o combo promocional e garanta as suas no bazar ou encomende pelo WhatsApp.
+                        Tempero caseiro irresistível e ingredientes selecionados! Aproveite o combo promocional no bazar ou fale conosco pelo WhatsApp <strong>(62) 99833-1774</strong>.
                     </p>
                 </div>
 
@@ -250,9 +254,9 @@
                     <div class="font-display text-3xl sm:text-4xl font-bold text-bazarBlue my-1">
                         10 por <span class="text-bazarGreen">R$ 100,00</span>
                     </div>
-                    <span class="block text-xs font-bold text-slate-600 mb-3">Sai a R$ 10,00 cada conserva!</span>
+                    <span class="block text-xs font-bold text-slate-600 mb-3">WhatsApp: (62) 99833-1774</span>
                     
-                    <a href="https://wa.me/5562998331774?text=Ol%C3%A1!%20Tenho%20interesse%20na%20promo%C3%A7%C3%A3o%20das%20conservas%20(10%20por%20R%24%20100%2C00).%20Gostaria%20de%20saber%20mais!" 
+                    <a href="https://wa.me/5562998331774?text=Ol%C3%A1!%20Vi%20o%20an%C3%BAncio%20no%20site%20Repassa%20A%C3%AD%20e%20quero%20saber%20mais%20sobre%20as%20conservas%2010%20por%20R%24%20100%2C00." 
                        target="_blank" 
                        rel="noopener noreferrer" 
                        class="w-full inline-flex items-center justify-center gap-2 bg-whatsGreen hover:bg-green-600 text-white font-extrabold text-sm sm:text-base px-5 py-3.5 rounded-xl shadow-md transition-all">
@@ -269,7 +273,7 @@
     <!-- RODAPÉ -->
     <footer class="max-w-4xl mx-auto px-4 pt-8 pb-6 text-center text-slate-600 text-xs sm:text-sm space-y-2">
         <p class="font-extrabold text-bazarBlue text-base">Não perca essa oportunidade!</p>
-        <p><strong>Repassa Aí</strong> (www.repassaai.com.br) • Parque das Primaveras, Qd. 15, Lt. 16 — Anápolis - GO</p>
+        <p><strong>Repassa Aí</strong> (www.repassaai.com.br) • Parque das Primaveras, Qd. 15, Lt. 16 — CEP 75124-810 — Anápolis - GO</p>
     </footer>
 
     <!-- ===================================================================== -->
@@ -277,15 +281,15 @@
     <!-- ===================================================================== -->
     <div class="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t-2 border-slate-200 p-2.5 shadow-[0_-6px_20px_rgba(0,0,0,0.12)] sm:hidden">
         <div class="grid grid-cols-2 gap-2.5 max-w-md mx-auto">
-            <a href="https://www.google.com/maps/search/?api=1&query=Rua+Antonio+Sabino+Rodrigues,+Quadra+15,+Lote+16,+Parque+das+Primaveras,+Anapolis+-+GO" 
+            <a href="https://maps.app.goo.gl/TWSF6WuQYNKJn6K68" 
                target="_blank" 
                rel="noopener noreferrer" 
                class="flex items-center justify-center gap-2 bg-mapsBlue active:bg-blue-800 text-white font-extrabold text-sm py-3.5 px-3 rounded-xl shadow">
                 <i class="fa-solid fa-location-dot text-bazarYellow text-base"></i>
-                <span>Ir para o Bazar</span>
+                <span>Ver Mapa</span>
             </a>
 
-            <a href="https://wa.me/5562998331774?text=Ol%C3%A1!%20Vi%20o%20site%20Repassa%20A%C3%AD%20sobre%20o%20Bazar%20de%20Garagem%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es." 
+            <a href="https://wa.me/5562998331774" 
                target="_blank" 
                rel="noopener noreferrer" 
                class="flex items-center justify-center gap-2 bg-whatsGreen active:bg-green-700 text-white font-extrabold text-sm py-3.5 px-3 rounded-xl shadow">
@@ -303,7 +307,7 @@
 
     <script>
         function copiarEndereco() {
-            const textoEndereco = "Rua Antônio Sabino Rodrigues, Quadra 15, Lote 16 - Parque das Primaveras, Anápolis - GO";
+            const textoEndereco = "Rua Antônio Sabino Rodrigues, Quadra 15, Lote 16 - Parque das Primaveras, Anápolis - GO, 75124-810";
             const inputTemp = document.createElement("textarea");
             inputTemp.value = textoEndereco;
             document.body.appendChild(inputTemp);
@@ -317,7 +321,7 @@
 
                 const btn = document.getElementById("btn-copiar");
                 const original = btn.innerHTML;
-                btn.innerHTML = '<i class="fa-solid fa-check text-whatsGreen text-lg"></i> <span>ENDEREÇO COPIADO!</span>';
+                btn.innerHTML = '<i class="fa-solid fa-check text-whatsGreen text-lg"></i> <span>Endereço copiado!</span>';
 
                 setTimeout(() => {
                     toast.classList.remove("opacity-100");
@@ -333,9 +337,10 @@
 
         function compartilharSite() {
             const msg = encodeURIComponent(
-                "📍 Endereço do *Bazar de Garagem* (Sábado, Dia 14/11):\n" +
-                "Rua Antônio Sabino Rodrigues, *Quadra 15, Lote 16* - Parque das Primaveras, Anápolis - GO.\n\n" +
-                "Veja o mapa e as ofertas (roupas de R$ 5, R$ 10 e R$ 15 + Conservas 10 por R$ 100) aqui: https://www.repassaai.com.br"
+                "📍 Endereço do *Bazar de Garagem* (Dia 14/11):\n" +
+                "Rua Antônio Sabino Rodrigues, *Quadra 15, Lote 16* — Parque das Primaveras, Anápolis - GO (CEP: 75124-810).\n\n" +
+                "Localização exata no Google Maps: https://maps.app.goo.gl/TWSF6WuQYNKJn6K68\n" +
+                "Veja também no site: https://www.repassaai.com.br"
             );
             window.open("https://wa.me/?text=" + msg, "_blank", "noopener,noreferrer");
         }
