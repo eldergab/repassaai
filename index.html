@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Repassa Aí | Bazar de Garagem (Dia 14/11) & Conservas Artesanais</title>
-    <meta name="description" content="Venha conferir o Bazar de Garagem no Parque das Primaveras (Qd. 15, Lt. 16), Anápolis - GO! Roupas a partir de R$ 5,00 e promoção especial de Conservas Artesanais: 10 por R$ 100,00.">
+    <title>Repassa Aí | Localização Bazar de Garagem (Dia 14/11) - Qd. 15, Lt. 16</title>
+    <meta name="description" content="Endereço e localização no Google Maps do Bazar de Garagem (Dia 14/11): Rua Antônio Sabino Rodrigues, Quadra 15, Lote 16 - Parque das Primaveras, Anápolis - GO.">
     
-    <!-- Google Fonts: Fredoka (títulos divertidos estilo panfleto) e Inter (leitura limpa) -->
+    <!-- Google Fonts: Fredoka e Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome para ícones modernos -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <!-- Tailwind CSS via CDN -->
@@ -29,13 +29,10 @@
                         bazarYellow: '#FFD400',
                         bazarBlue: '#0B2559',
                         bazarRoyal: '#0056B3',
-                        bazarGreen: '#1E8E3E',
+                        bazarGreen: '#16A34A',
                         bazarPink: '#E91E63',
                         whatsGreen: '#25D366',
-                    },
-                    boxShadow: {
-                        'tag': '0 10px 20px -5px rgba(0, 0, 0, 0.25), 0 4px 6px -2px rgba(0, 0, 0, 0.1)',
-                        'card': '0 20px 35px -10px rgba(11, 37, 89, 0.15)',
+                        mapsBlue: '#1A73E8',
                     }
                 }
             }
@@ -43,522 +40,304 @@
     </script>
 
     <style>
-        /* Estilos customizados para reproduzir a energia do panfleto com acabamento profissional */
-        .wood-sign {
-            background: linear-gradient(180deg, #F5A623 0%, #D97706 50%, #B45309 100%);
-            border: 4px solid #78350F;
-            box-shadow: 0 12px 25px rgba(0,0,0,0.28), inset 0 3px 6px rgba(255,255,255,0.45);
+        .wood-badge {
+            background: linear-gradient(180deg, #F59E0B 0%, #D97706 100%);
+            border: 3px solid #78350F;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
         }
 
         .text-stroke-white {
             text-shadow: 
-                -2px -2px 0 #fff,  
-                 2px -2px 0 #fff,
-                -2px  2px 0 #fff,
-                 2px  2px 0 #fff,
-                 0px  4px 8px rgba(0,0,0,0.35);
+                -1.5px -1.5px 0 #fff,  
+                 1.5px -1.5px 0 #fff,
+                -1.5px  1.5px 0 #fff,
+                 1.5px  1.5px 0 #fff,
+                 0px  3px 6px rgba(0,0,0,0.3);
         }
 
-        .text-stroke-dark {
-            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+        @keyframes pulse-cta {
+            0%, 100% { transform: scale(1); box-shadow: 0 10px 25px -5px rgba(26, 115, 232, 0.55); }
+            50% { transform: scale(1.02); box-shadow: 0 16px 32px -4px rgba(26, 115, 232, 0.75); }
         }
 
-        .price-tag {
-            position: relative;
-            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .price-tag:hover {
-            transform: translateY(-6px) rotate(-2deg) scale(1.04);
-        }
-
-        .price-tag::before {
-            content: '';
-            position: absolute;
-            top: 8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 12px;
-            height: 12px;
-            background-color: #FFFBEB;
-            border: 3px solid #92400E;
-            border-radius: 9999px;
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
-        }
-
-        .brush-highlight {
-            background: linear-gradient(104deg, rgba(255, 212, 0, 0) 0.9%, rgba(255, 212, 0, 1) 2.4%, rgba(255, 212, 0, 0.9) 5.8%, rgba(255, 212, 0, 0.95) 93%, rgba(255, 212, 0, 0.85) 96%, rgba(255, 212, 0, 0) 98%);
-            padding: 0.25rem 1.25rem;
-            border-radius: 14px;
-        }
-
-        @keyframes pulse-soft {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.04); }
-        }
-
-        .animate-pulse-soft {
-            animation: pulse-soft 2.5s infinite ease-in-out;
+        .btn-maps-hero {
+            animation: pulse-cta 2.2s infinite ease-in-out;
         }
     </style>
 </head>
-<body class="bg-amber-50/70 text-slate-800 antialiased selection:bg-bazarYellow selection:text-bazarBlue">
+<body class="bg-slate-100 text-slate-900 antialiased pb-24 sm:pb-8">
 
-    <!-- Barra Superior de Aviso Urgente -->
-    <div class="bg-bazarBlue text-white text-xs sm:text-sm font-semibold py-2.5 px-4 text-center shadow-md">
-        <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-center gap-2">
-            <span class="inline-flex items-center gap-1.5 bg-bazarRed text-white px-2.5 py-0.5 rounded-full text-xs uppercase tracking-wider font-bold animate-pulse">
-                <i class="fa-solid fa-fire"></i> É Amanhã!
-            </span>
-            <span>Sábado, <strong>Dia 14/11</strong> • Parque das Primaveras (Qd. 15, Lt. 16) • Anápolis - GO</span>
-        </div>
-    </div>
-
-    <!-- Cabeçalho / Identidade Repassa Aí -->
-    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-amber-200/80 shadow-sm">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
-            <!-- Logo -->
-            <a href="#" class="flex items-center gap-2.5 group">
-                <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-bazarRed to-amber-500 flex items-center justify-center text-white shadow-md group-hover:rotate-6 transition-transform">
-                    <i class="fa-solid fa-tags text-lg sm:text-xl"></i>
-                </div>
-                <div>
-                    <span class="font-display text-xl sm:text-2xl font-bold text-bazarBlue tracking-tight block leading-none">
-                        Repassa <span class="text-bazarRed">Aí</span>
+    <!-- CABEÇALHO COMPACTO E DIRETO -->
+    <header class="bg-bazarBlue text-white sticky top-0 z-40 shadow-md border-b-2 border-bazarYellow">
+        <div class="max-w-4xl mx-auto px-4 py-2.5 flex items-center justify-between gap-2">
+            <a href="#" class="flex items-center gap-2">
+                <span class="w-8 h-8 rounded-xl bg-bazarRed flex items-center justify-center text-bazarYellow shadow">
+                    <i class="fa-solid fa-location-dot text-base"></i>
+                </span>
+                <div class="leading-none">
+                    <span class="font-display text-lg sm:text-xl font-bold tracking-tight block">
+                        Repassa <span class="text-bazarYellow">Aí</span>
                     </span>
-                    <span class="text-[11px] font-medium text-slate-500 tracking-wide">repassaai.com.br</span>
+                    <span class="text-[10px] text-blue-200 font-semibold">repassaai.com.br</span>
                 </div>
             </a>
 
-            <!-- Navegação Rápida Desktop -->
-            <nav class="hidden md:flex items-center gap-6 text-sm font-semibold text-slate-700">
-                <a href="#bazar" class="hover:text-bazarRed transition-colors">Bazar de Garagem</a>
-                <a href="#localizacao" class="hover:text-bazarRed transition-colors">Como Chegar (Qd. 15 Lt. 16)</a>
-                <a href="#conservas" class="hover:text-bazarGreen transition-colors flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-bazarGreen"></span>
-                    Conservas 10 por R$ 100
-                </a>
-            </nav>
-
-            <!-- Botão Compartilhar no WhatsApp -->
             <div class="flex items-center gap-2">
-                <button onclick="compartilharSite()" class="inline-flex items-center gap-2 bg-amber-100 hover:bg-amber-200 text-amber-900 font-semibold text-xs sm:text-sm px-3.5 py-2.5 rounded-xl transition-all cursor-pointer border border-amber-300" title="Enviar página para amigos no WhatsApp">
-                    <i class="fa-solid fa-share-nodes text-bazarRed"></i>
-                    <span class="hidden sm:inline">Compartilhar</span>
+                <span class="bg-bazarRed text-white text-xs sm:text-sm font-extrabold px-3 py-1 rounded-full uppercase tracking-wide shadow">
+                    Sábado • Dia 14/11
+                </span>
+                <button onclick="compartilharSite()" class="bg-white/15 hover:bg-white/25 text-white p-2 rounded-xl transition-colors cursor-pointer" title="Compartilhar endereço no WhatsApp">
+                    <i class="fa-solid fa-share-nodes text-sm"></i>
                 </button>
-                <a href="https://wa.me/5562998331774?text=Ol%C3%A1!%20Vi%20o%20panfleto%20do%20Bazar%20de%20Garagem%20no%20Repassa%20A%C3%AD%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-whatsGreen hover:bg-green-600 text-white font-bold text-xs sm:text-sm px-3.5 sm:px-4 py-2.5 rounded-xl shadow-sm transition-all">
-                    <i class="fa-brands fa-whatsapp text-base sm:text-lg"></i>
-                    <span>WhatsApp</span>
-                </a>
             </div>
         </div>
     </header>
 
-    <main>
-        <!-- SEÇÃO 1: HERO / BAZAR DE GARAGEM -->
-        <section id="bazar" class="relative overflow-hidden pt-8 pb-14 sm:pt-12 sm:pb-20 bg-gradient-to-b from-sky-100 via-amber-50 to-amber-50/70">
-            <!-- Elementos decorativos de fundo -->
-            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[400px] bg-bazarYellow/20 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+    <main class="max-w-4xl mx-auto px-3 sm:px-6 pt-4 sm:pt-7 space-y-7">
 
-            <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center">
+        <!-- ===================================================================== -->
+        <!-- 1. HERO / PRIMEIRA DOBRA: ENDEREÇO GIGANTE + BOTÃO DIRETO GOOGLE MAPS -->
+        <!-- ===================================================================== -->
+        <section id="localizacao" aria-label="Localização do Bazar de Garagem" class="bg-white rounded-3xl shadow-xl border-4 border-bazarBlue overflow-hidden">
+            
+            <!-- Faixa de Título do Evento no Topo do Card -->
+            <div class="bg-gradient-to-r from-bazarBlue via-bazarRoyal to-bazarBlue px-4 py-4 sm:px-7 sm:py-5 text-center text-white">
+                <div class="inline-block wood-badge px-4 py-1 rounded-xl mb-1.5 transform -rotate-1">
+                    <span class="font-display text-lg sm:text-2xl font-bold text-bazarRed text-stroke-white tracking-wide">
+                        BAZAR DE GARAGEM • DIA 14/11
+                    </span>
+                </div>
+                <h1 class="text-lg sm:text-2xl font-extrabold tracking-tight text-bazarYellow mt-1">
+                    <i class="fa-solid fa-map-location-dot mr-1.5"></i> Localização Oficial — Como Chegar
+                </h1>
+            </div>
+
+            <!-- Corpo Principal com Endereço em Letras Grandes e Botões de Ação -->
+            <div class="p-4 sm:p-7 space-y-5">
+
+                <!-- Caixa de Alto Contraste com o Endereço Completo -->
+                <div class="bg-amber-50 border-2 border-amber-400 rounded-2xl p-4 sm:p-6 text-center shadow-inner">
+                    <span class="inline-flex items-center gap-1.5 bg-bazarRed text-white text-xs sm:text-sm font-black uppercase tracking-wider px-3.5 py-1 rounded-full mb-3 shadow-sm">
+                        <i class="fa-solid fa-house-chimney"></i> Atenção ao número: QUADRA 15, LOTE 16
+                    </span>
+
+                    <p id="endereco-completo" class="text-xl sm:text-3xl font-black text-slate-900 leading-snug tracking-tight">
+                        Rua Antônio Sabino Rodrigues,<br>
+                        <span class="bg-bazarYellow text-bazarBlue px-2.5 py-0.5 rounded-lg inline-block my-1 border border-amber-500">
+                            Quadra 15, Lote 16
+                        </span><br>
+                        Parque das Primaveras, Anápolis - GO
+                    </p>
+                </div>
+
+                <!-- BOTÃO GIGANTE PRINCIPAL: ABRIR NO GOOGLE MAPS -->
+                <div class="space-y-3">
+                    <a href="https://www.google.com/maps/search/?api=1&query=Rua+Antonio+Sabino+Rodrigues,+Quadra+15,+Lote+16,+Parque+das+Primaveras,+Anapolis+-+GO" 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       class="btn-maps-hero w-full flex items-center justify-center gap-3 bg-mapsBlue hover:bg-blue-700 active:scale-[0.99] text-white font-black text-lg sm:text-2xl py-5 px-5 rounded-2xl transition-all text-center leading-tight border-2 border-blue-900">
+                        <span class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white text-bazarRed flex items-center justify-center shrink-0 shadow-md">
+                            <i class="fa-solid fa-location-dot text-xl sm:text-2xl"></i>
+                        </span>
+                        <span>ABRIR LOCALIZAÇÃO NO GOOGLE MAPS</span>
+                    </a>
+
+                    <!-- Linha Secundária: Copiar Endereço (Uber/99/Waze) + Link Curto Pin -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <button onclick="copiarEndereco()" 
+                                id="btn-copiar" 
+                                class="w-full flex items-center justify-center gap-2.5 bg-slate-900 hover:bg-slate-800 active:scale-[0.99] text-white font-extrabold text-sm sm:text-base py-4 px-4 rounded-2xl shadow-md transition-all cursor-pointer">
+                            <i class="fa-solid fa-copy text-bazarYellow text-lg"></i>
+                            <span>COPIAR ENDEREÇO COMPLETO</span>
+                        </button>
+
+                        <a href="https://maps.app.goo.gl/TWSF6WuQYNKJn6K68" 
+                           target="_blank" 
+                           rel="noopener noreferrer" 
+                           class="w-full flex items-center justify-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-950 font-extrabold text-sm sm:text-base py-4 px-4 rounded-2xl border-2 border-emerald-500 transition-all">
+                            <i class="fa-solid fa-map-pin text-bazarRed text-lg"></i>
+                            <span>ABRIR PIN DIRETO NO MAPS</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Mapa Interativo Embutido para Visualização Imediata da Rua -->
+                <div class="rounded-2xl overflow-hidden border-2 border-slate-300 shadow-md bg-slate-200">
+                    <div class="bg-slate-800 text-white text-xs sm:text-sm font-bold px-4 py-2 flex items-center justify-between">
+                        <span><i class="fa-solid fa-street-view text-bazarYellow mr-1.5"></i> Mapa da Rua (Parque das Primaveras - Qd. 15, Lt. 16)</span>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Rua+Antonio+Sabino+Rodrigues,+Quadra+15,+Lote+16,+Parque+das+Primaveras,+Anapolis+-+GO" target="_blank" rel="noopener noreferrer" class="text-bazarYellow underline">
+                            Expandir GPS
+                        </a>
+                    </div>
+                    <iframe 
+                        title="Mapa - Rua Antônio Sabino Rodrigues, Quadra 15, Lote 16, Parque das Primaveras, Anápolis - GO"
+                        src="https://maps.google.com/maps?q=Rua%20Antonio%20Sabino%20Rodrigues,%20Quadra%2015,%20Lote%2016,%20Parque%20das%20Primaveras,%20Anapolis%20-%20GO&t=&z=16&ie=UTF8&iwloc=&output=embed" 
+                        class="w-full h-56 sm:h-72 border-0" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===================================================================== -->
+        <!-- 2. DETALHES DO BAZAR DE GARAGEM (PREÇOS R$ 5, R$ 10, R$ 15 + ZAP)     -->
+        <!-- ===================================================================== -->
+        <section id="bazar" class="bg-white rounded-3xl shadow-lg border-2 border-amber-300 p-5 sm:p-8 text-center">
+            <span class="inline-block bg-bazarYellow text-bazarBlue font-extrabold text-xs sm:text-sm uppercase tracking-wider px-3.5 py-1 rounded-full mb-2">
+                O que você vai encontrar lá
+            </span>
+            <h2 class="font-display text-2xl sm:text-4xl font-bold text-bazarBlue">
+                Roupas Femininas <span class="text-bazarPink">e</span> Masculinas
+            </h2>
+            <p class="text-slate-700 font-semibold text-sm sm:text-base mt-1 mb-6">
+                Qualidade, variedade e preços imperdíveis neste sábado, <strong>Dia 14/11</strong>!
+            </p>
+
+            <!-- Etiquetas de Preço -->
+            <div class="grid grid-cols-3 gap-2.5 sm:gap-5 max-w-lg mx-auto mb-7">
+                <div class="bg-bazarRed text-white rounded-2xl py-4 px-2 shadow-md border-2 border-red-900">
+                    <span class="block text-[11px] sm:text-xs font-extrabold uppercase text-amber-100">Peças por</span>
+                    <span class="font-display text-2xl sm:text-4xl font-bold text-bazarYellow block mt-0.5">R$ 5,00</span>
+                </div>
+                <div class="bg-bazarRoyal text-white rounded-2xl py-4 px-2 shadow-md border-2 border-blue-950">
+                    <span class="block text-[11px] sm:text-xs font-extrabold uppercase text-sky-100">Peças por</span>
+                    <span class="font-display text-2xl sm:text-4xl font-bold text-bazarYellow block mt-0.5">R$ 10,00</span>
+                </div>
+                <div class="bg-bazarGreen text-white rounded-2xl py-4 px-2 shadow-md border-2 border-green-950">
+                    <span class="block text-[11px] sm:text-xs font-extrabold uppercase text-emerald-100">Peças por</span>
+                    <span class="font-display text-2xl sm:text-4xl font-bold text-bazarYellow block mt-0.5">R$ 15,00</span>
+                </div>
+            </div>
+
+            <!-- Contato WhatsApp do Bazar -->
+            <div class="bg-green-50 border-2 border-whatsGreen rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="text-center sm:text-left">
+                    <span class="block text-xs font-extrabold uppercase text-green-800">Dúvidas sobre o Bazar?</span>
+                    <span class="font-display text-xl sm:text-2xl font-bold text-slate-900">WhatsApp: (62) 99833-1774</span>
+                </div>
+                <a href="https://wa.me/5562998331774?text=Ol%C3%A1!%20Vi%20o%20panfleto%20do%20Bazar%20de%20Garagem%20do%20dia%2014%2F11%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es." 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-whatsGreen hover:bg-green-600 text-white font-extrabold text-base px-6 py-3.5 rounded-xl shadow-md transition-all">
+                    <i class="fa-brands fa-whatsapp text-2xl"></i>
+                    <span>Chamar no WhatsApp</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- ===================================================================== -->
+        <!-- 3. SEÇÃO PROMOCIONAL: CONSERVAS ARTESANAIS (10 POR R$ 100,00)         -->
+        <!-- ===================================================================== -->
+        <section id="conservas" class="bg-gradient-to-br from-emerald-900 via-green-800 to-teal-900 text-white rounded-3xl shadow-xl border-4 border-bazarYellow p-5 sm:p-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
                 
-                <!-- Placa Estilo Madeira do Panfleto -->
-                <div class="inline-block wood-sign rounded-3xl px-7 py-5 sm:px-12 sm:py-7 mb-6 transform -rotate-1">
-                    <span class="block font-display text-2xl sm:text-4xl font-bold text-bazarBlue text-stroke-white tracking-wide leading-tight">
-                        Bazar de
+                <div class="space-y-2.5 text-center md:text-left">
+                    <span class="inline-flex items-center gap-1.5 bg-bazarYellow text-bazarBlue font-extrabold text-xs uppercase tracking-wider px-3 py-1 rounded-full">
+                        <i class="fa-solid fa-jar"></i> Promoção Especial no Local
                     </span>
-                    <h1 class="font-display text-4xl sm:text-6xl md:text-7xl font-bold text-bazarRed text-stroke-white tracking-tight leading-none mt-1">
-                        Garagem
-                    </h1>
-                </div>
-
-                <!-- Chamada Principal -->
-                <div class="max-w-2xl mx-auto">
-                    <p class="font-display text-2xl sm:text-3xl font-bold text-bazarBlue mb-3">
-                        Venha conferir!
-                    </p>
-                    
-                    <div class="inline-block brush-highlight mb-4">
-                        <h2 class="font-display text-xl sm:text-3xl font-bold text-bazarPink leading-snug">
-                            Roupas Femininas <span class="text-bazarBlue">e</span> Masculinas
-                        </h2>
-                    </div>
-
-                    <p class="text-base sm:text-lg font-semibold text-slate-700 mb-8">
-                        Qualidade, variedade e preços imperdíveis para renovar o guarda-roupa!
-                    </p>
-                </div>
-
-                <!-- Etiquetas de Preços (R$ 5,00 | R$ 10,00 | R$ 15,00) -->
-                <div class="grid grid-cols-3 gap-3 sm:gap-6 max-w-xl mx-auto mb-10">
-                    <!-- Etiqueta R$ 5,00 -->
-                    <div class="price-tag bg-bazarRed text-white rounded-2xl pt-7 pb-4 px-2 sm:px-4 shadow-tag border-2 border-red-800">
-                        <span class="block text-xs sm:text-sm font-bold uppercase tracking-wider text-amber-100">Peças por</span>
-                        <div class="font-display font-bold text-bazarYellow text-stroke-dark leading-none mt-1">
-                            <span class="text-sm sm:text-xl align-top">R$</span>
-                            <span class="text-3xl sm:text-5xl">5</span>
-                            <span class="text-sm sm:text-xl">,00</span>
-                        </div>
-                    </div>
-
-                    <!-- Etiqueta R$ 10,00 -->
-                    <div class="price-tag bg-bazarRoyal text-white rounded-2xl pt-7 pb-4 px-2 sm:px-4 shadow-tag border-2 border-blue-900">
-                        <span class="block text-xs sm:text-sm font-bold uppercase tracking-wider text-sky-100">Peças por</span>
-                        <div class="font-display font-bold text-bazarYellow text-stroke-dark leading-none mt-1">
-                            <span class="text-sm sm:text-xl align-top">R$</span>
-                            <span class="text-3xl sm:text-5xl">10</span>
-                            <span class="text-sm sm:text-xl">,00</span>
-                        </div>
-                    </div>
-
-                    <!-- Etiqueta R$ 15,00 -->
-                    <div class="price-tag bg-bazarGreen text-white rounded-2xl pt-7 pb-4 px-2 sm:px-4 shadow-tag border-2 border-green-900">
-                        <span class="block text-xs sm:text-sm font-bold uppercase tracking-wider text-emerald-100">Peças por</span>
-                        <div class="font-display font-bold text-bazarYellow text-stroke-dark leading-none mt-1">
-                            <span class="text-sm sm:text-xl align-top">R$</span>
-                            <span class="text-3xl sm:text-5xl">15</span>
-                            <span class="text-sm sm:text-xl">,00</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card Central de Data, Localização Rápida e Contato do Panfleto -->
-                <div class="bg-white rounded-3xl shadow-card border-2 border-amber-200 p-5 sm:p-8 max-w-4xl mx-auto">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center divide-y md:divide-y-0 md:divide-x divide-slate-200">
-                        
-                        <!-- Bloco Data -->
-                        <div class="flex items-center justify-center md:justify-start gap-4 pb-4 md:pb-0">
-                            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-red-50 border-2 border-bazarRed flex flex-col items-center justify-center shrink-0">
-                                <span class="bg-bazarRed text-white text-[10px] sm:text-xs font-bold uppercase w-full text-center py-0.5 rounded-t-xl">Sábado</span>
-                                <span class="font-display text-2xl sm:text-3xl font-bold text-bazarBlue leading-none mt-1">14/11</span>
-                            </div>
-                            <div class="text-left">
-                                <span class="inline-block bg-amber-100 text-amber-900 text-xs font-bold px-2.5 py-0.5 rounded-full mb-1">
-                                    Data do Evento
-                                </span>
-                                <h3 class="font-display text-xl sm:text-2xl font-bold text-bazarBlue">
-                                    Dia 14 de Novembro
-                                </h3>
-                                <p class="text-sm text-slate-600 font-medium">
-                                    Chegue cedo para garantir as melhores peças!
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- Bloco WhatsApp do Panfleto -->
-                        <div class="pt-5 md:pt-0 md:pl-6 flex flex-col items-center md:items-start text-center md:text-left">
-                            <span class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">
-                                Dúvidas sobre o Bazar? Fale conosco:
-                            </span>
-                            <a href="https://wa.me/5562998331774?text=Ol%C3%A1!%20Vi%20o%20panfleto%20do%20Bazar%20de%20Garagem%20no%20Repassa%20A%C3%AD%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-3 bg-green-50 hover:bg-whatsGreen border-2 border-whatsGreen rounded-2xl px-4 py-2.5 transition-all w-full sm:w-auto justify-center">
-                                <div class="w-10 h-10 rounded-full bg-whatsGreen group-hover:bg-white text-white group-hover:text-whatsGreen flex items-center justify-center transition-colors shrink-0">
-                                    <i class="fa-brands fa-whatsapp text-2xl"></i>
-                                </div>
-                                <div class="text-left">
-                                    <span class="block text-xs font-semibold text-slate-600 group-hover:text-white">Contato pelo WhatsApp:</span>
-                                    <span class="font-display text-xl sm:text-2xl font-bold text-bazarBlue group-hover:text-white tracking-tight">
-                                        (62) 99833-1774
-                                    </span>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Botões de Ação Principais (Maps + WhatsApp) -->
-                    <div class="mt-7 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3.5">
-                        <a href="https://www.google.com/maps/search/?api=1&query=Rua+Ant%C3%B4nio+Sabino+Rodrigues%2C+Quadra+15%2C+Lote+16+-+Parque+das+Primaveras%2C+An%C3%A1polis+-+GO%2C+75124-810" target="_blank" rel="noopener noreferrer" class="animate-pulse-soft inline-flex items-center justify-center gap-2.5 bg-bazarBlue hover:bg-bazarRoyal text-white font-bold text-base sm:text-lg px-6 py-4 rounded-2xl shadow-lg transition-all">
-                            <i class="fa-solid fa-location-dot text-bazarYellow text-xl"></i>
-                            <span>Abrir Localização no Google Maps (Qd. 15, Lt. 16)</span>
-                        </a>
-                        
-                        <a href="#conservas" class="inline-flex items-center justify-center gap-2 bg-amber-100 hover:bg-amber-200 text-amber-950 font-bold text-base px-5 py-4 rounded-2xl border border-amber-300 transition-all">
-                            <i class="fa-solid fa-jar text-bazarGreen"></i>
-                            <span>Ver Oferta de Conservas</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SEÇÃO 2: DESTAQUE ESPECIAL - CONSERVAS ARTESANAIS (10 POR R$ 100,00) -->
-        <section id="conservas" class="py-12 sm:py-16 px-4 sm:px-6">
-            <div class="max-w-5xl mx-auto">
-                <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-900 via-green-800 to-teal-900 text-white shadow-2xl border-4 border-bazarYellow">
-                    
-                    <!-- Selo de Promoção -->
-                    <div class="bg-bazarYellow text-bazarBlue font-display font-bold text-xs sm:text-sm uppercase tracking-widest py-2 px-4 text-center">
-                        <i class="fa-solid fa-star text-bazarRed mr-1"></i> Aproveite também no mesmo local ou encomende pelo WhatsApp! <i class="fa-solid fa-star text-bazarRed ml-1"></i>
-                    </div>
-
-                    <div class="p-6 sm:p-10 md:p-12 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                        
-                        <!-- Coluna de Informações da Oferta -->
-                        <div class="lg:col-span-7 space-y-4 text-center lg:text-left">
-                            <div class="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/25 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-amber-200">
-                                <i class="fa-solid fa-jar-wheat"></i>
-                                <span>Produção Caseira & Saborosa</span>
-                            </div>
-
-                            <h2 class="font-display text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
-                                Conservas Artesanais
-                                <span class="block text-bazarYellow mt-1">Promoção Especial!</span>
-                            </h2>
-
-                            <p class="text-emerald-100 text-base sm:text-lg leading-relaxed">
-                                Tempero caseiro irresistível, ingredientes selecionados e aquele sabor que conquista toda a família. Perfeitas para acompanhar suas refeições, churrascos ou presentear!
-                            </p>
-
-                            <!-- Lista de vantagens -->
-                            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-sm text-emerald-50 pt-1 text-left max-w-md mx-auto lg:mx-0">
-                                <li class="flex items-center gap-2">
-                                    <i class="fa-solid fa-circle-check text-bazarYellow"></i>
-                                    <span>Consulte os sabores disponíveis</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <i class="fa-solid fa-circle-check text-bazarYellow"></i>
-                                    <span>Retire no Bazar ou combine entrega</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <i class="fa-solid fa-circle-check text-bazarYellow"></i>
-                                    <span>Feitas com muito capricho</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <i class="fa-solid fa-circle-check text-bazarYellow"></i>
-                                    <span>Estoque promocional limitado</span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <!-- Coluna do Card de Preço & Botão WhatsApp Conservas -->
-                        <div class="lg:col-span-5">
-                            <div class="bg-white text-slate-900 rounded-3xl p-6 sm:p-7 shadow-xl text-center border-2 border-amber-300">
-                                <span class="inline-block bg-bazarRed text-white text-xs font-extrabold uppercase tracking-wider px-3 py-1 rounded-full mb-3">
-                                    Combo Imperdível
-                                </span>
-
-                                <div class="my-2">
-                                    <span class="font-display text-5xl sm:text-6xl font-bold text-bazarBlue">10</span>
-                                    <span class="font-display text-xl sm:text-2xl font-bold text-slate-600 block -mt-1">conservas por apenas</span>
-                                </div>
-
-                                <div class="bg-amber-50 border-2 border-dashed border-amber-400 rounded-2xl py-3 px-4 my-4">
-                                    <span class="font-display text-4xl sm:text-5xl font-bold text-bazarGreen">
-                                        R$ 100<span class="text-2xl">,00</span>
-                                    </span>
-                                    <span class="block text-xs font-semibold text-slate-500 mt-1">
-                                        Sai a apenas R$ 10,00 cada unidade!
-                                    </span>
-                                </div>
-
-                                <p class="text-xs sm:text-sm text-slate-600 mb-5 font-medium">
-                                    Quer saber mais sobre os sabores e garantir o seu kit? Clique abaixo e chame direto no WhatsApp:
-                                </p>
-
-                                <a href="https://wa.me/5562998331774?text=Ol%C3%A1!%20Vi%20no%20site%20Repassa%20A%C3%AD%20o%20an%C3%BAncio%20das%20Conservas%2010%20por%20R%24%20100%2C00%20e%20quero%20saber%20mais!" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2.5 bg-whatsGreen hover:bg-green-600 text-white font-bold text-base sm:text-lg px-5 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5">
-                                    <i class="fa-brands fa-whatsapp text-2xl"></i>
-                                    <span>Quero Saber Mais no Zap</span>
-                                </a>
-
-                                <span class="block text-[11px] text-slate-400 mt-2.5 font-medium">
-                                    Atendimento direto: (62) 99833-1774
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SEÇÃO 3: LOCALIZAÇÃO EXATA & MAPA (QUADRA 15, LOTE 16) -->
-        <section id="localizacao" class="py-12 sm:py-16 px-4 sm:px-6 bg-white border-t border-amber-200/70">
-            <div class="max-w-5xl mx-auto">
-                <div class="text-center max-w-2xl mx-auto mb-10">
-                    <span class="inline-flex items-center gap-1.5 bg-blue-50 text-bazarRoyal font-bold text-xs uppercase tracking-wider px-3.5 py-1.5 rounded-full mb-2">
-                        <i class="fa-solid fa-map-pin"></i> Endereço Oficial do Bazar
-                    </span>
-                    <h2 class="font-display text-3xl sm:text-4xl font-bold text-bazarBlue">
-                        Como Chegar ao Bazar
+                    <h2 class="font-display text-3xl sm:text-4xl font-bold leading-tight">
+                        Conservas Artesanais
                     </h2>
-                    <p class="text-slate-600 mt-2 text-sm sm:text-base">
-                        Clique no botão abaixo para abrir a rota direto no aplicativo do Google Maps do seu celular.
+                    <p class="text-emerald-100 text-sm sm:text-base max-w-xl font-medium">
+                        Tempero caseiro irresistível e ingredientes selecionados! Aproveite o combo promocional e garanta as suas no bazar ou encomende pelo WhatsApp.
                     </p>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+                <div class="w-full md:w-auto shrink-0 bg-white text-slate-900 rounded-2xl p-5 text-center shadow-lg border-2 border-amber-300">
+                    <span class="block text-xs font-black uppercase text-bazarRed tracking-wider">Combo Promocional</span>
+                    <div class="font-display text-3xl sm:text-4xl font-bold text-bazarBlue my-1">
+                        10 por <span class="text-bazarGreen">R$ 100,00</span>
+                    </div>
+                    <span class="block text-xs font-bold text-slate-600 mb-3">Sai a R$ 10,00 cada conserva!</span>
                     
-                    <!-- Cartão Detalhado do Endereço -->
-                    <div class="lg:col-span-6 bg-amber-50/80 rounded-3xl p-6 sm:p-8 border-2 border-amber-200 flex flex-col justify-between">
-                        <div>
-                            <!-- Destaque importante da Casa (Lote 16) -->
-                            <div class="bg-bazarYellow/90 border-2 border-amber-500 rounded-2xl p-4 mb-6 flex items-start gap-3.5 shadow-sm">
-                                <div class="w-10 h-10 rounded-xl bg-bazarBlue text-bazarYellow flex items-center justify-center shrink-0 mt-0.5">
-                                    <i class="fa-solid fa-house-chimney text-lg"></i>
-                                </div>
-                                <div>
-                                    <span class="block text-xs font-extrabold uppercase tracking-wider text-bazarRed">
-                                        Atenção ao número da casa:
-                                    </span>
-                                    <p class="font-display text-lg sm:text-xl font-bold text-bazarBlue leading-snug">
-                                        Casa: Quadra 15, Lote 16
-                                    </p>
-                                    <p class="text-xs sm:text-sm text-slate-800 font-medium mt-0.5">
-                                        Ao chegar na rua pelo GPS, procure exatamente o <strong>Lote 16 da Quadra 15</strong>!
-                                    </p>
-                                </div>
-                            </div>
-
-                            <!-- Endereço Completo -->
-                            <div class="space-y-3 mb-6">
-                                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500">Endereço Completo:</h3>
-                                <p id="endereco-texto" class="text-base sm:text-lg font-bold text-slate-800 bg-white p-4 rounded-2xl border border-slate-200 leading-relaxed">
-                                    Rua Antônio Sabino Rodrigues, Quadra 15, Lote 16 - Parque das Primaveras, Anápolis - GO, CEP 75124-810
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- Botões de Mapa e Copiar Endereço -->
-                        <div class="space-y-3">
-                            <!-- Botão Principal: Busca Exata Qd. 15, Lt. 16 -->
-                            <a href="https://www.google.com/maps/search/?api=1&query=Rua+Ant%C3%B4nio+Sabino+Rodrigues%2C+Quadra+15%2C+Lote+16+-+Parque+das+Primaveras%2C+An%C3%A1polis+-+GO%2C+75124-810" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2.5 bg-bazarBlue hover:bg-bazarRoyal text-white font-bold text-sm sm:text-base px-5 py-4 rounded-2xl shadow-md transition-all">
-                                <i class="fa-solid fa-diamond-turn-right text-bazarYellow text-lg"></i>
-                                <span>Abrir Localização no Google Maps (Qd. 15, Lt. 16)</span>
-                            </a>
-
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                <!-- Botão Secundário: Link Encurtado Fornecido -->
-                                <a href="https://maps.app.goo.gl/TWSF6WuQYNKJn6K68" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-bazarRoyal font-bold text-xs sm:text-sm px-4 py-3.5 rounded-xl border border-slate-300 transition-all">
-                                    <i class="fa-solid fa-map-location-dot"></i>
-                                    <span>Link Direto Maps (Pin)</span>
-                                </a>
-
-                                <!-- Botão Copiar Endereço -->
-                                <button onclick="copiarEndereco()" id="btn-copiar" class="inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs sm:text-sm px-4 py-3.5 rounded-xl border border-slate-300 transition-all cursor-pointer">
-                                    <i class="fa-regular fa-copy"></i>
-                                    <span>Copiar Endereço</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Mapa Visual Interativo Incorporado -->
-                    <div class="lg:col-span-6 rounded-3xl overflow-hidden border-2 border-slate-200 shadow-md min-h-[320px] sm:min-h-[380px] relative bg-slate-100">
-                        <iframe 
-                            title="Mapa de Localização - Rua Antônio Sabino Rodrigues, Quadra 15, Lote 16, Parque das Primaveras, Anápolis - GO"
-                            src="https://maps.google.com/maps?q=Rua%20Ant%C3%B4nio%20Sabino%20Rodrigues%2C%20Quadra%2015%2C%20Lote%2016%2C%20Parque%20das%20Primaveras%2C%20An%C3%A1polis%20-%20GO&t=&z=16&ie=UTF8&iwloc=&output=embed" 
-                            class="w-full h-full border-0 min-h-[320px] sm:min-h-[380px]" 
-                            allowfullscreen="" 
-                            loading="lazy" 
-                            referrerpolicy="no-referrer-when-downgrade">
-                        </iframe>
-                        <div class="absolute bottom-3 left-3 right-3 bg-white/95 backdrop-blur-sm px-4 py-2.5 rounded-xl shadow-md border border-slate-200 flex items-center justify-between gap-2 text-xs">
-                            <span class="font-bold text-bazarBlue truncate">
-                                <i class="fa-solid fa-location-dot text-bazarRed mr-1"></i> Parque das Primaveras • Qd. 15, Lt. 16
-                            </span>
-                            <a href="https://www.google.com/maps/search/?api=1&query=Rua+Ant%C3%B4nio+Sabino+Rodrigues%2C+Quadra+15%2C+Lote+16+-+Parque+das+Primaveras%2C+An%C3%A1polis+-+GO%2C+75124-810" target="_blank" rel="noopener noreferrer" class="text-bazarRoyal font-bold hover:underline shrink-0">
-                                Ampliar <i class="fa-solid fa-arrow-up-right-from-square ml-0.5"></i>
-                            </a>
-                        </div>
-                    </div>
-
+                    <a href="https://wa.me/5562998331774?text=Ol%C3%A1!%20Tenho%20interesse%20na%20promo%C3%A7%C3%A3o%20das%20conservas%20(10%20por%20R%24%20100%2C00).%20Gostaria%20de%20saber%20mais!" 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       class="w-full inline-flex items-center justify-center gap-2 bg-whatsGreen hover:bg-green-600 text-white font-extrabold text-sm sm:text-base px-5 py-3.5 rounded-xl shadow-md transition-all">
+                        <i class="fa-brands fa-whatsapp text-xl"></i>
+                        <span>Saber Mais no Zap</span>
+                    </a>
                 </div>
+
             </div>
         </section>
+
     </main>
 
-    <!-- RODAPÉ INSTITUCIONAL -->
-    <footer class="bg-bazarBlue text-white pt-10 pb-24 sm:pb-12 px-4 sm:px-6">
-        <div class="max-w-5xl mx-auto text-center">
-            <!-- Faixa de encerramento inspirada no panfleto -->
-            <div class="inline-block bg-bazarRed text-bazarYellow font-display text-xl sm:text-3xl font-bold px-6 py-2.5 rounded-2xl shadow-lg mb-6 transform -rotate-1">
-                Não perca essa oportunidade!
-            </div>
-
-            <div class="flex flex-col items-center justify-center gap-2 mb-6">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-tags text-bazarYellow text-xl"></i>
-                    <span class="font-display text-2xl font-bold">Repassa Aí</span>
-                </div>
-                <p class="text-sm text-blue-200 max-w-md">
-                    Conectando você às melhores oportunidades, bazares e produtos artesanais em Anápolis - GO.
-                </p>
-            </div>
-
-            <!-- Botão Compartilhar no Rodapé -->
-            <div class="mb-8">
-                <button onclick="compartilharSite()" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/25 font-semibold text-sm px-5 py-2.5 rounded-xl transition-all cursor-pointer">
-                    <i class="fa-brands fa-whatsapp text-whatsGreen text-lg"></i>
-                    <span>Compartilhar repassaai.com.br no WhatsApp</span>
-                </button>
-            </div>
-
-            <div class="border-t border-blue-900 pt-6 text-xs text-blue-300 flex flex-col sm:flex-row items-center justify-between gap-2">
-                <span>&copy; 2026 <strong>repassaai.com.br</strong> — Todos os direitos reservados.</span>
-                <span>Anápolis - Goiás</span>
-            </div>
-        </div>
+    <!-- RODAPÉ -->
+    <footer class="max-w-4xl mx-auto px-4 pt-8 pb-6 text-center text-slate-600 text-xs sm:text-sm space-y-2">
+        <p class="font-extrabold text-bazarBlue text-base">Não perca essa oportunidade!</p>
+        <p><strong>Repassa Aí</strong> (www.repassaai.com.br) • Parque das Primaveras, Qd. 15, Lt. 16 — Anápolis - GO</p>
     </footer>
 
-    <!-- BOTÃO FLUTUANTE DO WHATSAPP (Canto Inferior Direito) -->
-    <a href="https://wa.me/5562998331774?text=Ol%C3%A1!%20Vi%20o%20site%20Repassa%20A%C3%AD%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!" target="_blank" rel="noopener noreferrer" aria-label="Falar no WhatsApp (62) 99833-1774" class="fixed bottom-5 right-5 z-50 flex items-center gap-2.5 bg-whatsGreen hover:bg-green-600 text-white font-bold px-4 py-3.5 rounded-full shadow-2xl transition-transform hover:scale-105 border-2 border-white">
-        <i class="fa-brands fa-whatsapp text-2xl sm:text-3xl"></i>
-        <span class="text-sm pr-1 hidden sm:inline">Falar no Zap</span>
-    </a>
+    <!-- ===================================================================== -->
+    <!-- 4. BARRA FIXA NO RODAPÉ DO CELULAR (STICKY BOTTOM BAR)                -->
+    <!-- ===================================================================== -->
+    <div class="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t-2 border-slate-200 p-2.5 shadow-[0_-6px_20px_rgba(0,0,0,0.12)] sm:hidden">
+        <div class="grid grid-cols-2 gap-2.5 max-w-md mx-auto">
+            <a href="https://www.google.com/maps/search/?api=1&query=Rua+Antonio+Sabino+Rodrigues,+Quadra+15,+Lote+16,+Parque+das+Primaveras,+Anapolis+-+GO" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="flex items-center justify-center gap-2 bg-mapsBlue active:bg-blue-800 text-white font-extrabold text-sm py-3.5 px-3 rounded-xl shadow">
+                <i class="fa-solid fa-location-dot text-bazarYellow text-base"></i>
+                <span>Ir para o Bazar</span>
+            </a>
 
-    <!-- NOTIFICAÇÃO TOAST (Feedback visual sem usar alert) -->
-    <div id="toast-notificacao" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-sm font-semibold px-5 py-3 rounded-2xl shadow-xl opacity-0 pointer-events-none transition-opacity duration-300 flex items-center gap-2">
-        <i class="fa-solid fa-circle-check text-whatsGreen"></i>
-        <span id="toast-mensagem">Endereço copiado!</span>
+            <a href="https://wa.me/5562998331774?text=Ol%C3%A1!%20Vi%20o%20site%20Repassa%20A%C3%AD%20sobre%20o%20Bazar%20de%20Garagem%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es." 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="flex items-center justify-center gap-2 bg-whatsGreen active:bg-green-700 text-white font-extrabold text-sm py-3.5 px-3 rounded-xl shadow">
+                <i class="fa-brands fa-whatsapp text-lg"></i>
+                <span>WhatsApp</span>
+            </a>
+        </div>
     </div>
 
-    <!-- SCRIPTS DE INTERAÇÃO -->
+    <!-- NOTIFICAÇÃO TOAST AO COPIAR ENDEREÇO -->
+    <div id="toast" class="fixed top-16 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white font-bold text-sm px-5 py-3 rounded-2xl shadow-2xl border border-bazarYellow opacity-0 pointer-events-none transition-opacity duration-300 flex items-center gap-2">
+        <i class="fa-solid fa-circle-check text-whatsGreen text-lg"></i>
+        <span>Endereço copiado! Cole no Uber, 99 ou Waze.</span>
+    </div>
+
     <script>
-        // Exibe mensagem discreta na tela (substitui alert)
-        function mostrarToast(mensagem) {
-            const toast = document.getElementById('toast-notificacao');
-            const texto = document.getElementById('toast-mensagem');
-            texto.textContent = mensagem;
-            toast.classList.remove('opacity-0');
-            toast.classList.add('opacity-100');
-
-            setTimeout(() => {
-                toast.classList.remove('opacity-100');
-                toast.classList.add('opacity-0');
-            }, 3000);
-        }
-
-        // Copia o endereço completo (Quadra 15, Lote 16) para a área de transferência
         function copiarEndereco() {
-            const endereco = "Rua Antônio Sabino Rodrigues, Quadra 15, Lote 16 - Parque das Primaveras, Anápolis - GO, CEP 75124-810";
-            
-            const areaTemp = document.createElement('textarea');
-            areaTemp.value = endereco;
-            document.body.appendChild(areaTemp);
-            areaTemp.select();
-            
+            const textoEndereco = "Rua Antônio Sabino Rodrigues, Quadra 15, Lote 16 - Parque das Primaveras, Anápolis - GO";
+            const inputTemp = document.createElement("textarea");
+            inputTemp.value = textoEndereco;
+            document.body.appendChild(inputTemp);
+            inputTemp.select();
+
             try {
-                document.execCommand('copy');
-                mostrarToast('Endereço (Qd. 15, Lt. 16) copiado!');
-                
-                const btn = document.getElementById('btn-copiar');
-                const conteudoOriginal = btn.innerHTML;
-                btn.innerHTML = '<i class="fa-solid fa-check text-bazarGreen"></i> <span>Copiado!</span>';
+                document.execCommand("copy");
+                const toast = document.getElementById("toast");
+                toast.classList.remove("opacity-0");
+                toast.classList.add("opacity-100");
+
+                const btn = document.getElementById("btn-copiar");
+                const original = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check text-whatsGreen text-lg"></i> <span>ENDEREÇO COPIADO!</span>';
+
                 setTimeout(() => {
-                    btn.innerHTML = conteudoOriginal;
-                }, 2500);
-            } catch (err) {
-                mostrarToast('Não foi possível copiar automaticamente.');
+                    toast.classList.remove("opacity-100");
+                    toast.classList.add("opacity-0");
+                    btn.innerHTML = original;
+                }, 3000);
+            } catch (e) {
+                console.error("Erro ao copiar endereço", e);
             }
-            
-            document.body.removeChild(areaTemp);
+
+            document.body.removeChild(inputTemp);
         }
 
-        // Compartilha a página do Repassa Aí diretamente no WhatsApp
         function compartilharSite() {
-            const urlSite = "https://repassaai.com.br";
-            const mensagem = encodeURIComponent(
-                "Olha que legal! Vai ter *Bazar de Garagem* amanhã (Dia 14/11) com roupas de R$ 5, R$ 10 e R$ 15 no Parque das Primaveras (Qd. 15, Lt. 16), além de Conservas Artesanais 10 por R$ 100! Confira o endereço e o link do mapa aqui: " + urlSite
+            const msg = encodeURIComponent(
+                "📍 Endereço do *Bazar de Garagem* (Sábado, Dia 14/11):\n" +
+                "Rua Antônio Sabino Rodrigues, *Quadra 15, Lote 16* - Parque das Primaveras, Anápolis - GO.\n\n" +
+                "Veja o mapa e as ofertas (roupas de R$ 5, R$ 10 e R$ 15 + Conservas 10 por R$ 100) aqui: https://www.repassaai.com.br"
             );
-            window.open("https://wa.me/?text=" + mensagem, "_blank", "noopener,noreferrer");
+            window.open("https://wa.me/?text=" + msg, "_blank", "noopener,noreferrer");
         }
     </script>
 </body>
