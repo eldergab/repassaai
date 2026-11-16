@@ -31,3 +31,4 @@ input,select,textarea{font:inherit;padding:.65rem;border:1px solid #aab4c4;borde
 .cert small{color:var(--mut)}
 @media print{header.nav,form,.noprint{display:none}body{background:#fff}main{padding:0;max-width:none}@page{size:A4 landscape;margin:8mm}.cert{border-width:12px}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+header.nav a.btn{background:var(--hi);color:#1b1b1b;padding:.35rem .8rem;border:0;font-size:.9rem}
