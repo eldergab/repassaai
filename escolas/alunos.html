@@ -1,0 +1,16 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#16213e"><link rel="manifest" href="manifest.json"><link rel="icon" href="icon.svg"><link rel="stylesheet" href="style.css"><title>Inscrição de alunos – Repassa Aí</title></head><body><main>
+<h1>Inscrição de aluno</h1>
+<p class="note">Preencha junto com o pai, mãe ou responsável. Coletamos só o necessário e não publicamos nome, foto ou escola sem autorização.</p>
+<form data-t="INSCRIÇÃO DE ALUNO - REPASSA AÍ"><label>Nome do aluno<input name="a" data-l="Aluno" required></label>
+<label>Idade<input name="i" data-l="Idade" type="number" min="10" max="19" required></label>
+<label>Escola<input name="e" data-l="Escola" required></label>
+<label>Série e turma<input name="t" data-l="Série/Turma" required></label>
+<label>Nome do responsável<input name="r" data-l="Responsável" required></label>
+<label>WhatsApp do responsável<input name="w" data-l="WhatsApp do responsável" type="tel" required></label>
+<label class="ck"><input type="checkbox" name="p" data-l="Autorizo a participação no mini curso e no desafio (voluntário, sem pagamento)" required>Autorizo meu filho(a) a participar do curso e do desafio, como atividade voluntária e sem pagamento.</label>
+<label class="ck"><input type="checkbox" name="d" data-l="Autorizo o uso mínimo de dados (LGPD)" required>Autorizo o uso dos dados acima apenas para organizar o programa.</label>
+<label class="ck"><input type="checkbox" name="f" data-l="Autorizo imagem do aluno nos vídeos e redes (opcional)">Opcional: autorizo o uso da imagem e do nome do aluno nos vídeos e redes da AFFE.</label>
+<label class="ck"><input type="checkbox" name="v" data-l="Autorizo participação em evento presencial de comemoração (opcional)">Opcional: autorizo a participação em comemoração presencial, com adultos responsáveis.</label>
+<label class="ck"><input type="checkbox" name="s" data-l="Declaro ser o responsável legal" required>Declaro ser o responsável legal pelo aluno e ter lido as regras do programa.</label>
+<button class="btn">Enviar pelo WhatsApp</button><p id="ok"></p></form>
+</main><script src="app.js"></script></body></html>
