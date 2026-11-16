@@ -1,0 +1,15 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#16213e"><link rel="manifest" href="manifest.json"><link rel="icon" href="icon.svg"><link rel="stylesheet" href="style.css"><title>Cadastro de escola – Repassa Aí</title></head><body><main>
+<h1>Cadastro de escola</h1>
+<p>Para a direção (veja também <a href="direcao.html">a conversa com a direção</a>). Participação voluntária e gratuita. Nenhum conteúdo é publicado sem autorização dos responsáveis.</p>
+<form data-t="CADASTRO DE ESCOLA - REPASSA AÍ"><label>Nome da escola<input name="e" data-l="Escola" required></label>
+<label>Bairro<input name="b" data-l="Bairro" required></label>
+<label>Etapa<select name="t" data-l="Etapa" required><option value="">Escolha</option><option>Ensino médio</option><option>Fundamental II</option><option>Fundamental I</option></select></label>
+<label>Turmas participantes<input name="n" data-l="Turmas participantes" type="number" min="1" required></label>
+<label>Nome do(a) diretor(a)<input name="d" data-l="Diretor(a)" required></label>
+<label>Cargo<input name="c" data-l="Cargo" value="Diretor(a)" required></label>
+<label>WhatsApp<input name="w" data-l="WhatsApp" type="tel" required></label>
+<label>E-mail<input name="m" data-l="E-mail" type="email"></label>
+<label class="ck"><input type="checkbox" name="a1" data-l="A direção aceita que a escola participe" required>Como responsável pela escola, aceito que as turmas participem do programa Repassa Aí.</label>
+<label class="ck"><input type="checkbox" name="a2" data-l="A escola exigirá autorização dos pais" required>Estou ciente de que a participação de cada aluno depende da autorização dos responsáveis.</label>
+<button class="btn">Enviar pelo WhatsApp</button><p id="ok"></p></form>
+</main><script src="app.js"></script></body></html>
