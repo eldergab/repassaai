@@ -1,0 +1,81 @@
+/* Estilização do Cabeçalho */
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #16213e;
+  color: #fff;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.25rem;
+}
+
+.header-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.site-header nav a {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 1.5rem;
+  font-weight: 500;
+}
+
+/* Seção Hero adaptada para o Mascote */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+  padding: 3rem 1rem;
+}
+
+.hero-content {
+  flex: 1;
+  min-width: 280px;
+}
+
+.hero-mascot {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  min-width: 260px;
+}
+
+.hero-mascot img {
+  max-width: 100%;
+  height: auto;
+  max-height: 420px;
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Pequeno efeito de flutuação suave para o robô */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column-reverse;
+    text-align: center;
+  }
+  .hero-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .hero-buttons .btn {
+    margin: 0 !important;
+  }
+}
