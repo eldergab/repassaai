@@ -2,7 +2,7 @@
 <h1 class="noprint">Gerar certificado</h1>
 <form class="noprint" onsubmit="return false"><label>Nome do aluno<input id="n" value="Nome do Aluno"></label><label>Data e cidade<input id="d" value="Anápolis, 00 de mês de 2026"></label><label>Responsável (assinatura)<input id="r" value="Responsável pela AFFE"></label><button type="button" class="btn" onclick="print()">Imprimir ou salvar PDF</button></form>
 <div class="cert"><h2>Certificado</h2><small>A Associação AFFE certifica que</small><div class="nm" id="pn">Nome do Aluno</div>
-<p>participou do Mini Curso de Redes Sociais, Criação de Conteúdo, Engajamento e Comunicação, com carga horária de 4 horas, no programa Repassa Aí, atuando como voluntário(a) em ação de divulgação comunitária.</p>
+<p>participou do Minicurso de Redes Sociais, Criação de Conteúdo, Engajamento e Comunicação, com carga horária de 4 horas, no programa Repassa Aí, atuando como voluntário(a) em ação de divulgação comunitária.</p>
 <p id="pd">Anápolis, 00 de mês de 2026</p><p><b>______________________</b><br><span id="pr">Responsável pela AFFE</span></p></div>
 <script>for(const [a,b] of [["n","pn"],["d","pd"],["r","pr"]])document.getElementById(a).oninput=e=>document.getElementById(b).textContent=e.target.value</script>
 </main><script src="app.js"></script></body></html>
