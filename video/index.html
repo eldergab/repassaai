@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arquivos da pasta video</title>
+<style>
+  :root{
+    --bg:#eef1f4; --card:#ffffff; --ink:#15212b; --muted:#5d6b78;
+    --line:#d5dce3; --accent:#0b5fd6; --accent-ink:#ffffff; --thumb:#dfe5ea;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#12181e; --card:#1b232b; --ink:#e8eef3; --muted:#92a1ae;
+      --line:#2b3641; --accent:#5aa2ff; --accent-ink:#06121f; --thumb:#232d37;}
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  header{max-width:1100px;margin:0 auto;padding:32px 20px 12px;
+    display:flex;flex-wrap:wrap;gap:16px;align-items:end;justify-content:space-between}
+  h1{margin:0;font-size:1.6rem;letter-spacing:-.01em}
+  .sub{margin:4px 0 0;color:var(--muted);font-size:.95rem}
+  .actions{display:flex;gap:10px;flex-wrap:wrap}
+  button,.btn{font:inherit;cursor:pointer;border-radius:8px;padding:9px 16px;
+    border:1px solid var(--line);background:var(--card);color:var(--ink);
+    text-decoration:none;display:inline-block}
+  button.primary,.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+  button:disabled{opacity:.6;cursor:progress}
+  button:focus-visible,.btn:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  main{max-width:1100px;margin:0 auto;padding:12px 20px 48px}
+  #status{margin:8px 0 18px;color:var(--muted)}
+  #status.erro{color:#c0392b}
+  .grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(290px,1fr))}
+  .item{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;
+    display:flex;flex-direction:column}
+  .thumb{aspect-ratio:16/10;background:var(--thumb);display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .thumb img,.thumb video{width:100%;height:100%;object-fit:contain;background:#000}
+  .thumb .ext{font-size:2.2rem;font-weight:700;color:var(--muted)}
+  .info{padding:12px 14px 14px;display:flex;flex-direction:column;gap:10px;flex:1}
+  .nome{font-weight:600;word-break:break-all;font-size:.95rem}
+  .meta{color:var(--muted);font-size:.85rem}
+  .btns{display:flex;gap:8px;margin-top:auto}
+  .btns>*{flex:1;text-align:center;padding:8px 10px;font-size:.9rem}
+  footer{max-width:1100px;margin:0 auto;padding:0 20px 32px;color:var(--muted);font-size:.85rem}
+  details{margin-top:8px}
+  input[type=file]{margin-top:8px}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Arquivos da pasta <span id="pasta">video</span></h1>
+    <p class="sub" id="repo"></p>
+  </div>
+  <div class="actions">
+    <button id="recarregar" type="button">Atualizar lista</button>
+    <button id="baixarTudo" type="button" class="primary" disabled>Baixar todos</button>
+  </div>
+</header>
+
+<main>
+  <div id="status" role="status">Carregando arquivos…</div>
+  <div class="grid" id="lista"></div>
+</main>
+
+<footer>
+  <details>
+    <summary>Não carregou? Escolha os arquivos do seu computador</summary>
+    <p>Selecione os arquivos (ou a pasta inteira) e eles aparecem aqui com a opção de baixar.</p>
+    <input type="file" id="local" multiple webkitdirectory>
+  </details>
+</footer>
+
+<script>
+/* ===== CONFIGURAÇÃO ===== */
+const CONFIG = {
+  usuario: "eldergab",
+  repositorio: "repassaai",
+  branch: "main",
+  pasta: "video"
+};
+/* ========================= */
+
+const $ = id => document.getElementById(id);
+const lista = $("lista"), status = $("status"), btnTudo = $("baixarTudo");
+let arquivos = []; // {name, size, url, local?:File}
+
+$("pasta").textContent = CONFIG.pasta;
+$("repo").textContent = `${CONFIG.usuario}/${CONFIG.repositorio} · ramo ${CONFIG.branch}`;
+
+const tipoDe = nome => {
+  const e = (nome.split(".").pop() || "").toLowerCase();
+  if (["gif","png","jpg","jpeg","webp","svg"].includes(e)) return "imagem";
+  if (["mp4","webm","mov","ogv"].includes(e)) return "video";
+  return e || "arquivo";
+};
+
+const tamanho = b => {
+  if (b == null) return "";
+  if (b < 1024) return b + " B";
+  if (b < 1048576) return (b/1024).toFixed(1) + " KB";
+  return (b/1048576).toFixed(1) + " MB";
+};
+
+function salvarBlob(blob, nome){
+  const a = document.createElement("a");
+  const u = URL.createObjectURL(blob);
+  a.href = u; a.download = nome;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(u), 4000);
+}
+
+/* Baixa de verdade (força o download, mesmo vindo de outro domínio) */
+async function baixar(arq, botao){
+  const textoOriginal = botao ? botao.textContent : "";
+  try{
+    if (botao){ botao.disabled = true; botao.textContent = "Baixando…"; }
+    if (arq.local){ salvarBlob(arq.local, arq.name); return; }
+    const r = await fetch(arq.url);
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    salvarBlob(await r.blob(), arq.name);
+  }catch(e){
+    // plano B: abre o arquivo em outra aba para salvar manualmente
+    window.open(arq.url, "_blank", "noopener");
+  }finally{
+    if (botao){ botao.disabled = false; botao.textContent = textoOriginal; }
+  }
+}
+
+function preview(arq){
+  const t = tipoDe(arq.name);
+  const box = document.createElement("div");
+  box.className = "thumb";
+  if (t === "imagem"){
+    const i = document.createElement("img");
+    i.loading = "lazy"; i.alt = arq.name; i.src = arq.url; box.appendChild(i);
+  } else if (t === "video"){
+    const v = document.createElement("video");
+    v.controls = true; v.preload = "metadata"; v.src = arq.url; box.appendChild(v);
+  } else {
+    const s = document.createElement("span");
+    s.className = "ext"; s.textContent = "." + t; box.appendChild(s);
+  }
+  return box;
+}
+
+function desenhar(){
+  lista.innerHTML = "";
+  arquivos.forEach(arq => {
+    const card = document.createElement("article");
+    card.className = "item";
+    card.appendChild(preview(arq));
+
+    const info = document.createElement("div");
+    info.className = "info";
+    info.innerHTML = `<div class="nome"></div><div class="meta"></div><div class="btns"></div>`;
+    info.querySelector(".nome").textContent = arq.name;
+    info.querySelector(".meta").textContent = tamanho(arq.size);
+
+    const btns = info.querySelector(".btns");
+    const ver = document.createElement("a");
+    ver.className = "btn"; ver.textContent = "Abrir";
+    ver.href = arq.url; ver.target = "_blank"; ver.rel = "noopener";
+    const dl = document.createElement("button");
+    dl.type = "button"; dl.className = "primary"; dl.textContent = "Baixar";
+    dl.addEventListener("click", () => baixar(arq, dl));
+    btns.append(ver, dl);
+
+    card.appendChild(info);
+    lista.appendChild(card);
+  });
+  btnTudo.disabled = !arquivos.length;
+}
+
+async function carregar(){
+  status.className = "";
+  status.textContent = "Carregando arquivos…";
+  lista.innerHTML = ""; btnTudo.disabled = true;
+  const api = `https://api.github.com/repos/${CONFIG.usuario}/${CONFIG.repositorio}/contents/${CONFIG.pasta}?ref=${CONFIG.branch}`;
+  try{
+    const r = await fetch(api, {headers:{Accept:"application/vnd.github+json"}});
+    if (!r.ok) throw new Error(r.status === 403 ? "Limite de consultas do GitHub atingido. Tente de novo em alguns minutos." : "Erro " + r.status + " ao ler a pasta.");
+    const dados = await r.json();
+    arquivos = dados.filter(x => x.type === "file")
+      .map(x => ({name:x.name, size:x.size, url:x.download_url}));
+    status.textContent = arquivos.length + " arquivo(s) encontrado(s).";
+    desenhar();
+  }catch(e){
+    status.className = "erro";
+    status.textContent = e.message + " Você também pode escolher os arquivos manualmente no rodapé.";
+  }
+}
+
+$("recarregar").addEventListener("click", carregar);
+
+btnTudo.addEventListener("click", async () => {
+  btnTudo.disabled = true;
+  for (let i = 0; i < arquivos.length; i++){
+    btnTudo.textContent = `Baixando ${i+1} de ${arquivos.length}…`;
+    await baixar(arquivos[i]);
+    await new Promise(r => setTimeout(r, 600)); // evita bloqueio do navegador
+  }
+  btnTudo.textContent = "Baixar todos";
+  btnTudo.disabled = false;
+});
+
+/* Plano B: arquivos escolhidos no computador */
+$("local").addEventListener("change", e => {
+  const fs = [...e.target.files];
+  arquivos = fs.map(f => ({name:f.name, size:f.size, url:URL.createObjectURL(f), local:f}));
+  status.className = "";
+  status.textContent = arquivos.length + " arquivo(s) selecionado(s) do seu computador.";
+  desenhar();
+});
+
+carregar();
+</script>
+</body>
+</html>
