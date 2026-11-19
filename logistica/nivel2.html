@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logística Nível 2 — O Papel do Operador de Empilhadeira | RepassaAí</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --azul-escuro: #0b3c78;
+      --azul-principal: #1368ce;
+      --turquesa: #00b4d8;
+      --turquesa-claro: #caf0f8;
+      --amarelo: #ffb703;
+      --verde: #2ec4b6;
+      --verde-sucesso: #22c55e;
+      --vermelho-alerta: #ef4444;
+      --fundo: #f0f7ff;
+      --branco: #ffffff;
+      --texto: #1e293b;
+      --texto-suave: #475569;
+      --sombra: 0 10px 25px rgba(11, 60, 120, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(180deg, #e0f2fe 0%, var(--fundo) 100%);
+      color: var(--texto);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    h1, h2, h3, .badge-nivel {
+      font-family: 'Fredoka', sans-serif;
+    }
+
+    /* Barra superior de navegação */
+    .topbar {
+      background: var(--azul-escuro);
+      color: var(--branco);
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.25rem;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--turquesa);
+      box-shadow: 0 0 10px var(--turquesa);
+    }
+
+    .btn-voltar {
+      background: var(--branco);
+      color: var(--azul-escuro);
+      text-decoration: none;
+      font-weight: 800;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      transition: transform 0.2s, background 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-voltar:hover {
+      background: var(--amarelo);
+      color: var(--azul-escuro);
+      transform: translateY(-2px);
+    }
+
+    /* Container Principal */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+
+    /* Hero / Cabeçalho da Página */
+    .hero {
+      background: linear-gradient(135deg, var(--azul-principal) 0%, var(--turquesa) 100%);
+      color: var(--branco);
+      border-radius: 28px;
+      padding: 36px 32px;
+      box-shadow: var(--sombra);
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 24px;
+      align-items: center;
+      margin-bottom: 36px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .badge-nivel {
+      display: inline-block;
+      background: var(--amarelo);
+      color: var(--azul-escuro);
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 6px 16px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .hero h1 {
+      font-size: clamp(1.8rem, 3.5vw, 2.7rem);
+      line-height: 1.15;
+      margin-bottom: 14px;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      opacity: 0.95;
+    }
+
+    /* Balão do Mascote */
+    .mascote-box {
+      background: var(--branco);
+      color: var(--texto);
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      border: 4px solid var(--turquesa-claro);
+      text-align: center;
+    }
+
+    .mascote-avatar {
+      width: 84px;
+      height: 84px;
+      margin: 0 auto 10px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--azul-escuro), var(--turquesa));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.4rem;
+      color: var(--branco);
+      border: 4px solid var(--amarelo);
+    }
+
+    .mascote-box strong {
+      display: block;
+      color: var(--azul-principal);
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .mascote-box p {
+      font-size: 0.95rem;
+      color: var(--texto);
+      line-height: 1.45;
+    }
+
+    /* Destaque Central: Muito mais que dirigir */
+    .destaque-principal {
+      background: var(--branco);
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: var(--sombra);
+      border-left: 8px solid var(--amarelo);
+      margin-bottom: 36px;
+    }
+
+    .destaque-principal h2 {
+      color: var(--azul-escuro);
+      font-size: 1.65rem;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .destaque-principal p {
+      font-size: 1.12rem;
+      color: var(--texto-suave);
+    }
+
+    .destaque-principal strong {
+      color: var(--azul-principal);
+    }
+
+    /* Grid dos 3 Pilares */
+    .section-title {
+      text-align: center;
+      color: var(--azul-escuro);
+      font-size: 1.8rem;
+      margin-bottom: 24px;
+    }
+
+    .pilares-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 22px;
+      margin-bottom: 40px;
+    }
+
+    .card-pilar {
+      background: var(--branco);
+      border-radius: 22px;
+      padding: 26px;
+      box-shadow: var(--sombra);
+      border-top: 6px solid var(--turquesa);
+      transition: transform 0.25s ease;
+    }
+
+    .card-pilar:hover {
+      transform: translateY(-6px);
+    }
+
+    .card-pilar.seguranca { border-top-color: var(--verde-sucesso); }
+    .card-pilar.organizacao { border-top-color: var(--azul-principal); }
+    .card-pilar.eficiencia { border-top-color: var(--amarelo); }
+
+    .icone-pilar {
+      font-size: 2.3rem;
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+
+    .card-pilar h3 {
+      color: var(--azul-escuro);
+      font-size: 1.35rem;
+      margin-bottom: 10px;
+    }
+
+    .card-pilar p {
+      color: var(--texto-suave);
+      font-size: 1rem;
+    }
+
+    /* Bloco de Impacto: O que acontece se houver erro vs acerto */
+    .comparativo-box {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .card-impacto {
+      border-radius: 22px;
+      padding: 26px;
+      box-shadow: var(--sombra);
+    }
+
+    .card-impacto.alerta {
+      background: #fef2f2;
+      border: 2px solid #fecaca;
+    }
+
+    .card-impacto.alerta h3 {
+      color: #b91c1c;
+      margin-bottom: 12px;
+      font-size: 1.35rem;
+    }
+
+    .card-impacto.sucesso {
+      background: #f0fdf4;
+      border: 2px solid #bbf7d0;
+    }
+
+    .card-impacto.sucesso h3 {
+      color: #15803d;
+      margin-bottom: 12px;
+      font-size: 1.35rem;
+    }
+
+    .card-impacto ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .card-impacto li {
+      font-weight: 600;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    /* Mini Quiz Interativo para os Jovens */
+    .quiz-box {
+      background: var(--azul-escuro);
+      color: var(--branco);
+      border-radius: 26px;
+      padding: 32px;
+      box-shadow: var(--sombra);
+      text-align: center;
+    }
+
+    .quiz-box h2 {
+      color: var(--amarelo);
+      font-size: 1.7rem;
+      margin-bottom: 10px;
+    }
+
+    .quiz-box p {
+      margin-bottom: 20px;
+      font-size: 1.05rem;
+    }
+
+    .quiz-opcoes {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 680px;
+      margin: 0 auto 18px;
+    }
+
+    .quiz-btn {
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--branco);
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      padding: 14px 20px;
+      border-radius: 14px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s;
+    }
+
+    .quiz-btn:hover {
+      background: var(--turquesa);
+      color: var(--azul-escuro);
+      border-color: var(--turquesa);
+    }
+
+    #quiz-feedback {
+      font-weight: 800;
+      font-size: 1.05rem;
+      min-height: 28px;
+      color: var(--amarelo);
+    }
+
+    /* Rodapé */
+    footer {
+      text-align: center;
+      padding: 24px;
+      color: var(--texto-suave);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Barra de Navegação -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-dot"></span>
+      <span>RepassaAí Educação • Logística</span>
+    </div>
+    <a href="index.html" class="btn-voltar">⬅ Voltar ao Nível 1</a>
+  </header>
+
+  <main class="container">
+
+    <!-- Cabeçalho Nível 2 -->
+    <section class="hero">
+      <div>
+        <span class="badge-nivel">🚀 Nível 2 • Aprofundamento</span>
+        <h1>Qual é o papel do Operador de Empilhadeira na Logística?</h1>
+        <p>
+          Agora que você já sabe como os produtos viajam pelo mundo, chegou a hora de conhecer quem faz a operação acontecer dentro dos centros de distribuição e fábricas!
+        </p>
+      </div>
+
+      <div class="mascote-box">
+        <!-- Se você tiver a imagem salva do mascote na pasta, pode trocar o emoji abaixo por: <img src="mascote.png" alt="Mascote RepassaAí" style="width:84px;height:84px;object-fit:contain;"> -->
+        <div class="mascote-avatar">🤖</div>
+        <strong>Dica do Mascote RepassaAí:</strong>
+        <p>"Operar uma empilhadeira não é só dirigir uma máquina — é cuidar do coração da logística!"</p>
+      </div>
+    </section>
+
+    <!-- Conceito Central -->
+    <section class="destaque-principal">
+      <h2>🎯 Muito mais que dirigir uma máquina</h2>
+      <p>
+        Na logística, o operador de empilhadeira não é simplesmente alguém que dirige um equipamento. Ele é um <strong>profissional estratégico</strong> responsável por movimentar, organizar e armazenar materiais com <strong>segurança, organização e eficiência</strong> para que toda a cadeia funcione sem falhas.
+      </p>
+    </section>
+
+    <!-- Os 3 Pilares -->
+    <h2 class="section-title">Os 3 Pilares do Operador na Logística</h2>
+    <section class="pilares-grid">
+      <article class="card-pilar seguranca">
+        <span class="icone-pilar">🛡️</span>
+        <h3>1. Segurança</h3>
+        <p>
+          Protege a própria vida, os colegas de equipe e toda a estrutura do armazém, respeitando regras, limites de carga e áreas de circulação.
+        </p>
+      </article>
+
+      <article class="card-pilar organizacao">
+        <span class="icone-pilar">📦</span>
+        <h3>2. Organização</h3>
+        <p>
+          Coloca cada palete e mercadoria no endereço exato do estoque, evitando perdas, misturas e bagunça na hora de separar pedidos.
+        </p>
+      </article>
+
+      <article class="card-pilar eficiencia">
+        <span class="icone-pilar">⚡</span>
+        <h3>3. Eficiência</h3>
+        <p>
+          Garante o ritmo certo entre recebimento, armazenagem e expedição, fazendo com que os produtos cheguem no prazo até os clientes.
+        </p>
+      </article>
+    </section>
+
+    <!-- Comparativo: Impacto da Operação -->
+    <h2 class="section-title">Por que cada movimento importa?</h2>
+    <section class="comparativo-box">
+      <div class="card-impacto alerta">
+        <h3>⚠️ Quando há um erro na movimentação:</h3>
+        <ul>
+          <li>❌ Pode provocar acidentes graves no ambiente de trabalho.</li>
+          <li>❌ Danifica mercadorias e gera prejuízo financeiro.</li>
+          <li>❌ Prejudica o controle do estoque (produtos perdidos ou trocados).</li>
+          <li>❌ Atrasa toda a operação e a entrega para o cliente.</li>
+        </ul>
+      </div>
+
+      <div class="card-impacto sucesso">
+        <h3>✅ Quando o operador atua com excelência:</h3>
+        <ul>
+          <li>✔️ Ambiente de trabalho seguro e protegido para todos.</li>
+          <li>✔️ Produtos intactos, bem cuidados e sem desperdícios.</li>
+          <li>✔️ Estoque preciso, rápido de localizar e conferir.</li>
+          <li>✔️ Caminhões carregados no horário e clientes satisfeitos!</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Desafio Rápido para os Jovens -->
+    <section class="quiz-box">
+      <h2>🎮 Desafio Rápido do Mascote!</h2>
+      <p>O que melhor define o papel do operador de empilhadeira na logística?</p>
+
+      <div class="quiz-opcoes">
+        <button class="quiz-btn" onclick="responderQuiz(false)">
+          A) Apenas dirigir rápido para terminar o serviço o quanto antes.
+        </button>
+        <button class="quiz-btn" onclick="responderQuiz(true)">
+          B) Movimentar materiais com segurança, organização e eficiência, evitando acidentes, perdas e atrasos.
+        </button>
+        <button class="quiz-btn" onclick="responderQuiz(false)">
+          C) Guardar as caixas em qualquer espaço vazio do depósito.
+        </button>
+      </div>
+
+      <div id="quiz-feedback"></div>
+    </section>
+
+  </main>
+
+  <footer>
+    Material Educativo de Logística • RepassaAí &copy; 2026
+  </footer>
+
+  <script>
+    function responderQuiz(correta) {
+      const feedback = document.getElementById('quiz-feedback');
+      if (correta) {
+        feedback.style.color = '#4ade80';
+        feedback.textContent = '🎉 Mandou bem! Segurança, organização e eficiência são a base da logística!';
+      } else {
+        feedback.style.color = '#fbbf24';
+        feedback.textContent = '🤔 Quase lá! Lembre-se: pressa ou desorganização causam acidentes e atrasos. Tente novamente!';
+      }
+    }
+  </script>
+
+</body>
+</html>
