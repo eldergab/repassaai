@@ -68,15 +68,15 @@
 
     <section class="lg:col-span-7 flex flex-col gap-5">
 
-      <!-- Passo 1: Templates + Mascote -->
+      <!-- Passo 1: 5 Templates Coloridos + Mascote -->
       <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-4 sm:p-5">
         <div class="flex items-center justify-between mb-3">
           <div class="flex items-center gap-2">
             <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center">1</span>
-            <h2 class="font-display font-bold text-base sm:text-lg text-slate-800">Escolha o Visual do Status (5 Templates)</h2>
+            <h2 class="font-display font-bold text-base sm:text-lg text-slate-800">Escolha o Template (5 Cores)</h2>
           </div>
           <span id="selectedTemplateBadge" class="text-xs font-semibold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-200">
-            Azul Noturno Tech
+            Template 1 • Azul Tech
           </span>
         </div>
 
@@ -84,8 +84,8 @@
 
         <div class="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
           <div class="flex items-center gap-2">
-            <span id="mascotStatusDot" class="inline-block w-2 h-2 rounded-full bg-amber-400"></span>
-            <span id="mascotStatusText">Carregando mascote (<code class="text-slate-700 font-mono">image_f0a80c.png</code>)...</span>
+            <span id="mascotStatusDot" class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span id="mascotStatusText">Mascote RepassaAí integrado nos 5 templates</span>
           </div>
           <div class="flex items-center gap-2">
             <label for="mascotUpload" class="cursor-pointer inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition">
@@ -201,8 +201,60 @@
   </main>
 
   <script>
-    // Caminho relativo para funcionar direto no GitHub Pages (mesma pasta do index.html)
-    const DEFAULT_MASCOT_SRC = './image_f0a80c.png';
+    // Tenta primeiro o arquivo local ./image_f0a80c.png; se não existir no servidor, usa o fallback embutido
+    const LOCAL_MASCOT_SRC = './image_f0a80c.png';
+    const FALLBACK_MASCOT_SVG = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 520">
+        <defs>
+          <linearGradient id="headGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1d63ff"/>
+            <stop offset="55%" stop-color="#0a2e8a"/>
+            <stop offset="100%" stop-color="#051647"/>
+          </linearGradient>
+          <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="100%" stop-color="#dbeafe"/>
+          </linearGradient>
+        </defs>
+        <ellipse cx="210" cy="492" rx="115" ry="18" fill="rgba(0,0,0,0.28)"/>
+        <!-- Antenas -->
+        <line x1="115" y1="95" x2="72" y2="52" stroke="#38bdf8" stroke-width="10" stroke-linecap="round"/>
+        <circle cx="68" cy="48" r="18" fill="#00e5ff"/>
+        <line x1="305" y1="95" x2="348" y2="52" stroke="#38bdf8" stroke-width="10" stroke-linecap="round"/>
+        <circle cx="352" cy="48" r="18" fill="#00e5ff"/>
+        <!-- Fones -->
+        <rect x="64" y="112" width="34" height="92" rx="16" fill="#0284c7" stroke="#7dd3fc" stroke-width="4"/>
+        <rect x="322" y="112" width="34" height="92" rx="16" fill="#0284c7" stroke="#7dd3fc" stroke-width="4"/>
+        <!-- Cabeça -->
+        <rect x="96" y="64" width="228" height="196" rx="44" fill="url(#headGrad)" stroke="#e0f2fe" stroke-width="8"/>
+        <rect x="112" y="80" width="196" height="164" rx="34" fill="#06194a"/>
+        <!-- Sobrancelhas e Olhos -->
+        <path d="M136 122 Q162 108 186 122" stroke="#38bdf8" stroke-width="9" fill="none" stroke-linecap="round"/>
+        <path d="M234 122 Q258 108 284 122" stroke="#38bdf8" stroke-width="9" fill="none" stroke-linecap="round"/>
+        <ellipse cx="164" cy="156" rx="32" ry="38" fill="#ffffff"/>
+        <ellipse cx="256" cy="156" rx="32" ry="38" fill="#ffffff"/>
+        <circle cx="168" cy="158" r="21" fill="#071940"/>
+        <circle cx="252" cy="158" r="21" fill="#071940"/>
+        <circle cx="160" cy="148" r="8" fill="#ffffff"/>
+        <circle cx="244" cy="148" r="8" fill="#ffffff"/>
+        <!-- Sorriso -->
+        <path d="M162 204 Q210 240 258 204 Z" fill="#e11d48" stroke="#fda4af" stroke-width="4"/>
+        <!-- Corpo -->
+        <rect x="128" y="268" width="164" height="122" rx="46" fill="url(#bodyGrad)" stroke="#0284c7" stroke-width="6"/>
+        <text x="210" y="336" text-anchor="middle" font-family="Arial, sans-serif" font-weight="900" font-size="27" fill="#0d47a1">RepassaAí</text>
+        <!-- Braços -->
+        <path d="M128 295 Q76 315 86 365" stroke="#1d4ed8" stroke-width="22" fill="none" stroke-linecap="round"/>
+        <circle cx="88" cy="372" r="22" fill="#ffffff" stroke="#0284c7" stroke-width="5"/>
+        <path d="M292 295 Q344 315 334 365" stroke="#1d4ed8" stroke-width="22" fill="none" stroke-linecap="round"/>
+        <circle cx="332" cy="372" r="22" fill="#ffffff" stroke="#0284c7" stroke-width="5"/>
+        <!-- Pernas e Botas -->
+        <rect x="145" y="385" width="44" height="58" rx="16" fill="#0284c7"/>
+        <rect x="231" y="385" width="44" height="58" rx="16" fill="#0284c7"/>
+        <rect x="124" y="432" width="76" height="44" rx="20" fill="#ffffff" stroke="#0369a1" stroke-width="6"/>
+        <rect x="220" y="432" width="76" height="44" rx="20" fill="#ffffff" stroke="#0369a1" stroke-width="6"/>
+      </svg>
+    `)}`;
+
     const MAX_SELECTION = 3;
 
     const DANIEL_DATA = [
@@ -255,10 +307,11 @@
       { id: 'd12-3', chapter: 12, chapterTitle: 'A Esperança da Ressurreição', title: 'Fidelidade até o fim', text: 'Enquanto os propósitos do futuro se desenrolam no tempo de Deus, o nosso chamado é seguir firmes até o fim.' }
     ];
 
+    // 5 templates coloridos distintos
     const TEMPLATES = [
       {
-        id: 'tech-navy',
-        name: 'Azul Noturno Tech',
+        id: 'tpl-1-azul',
+        name: 'Template 1 • Azul Tech',
         shortName: 'Azul Tech',
         swatch: 'linear-gradient(135deg, #07142e 0%, #0d3b8e 60%, #00c6ff 100%)',
         bgStops: ['#050d21', '#0b2252', '#07142e'],
@@ -276,8 +329,8 @@
         decorType: 'tech'
       },
       {
-        id: 'golden-dawn',
-        name: 'Amanhecer Dourado & Fé',
+        id: 'tpl-2-dourado',
+        name: 'Template 2 • Dourado Fé',
         shortName: 'Dourado Fé',
         swatch: 'linear-gradient(135deg, #451a03 0%, #b45309 55%, #fbbf24 100%)',
         bgStops: ['#2c1004', '#78350f', '#d97706'],
@@ -295,8 +348,8 @@
         decorType: 'sunrays'
       },
       {
-        id: 'celestial-sky',
-        name: 'Céu Celestial & Nuvens',
+        id: 'tpl-3-ceu',
+        name: 'Template 3 • Céu Azul',
         shortName: 'Céu Azul',
         swatch: 'linear-gradient(135deg, #0284c7 0%, #38bdf8 55%, #bae6fd 100%)',
         bgStops: ['#0369a1', '#0ea5e9', '#7dd3fc'],
@@ -314,8 +367,8 @@
         decorType: 'clouds'
       },
       {
-        id: 'royal-purple',
-        name: 'Roxo Real & Sabedoria',
+        id: 'tpl-4-roxo',
+        name: 'Template 4 • Roxo Real',
         shortName: 'Roxo Real',
         swatch: 'linear-gradient(135deg, #1e1b4b 0%, #581c87 55%, #c026d3 100%)',
         bgStops: ['#16123b', '#3b0764', '#6b21a8'],
@@ -333,8 +386,8 @@
         decorType: 'royal'
       },
       {
-        id: 'emerald-hope',
-        name: 'Verde Esperança & Renovação',
+        id: 'tpl-5-verde',
+        name: 'Template 5 • Verde Vida',
         shortName: 'Verde Vida',
         swatch: 'linear-gradient(135deg, #022c22 0%, #047857 55%, #34d399 100%)',
         bgStops: ['#022c22', '#065f46', '#059669'],
@@ -384,12 +437,8 @@
     function setMascotIndicator(ok, label) {
       const dot = document.getElementById('mascotStatusDot');
       const text = document.getElementById('mascotStatusText');
-      if (dot) {
-        dot.className = `inline-block w-2 h-2 rounded-full ${ok ? 'bg-emerald-500' : 'bg-rose-500'}`;
-      }
-      if (text) {
-        text.innerHTML = label;
-      }
+      if (dot) dot.className = `inline-block w-2 h-2 rounded-full ${ok ? 'bg-emerald-500' : 'bg-amber-500'}`;
+      if (text) text.innerHTML = label;
     }
 
     function processMascotTransparency(img) {
@@ -404,8 +453,6 @@
         const octx = off.getContext('2d');
         octx.drawImage(img, 0, 0, w, h);
 
-        // Em ambiente HTTPS (GitHub Pages), getImageData funciona normalmente.
-        // Em file:// local, se o navegador bloquear, cai no catch e usa a imagem original sem falhar.
         const imgData = octx.getImageData(0, 0, w, h);
         const data = imgData.data;
         const bgR = data[0], bgG = data[1], bgB = data[2], bgA = data[3];
@@ -459,7 +506,7 @@
       }
     }
 
-    function loadMascotFromSrc(src, isCustom = false) {
+    function loadMascotFromSrc(src, isCustom = false, useFallbackOnError = false) {
       const img = new Image();
       img.onload = () => {
         state.mascotImage = img;
@@ -469,15 +516,18 @@
         setMascotIndicator(
           true,
           isCustom
-            ? 'Mascote personalizado carregado'
-            : 'Mascote RepassaAí ativo (<code class="text-slate-700 font-mono">image_f0a80c.png</code>)'
+            ? 'Mascote personalizado ativo nos 5 templates'
+            : 'Mascote RepassaAí ativo nos 5 templates'
         );
         renderCanvas();
       };
       img.onerror = () => {
+        if (useFallbackOnError) {
+          loadMascotFromSrc(FALLBACK_MASCOT_SVG, false, false);
+          return;
+        }
         state.mascotImage = null;
         state.processedMascotCanvas = null;
-        setMascotIndicator(false, 'Arquivo <code class="text-slate-700 font-mono">image_f0a80c.png</code> não encontrado na pasta');
         renderCanvas();
       };
       img.src = src;
@@ -487,7 +537,7 @@
       ctx.beginPath();
       ctx.moveTo(x + r, y);
       ctx.lineTo(x + w - r, y);
-      ctx.quadraticCurveTo(x + widthOr(w), y, x + w, y + r);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
       ctx.lineTo(x + w, y + h - r);
       ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
       ctx.lineTo(x + r, y + h);
@@ -496,8 +546,6 @@
       ctx.quadraticCurveTo(x, y, x + r, y);
       ctx.closePath();
     }
-
-    function widthOr(w) { return w; }
 
     function wrapTextLines(ctx, text, maxWidth) {
       const words = text.split(/\s+/);
@@ -589,7 +637,6 @@
         ctx.ellipse(dx + dw * 0.52, mascotBottomY + 8, dw * 0.34, 24, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        // Se o fundo não foi removido (ex: aberto via file://), aplica borda arredondada suave
         if (!state.processedMascotCanvas && !state.isCustomMascot) {
           roundRectPath(ctx, dx, dy, dw, dh, 36);
           ctx.clip();
@@ -599,17 +646,6 @@
         }
 
         ctx.drawImage(source, dx, dy, dw, dh);
-        ctx.restore();
-      } else {
-        ctx.save();
-        ctx.fillStyle = tpl.bubbleBg;
-        ctx.beginPath();
-        ctx.arc(760, 1380, 150, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = tpl.bubbleTitle;
-        ctx.font = '800 34px "Plus Jakarta Sans", sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText('RepassaAí', 760, 1390);
         ctx.restore();
       }
     }
@@ -661,7 +697,6 @@
       roundRectPath(ctx, bx, by, bw, bh, br);
       ctx.fill();
 
-      // Ponteiro do balão apontando para o mascote
       ctx.beginPath();
       ctx.moveTo(640, by + bh - 2);
       ctx.lineTo(735, by + bh - 2);
@@ -677,7 +712,6 @@
       ctx.stroke();
       ctx.restore();
 
-      // Conteúdo dentro do Balão
       if (selectedPhrases.length === 0) {
         ctx.save();
         ctx.fillStyle = tpl.bubbleText;
@@ -741,10 +775,9 @@
         });
       }
 
-      // Mascote RepassaAí
       drawMascot(ctx, tpl);
 
-      // Rodapé Obrigatório perfeitamente centralizado
+      // Rodapé Obrigatório
       const fy = 1735, fh = 145, fx = 50, fw = W - 100;
       ctx.save();
       ctx.fillStyle = tpl.footerBg;
@@ -949,7 +982,7 @@
         link.click();
         showToast('Imagem PNG (1080×1920) gerada com sucesso!', 'success');
       } catch (err) {
-        showToast('Para baixar direto pelo navegador, acesse pelo GitHub Pages ou servidor local.', 'warning');
+        showToast('Não foi possível exportar a imagem neste ambiente.', 'warning');
       }
     }
 
@@ -1010,15 +1043,15 @@
       if (!file) return;
       const reader = new FileReader();
       reader.onload = ev => {
-        loadMascotFromSrc(ev.target.result, true);
-        showToast('Mascote atualizado!', 'success');
+        loadMascotFromSrc(ev.target.result, true, false);
+        showToast('Mascote atualizado nos 5 templates!', 'success');
       };
       reader.readAsDataURL(file);
     });
 
     document.getElementById('btnResetMascot').addEventListener('click', () => {
       document.getElementById('mascotUpload').value = '';
-      loadMascotFromSrc(DEFAULT_MASCOT_SRC, false);
+      loadMascotFromSrc(LOCAL_MASCOT_SRC, false, true);
       showToast('Mascote padrão RepassaAí restaurado.', 'info');
     });
 
@@ -1026,7 +1059,7 @@
     populateChapterControls();
     updateCounter();
     renderPhrases();
-    loadMascotFromSrc(DEFAULT_MASCOT_SRC, false);
+    loadMascotFromSrc(LOCAL_MASCOT_SRC, false, true);
     renderCanvas();
   </script>
 </body>
