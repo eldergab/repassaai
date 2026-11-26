@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RepassaAí — Gerador de Status: Ensinamentos de Daniel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'sans-serif'],
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+    .custom-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scroll::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 9999px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    .custom-scroll::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <header class="bg-gradient-to-r from-[#081736] via-[#0d2b66] to-[#081736] text-white shadow-lg sticky top-0 z-30 border-b border-cyan-500/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-400 to-blue-600 flex items-center justify-center shadow-md shadow-cyan-500/30 font-display font-extrabold text-white text-lg">
+          RA
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-display font-extrabold text-lg sm:text-xl tracking-tight text-white">
+              Repassa<span class="text-cyan-400">Aí</span>
+            </h1>
+            <span class="text-[11px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-cyan-400/15 text-cyan-300 border border-cyan-400/30">
+              Status 9:16
+            </span>
+          </div>
+          <p class="text-xs text-slate-300">Gerador de Mensagens do Bem • Ensinamentos do Livro de Daniel</p>
+        </div>
+      </div>
+
+      <button
+        id="btnRandomTop"
+        type="button"
+        class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 text-xs sm:text-sm font-semibold text-cyan-200 border border-white/15 transition cursor-pointer"
+      >
+        <svg class="w-4 h-4 text-cyan-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
+        <span>Frase Aleatória</span>
+      </button>
+    </div>
+  </header>
+
+  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+    <section class="lg:col-span-7 flex flex-col gap-5">
+
+      <!-- Passo 1: Templates + Mascote -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-4 sm:p-5">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center">1</span>
+            <h2 class="font-display font-bold text-base sm:text-lg text-slate-800">Escolha o Visual do Status (5 Templates)</h2>
+          </div>
+          <span id="selectedTemplateBadge" class="text-xs font-semibold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-200">
+            Azul Noturno Tech
+          </span>
+        </div>
+
+        <div id="templateGrid" class="grid grid-cols-2 sm:grid-cols-5 gap-2.5"></div>
+
+        <div class="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
+          <div class="flex items-center gap-2">
+            <span id="mascotStatusDot" class="inline-block w-2 h-2 rounded-full bg-amber-400"></span>
+            <span id="mascotStatusText">Carregando mascote (<code class="text-slate-700 font-mono">image_f0a80c.png</code>)...</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <label for="mascotUpload" class="cursor-pointer inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+              </svg>
+              <span>Trocar Mascote</span>
+            </label>
+            <input id="mascotUpload" type="file" accept="image/*" class="hidden" />
+            <button id="btnResetMascot" type="button" class="hidden px-2 py-1 rounded-lg text-rose-600 hover:bg-rose-50 font-medium cursor-pointer">
+              Restaurar Padrão
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Passo 2: Frases de Daniel -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-4 sm:p-5">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center">2</span>
+            <h2 class="font-display font-bold text-base sm:text-lg text-slate-800">Ensinamentos de Daniel (Cap. 1 a 12)</h2>
+          </div>
+          <div class="flex items-center gap-2">
+            <span id="selectionCounter" class="text-xs font-bold px-2.5 py-1 rounded-full bg-cyan-50 text-cyan-800 border border-cyan-200">
+              1 / 3 selecionadas
+            </span>
+            <button
+              id="btnClearSelection"
+              type="button"
+              class="text-xs font-semibold text-slate-500 hover:text-rose-600 px-2 py-1 rounded-lg hover:bg-rose-50 transition cursor-pointer"
+            >
+              Limpar
+            </button>
+          </div>
+        </div>
+
+        <p class="text-xs text-slate-500 mb-3">
+          Marque <strong>1 até 3 frases</strong> para o mascote falar no balão do seu Status.
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 mb-3">
+          <div class="sm:col-span-7 relative">
+            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z" />
+            </svg>
+            <input
+              id="searchInput"
+              type="text"
+              placeholder="Buscar palavra-chave (ex: fé, oração, sabedoria, fornalha)..."
+              class="w-full pl-9 pr-3 py-2 text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-slate-50/70"
+            />
+          </div>
+          <div class="sm:col-span-5">
+            <select
+              id="chapterFilter"
+              class="w-full px-3 py-2 text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-slate-50/70 font-medium text-slate-700"
+            >
+              <option value="all">Todos os Capítulos (1 a 12)</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="chapterPills" class="flex items-center gap-1.5 overflow-x-auto pb-2 mb-2 custom-scroll"></div>
+        <div id="phrasesList" class="max-h-[460px] overflow-y-auto pr-1 space-y-2.5 custom-scroll"></div>
+      </div>
+
+    </section>
+
+    <!-- Coluna Direita: Prévia 9:16 + Exportação -->
+    <aside class="lg:col-span-5 lg:sticky lg:top-20 flex flex-col gap-4">
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-4 sm:p-5 flex flex-col items-center">
+        <div class="w-full flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-emerald-600 text-white text-xs font-bold flex items-center justify-center">3</span>
+            <h2 class="font-display font-bold text-base sm:text-lg text-slate-800">Prévia do Status (9:16)</h2>
+          </div>
+          <span class="text-[11px] font-mono text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
+            1080 × 1920 px
+          </span>
+        </div>
+
+        <div class="w-full max-w-[330px] sm:max-w-[350px] aspect-[9/16] rounded-2xl overflow-hidden shadow-xl border-4 border-slate-900 bg-[#081736] relative">
+          <canvas id="statusCanvas" width="1080" height="1920" class="w-full h-full block object-contain"></canvas>
+        </div>
+
+        <div class="w-full max-w-[350px] mt-4 flex flex-col gap-2.5">
+          <button
+            id="btnDownload"
+            type="button"
+            class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-[#0D47A1] via-[#1565C0] to-[#0097A7] hover:brightness-110 active:scale-[0.99] text-white font-display font-bold text-sm sm:text-base shadow-lg shadow-blue-900/20 flex items-center justify-center gap-2 transition cursor-pointer"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V3" />
+            </svg>
+            <span>Baixar Imagem para Status (PNG)</span>
+          </button>
+
+          <button
+            id="btnShare"
+            type="button"
+            class="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white font-semibold text-sm shadow-md shadow-emerald-900/15 flex items-center justify-center gap-2 transition cursor-pointer"
+          >
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/>
+            </svg>
+            <span>Compartilhar no WhatsApp</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+  </main>
+
+  <script>
+    // Caminho relativo para funcionar direto no GitHub Pages (mesma pasta do index.html)
+    const DEFAULT_MASCOT_SRC = './image_f0a80c.png';
+    const MAX_SELECTION = 3;
+
+    const DANIEL_DATA = [
+      { id: 'd1-1', chapter: 1, chapterTitle: 'Fidelidade e Propósito', title: 'Consciência acima da conveniência', text: 'Manter princípios e valores inegociáveis mesmo longe de casa e sob pressão cultural define o caráter.' },
+      { id: 'd1-2', chapter: 1, chapterTitle: 'Fidelidade e Propósito', title: 'Integridade naquilo que parece pequeno', text: 'Escolhas diárias de disciplina e fidelidade preparam o terreno para grandes responsabilidades no futuro.' },
+      { id: 'd1-3', chapter: 1, chapterTitle: 'Fidelidade e Propósito', title: 'Sabedoria que vem do alto', text: 'O verdadeiro discernimento e a excelência intelectual são frutos de uma vida alinhada com Deus, superando o conhecimento puramente humano.' },
+
+      { id: 'd2-1', chapter: 2, chapterTitle: 'A Soberania de Deus sobre os Reinos', title: 'Deus controla a história', text: 'Reis sobem e caem, impérios nascem e desaparecem, mas a autoridade final pertence exclusivamente a Deus.' },
+      { id: 'd2-2', chapter: 2, chapterTitle: 'A Soberania de Deus sobre os Reinos', title: 'Dependência através da oração', text: 'Diante de crises impossíveis, buscar respostas em unidade e oração traz revelação e livramento.' },
+      { id: 'd2-3', chapter: 2, chapterTitle: 'A Soberania de Deus sobre os Reinos', title: 'Humildade diante do sucesso', text: 'Ao receber reconhecimento, apontar a glória para Deus evita a armadilha do orgulho.' },
+
+      { id: 'd3-1', chapter: 3, chapterTitle: 'Fé Inabalável na Fornalha', title: 'Obediência incondicional', text: 'A verdadeira fé permanece firme mesmo quando Deus escolhe não livrar imediatamente do sofrimento ("e, se não, fica sabendo...").' },
+      { id: 'd3-2', chapter: 3, chapterTitle: 'Fé Inabalável na Fornalha', title: 'Presença divina na provação', text: 'Deus nem sempre impede o fogo, mas entra na fornalha junto com aqueles que permanecem fiéis a Ele.' },
+      { id: 'd3-3', chapter: 3, chapterTitle: 'Fé Inabalável na Fornalha', title: 'Testemunho através da coragem', text: 'A recusa em se curvar aos ídolos do tempo presente transforma a perseguição em um testemunho poderoso.' },
+
+      { id: 'd4-1', chapter: 4, chapterTitle: 'O Perigo do Orgulho e a Restauração', title: 'A soberba precede a queda', text: 'Atribuir conquistas apenas à própria força leva à humilhação; todo poder é uma concessão temporária.' },
+      { id: 'd4-2', chapter: 4, chapterTitle: 'O Perigo do Orgulho e a Restauração', title: 'O propósito da disciplina', text: 'As provações permitidas por Deus visam quebrar a autossuficiência humana e restaurar a sanidade espiritual.' },
+      { id: 'd4-3', chapter: 4, chapterTitle: 'O Perigo do Orgulho e a Restauração', title: 'Ninguém está além da graça', text: 'Até mesmo os líderes mais arrogantes podem ser transformados quando reconhecem a grandeza do Altíssimo.' },
+
+      { id: 'd5-1', chapter: 5, chapterTitle: 'A Queda da Arrogância e a Escrita na Parede', title: 'Ignorar a história tem um preço', text: 'Repetir os erros do passado e desprezar lições já aprendidas acelera o juízo.' },
+      { id: 'd5-2', chapter: 5, chapterTitle: 'A Queda da Arrogância e a Escrita na Parede', title: 'Não profanar o que é sagrado', text: 'Tratar com leviandade as coisas de Deus demonstra falta de temor e atrai consequências severas.' },
+      { id: 'd5-3', chapter: 5, chapterTitle: 'A Queda da Arrogância e a Escrita na Parede', title: 'O peso da balança divina', text: 'A vida humana é avaliada pela integridade e justiça de Deus, não pelas aparências ou riquezas.' },
+
+      { id: 'd6-1', chapter: 6, chapterTitle: 'Constância na Oração e Integridade', title: 'Vida irrepreensível', text: 'Uma conduta íntegra faz com que os inimigos não encontrem falhas morais para acusar, restando apenas atacar a fé.' },
+      { id: 'd6-2', chapter: 6, chapterTitle: 'Constância na Oração e Integridade', title: 'Hábitos espirituais inegociáveis', text: 'A oração constante não é um recurso de emergência, mas um estilo de vida mantido antes, durante e depois das crises.' },
+      { id: 'd6-3', chapter: 6, chapterTitle: 'Constância na Oração e Integridade', title: 'Fidelidade que fecha bocas', text: 'A confiança plena em Deus neutraliza as armadilhas humanas e transforma covas de leões em lugares de milagres.' },
+
+      { id: 'd7-1', chapter: 7, chapterTitle: 'O Reino Eterno de Deus', title: 'Os reinos humanos são temporários', text: 'Sistemas opressores podem parecer invencíveis, mas têm prazo de validade determinado por Deus.' },
+      { id: 'd7-2', chapter: 7, chapterTitle: 'O Reino Eterno de Deus', title: 'O Filho do Homem reinará', text: 'A história não caminha para o caos definitivo, mas para o estabelecimento de um reino eterno e justo.' },
+      { id: 'd7-3', chapter: 7, chapterTitle: 'O Reino Eterno de Deus', title: 'Perseverança dos santos', text: 'Mesmo em tempos de perseguição intensa, a vitória final pertence ao povo de Deus.' },
+
+      { id: 'd8-1', chapter: 8, chapterTitle: 'O Fim da Opressão e o Discernimento', title: 'O mal tem limites', text: 'Por mais destrutivo que um poder opressor pareça, sua duração e alcance estão sob o controle divino.' },
+      { id: 'd8-2', chapter: 8, chapterTitle: 'O Fim da Opressão e o Discernimento', title: 'A verdade prevalece sobre o engano', text: 'Mesmo quando a verdade parece lançada por terra, ela será restaurada pelo poder de Deus.' },
+      { id: 'd8-3', chapter: 8, chapterTitle: 'O Fim da Opressão e o Discernimento', title: 'O peso da revelação', text: 'Compreender a seriedade dos propósitos espirituais gera compaixão e responsabilidade, não apenas curiosidade.' },
+
+      { id: 'd9-1', chapter: 9, chapterTitle: 'O Poder da Oração de Confissão', title: 'As Escrituras impulsionam a oração', text: 'Compreender as promessas de Deus leva à intercessão ativa pelo cumprimento delas.' },
+      { id: 'd9-2', chapter: 9, chapterTitle: 'O Poder da Oração de Confissão', title: 'Identificação e arrependimento', text: 'Líderes espirituais não apontam apenas o erro dos outros; eles se colocam na brecha e oram pelo povo.' },
+      { id: 'd9-3', chapter: 9, chapterTitle: 'O Poder da Oração de Confissão', title: 'A misericórdia é a base do perdão', text: 'O clamor a Deus não se apoia nos méritos humanos, mas na Sua grande misericórdia e fidelidade.' },
+
+      { id: 'd10-1', chapter: 10, chapterTitle: 'A Realidade da Batalha Espiritual', title: 'Há uma guerra invisível em curso', text: 'Os conflitos visíveis na terra refletem batalhas espirituais nos lugares celestiais.' },
+      { id: 'd10-2', chapter: 10, chapterTitle: 'A Realidade da Batalha Espiritual', title: 'A oração movimenta o mundo espiritual', text: 'Desde o primeiro momento de busca sincera, Deus ouve e envia resposta, ainda que haja resistência no caminho.' },
+      { id: 'd10-3', chapter: 10, chapterTitle: 'A Realidade da Batalha Espiritual', title: 'Fortalecimento na fraqueza', text: 'Diante da grandeza divina, a força humana desfalece, mas o toque de Deus restaura a paz e o vigor.' },
+
+      { id: 'd11-1', chapter: 11, chapterTitle: 'Conflitos Terrenos e Resistência Fiel', title: 'Segurança além dos governos', text: 'Alianças políticas e instabilidades humanas se repetem, provando que nossa verdadeira segurança está em Deus.' },
+      { id: 'd11-2', chapter: 11, chapterTitle: 'Conflitos Terrenos e Resistência Fiel', title: 'Conhecer a Deus gera coragem', text: 'Aqueles que conhecem verdadeiramente ao seu Deus permanecem firmes e agem com sabedoria nos tempos difíceis.' },
+      { id: 'd11-3', chapter: 11, chapterTitle: 'Conflitos Terrenos e Resistência Fiel', title: 'A provação purifica', text: 'Os tempos difíceis servem para refinar, purificar e fortalecer a nossa fé.' },
+
+      { id: 'd12-1', chapter: 12, chapterTitle: 'A Esperança da Ressurreição', title: 'A morte não é o fim', text: 'Há uma promessa segura de ressurreição e recompensa eterna para os que permanecem fiéis.' },
+      { id: 'd12-2', chapter: 12, chapterTitle: 'A Esperança da Ressurreição', title: 'O valor de guiar outros à justiça', text: 'Aqueles que ensinam a verdade e conduzem pessoas a Deus brilharão como estrelas para sempre.' },
+      { id: 'd12-3', chapter: 12, chapterTitle: 'A Esperança da Ressurreição', title: 'Fidelidade até o fim', text: 'Enquanto os propósitos do futuro se desenrolam no tempo de Deus, o nosso chamado é seguir firmes até o fim.' }
+    ];
+
+    const TEMPLATES = [
+      {
+        id: 'tech-navy',
+        name: 'Azul Noturno Tech',
+        shortName: 'Azul Tech',
+        swatch: 'linear-gradient(135deg, #07142e 0%, #0d3b8e 60%, #00c6ff 100%)',
+        bgStops: ['#050d21', '#0b2252', '#07142e'],
+        accent: '#00E5FF',
+        bubbleBg: 'rgba(255, 255, 255, 0.96)',
+        bubbleBorder: '#00E5FF',
+        bubbleText: '#0A1936',
+        bubbleTitle: '#0D47A1',
+        badgeBg: '#0D47A1',
+        badgeText: '#FFFFFF',
+        footerBg: 'rgba(5, 13, 33, 0.92)',
+        footerBorder: '#00E5FF',
+        footerText: '#FFFFFF',
+        footerUrl: '#00E5FF',
+        decorType: 'tech'
+      },
+      {
+        id: 'golden-dawn',
+        name: 'Amanhecer Dourado & Fé',
+        shortName: 'Dourado Fé',
+        swatch: 'linear-gradient(135deg, #451a03 0%, #b45309 55%, #fbbf24 100%)',
+        bgStops: ['#2c1004', '#78350f', '#d97706'],
+        accent: '#FDE047',
+        bubbleBg: 'rgba(255, 252, 245, 0.97)',
+        bubbleBorder: '#F59E0B',
+        bubbleText: '#291505',
+        bubbleTitle: '#92400E',
+        badgeBg: '#B45309',
+        badgeText: '#FEF3C7',
+        footerBg: 'rgba(44, 16, 4, 0.92)',
+        footerBorder: '#FBBF24',
+        footerText: '#FEF3C7',
+        footerUrl: '#FDE047',
+        decorType: 'sunrays'
+      },
+      {
+        id: 'celestial-sky',
+        name: 'Céu Celestial & Nuvens',
+        shortName: 'Céu Azul',
+        swatch: 'linear-gradient(135deg, #0284c7 0%, #38bdf8 55%, #bae6fd 100%)',
+        bgStops: ['#0369a1', '#0ea5e9', '#7dd3fc'],
+        accent: '#FFFFFF',
+        bubbleBg: 'rgba(255, 255, 255, 0.96)',
+        bubbleBorder: '#38BDF8',
+        bubbleText: '#0C4A6E',
+        bubbleTitle: '#0284C7',
+        badgeBg: '#0369A1',
+        badgeText: '#FFFFFF',
+        footerBg: 'rgba(7, 45, 78, 0.92)',
+        footerBorder: '#7DD3FC',
+        footerText: '#F0F9FF',
+        footerUrl: '#7DD3FC',
+        decorType: 'clouds'
+      },
+      {
+        id: 'royal-purple',
+        name: 'Roxo Real & Sabedoria',
+        shortName: 'Roxo Real',
+        swatch: 'linear-gradient(135deg, #1e1b4b 0%, #581c87 55%, #c026d3 100%)',
+        bgStops: ['#16123b', '#3b0764', '#6b21a8'],
+        accent: '#F0ABFC',
+        bubbleBg: 'rgba(253, 250, 255, 0.96)',
+        bubbleBorder: '#E879F9',
+        bubbleText: '#2E1065',
+        bubbleTitle: '#6B21A8',
+        badgeBg: '#581C87',
+        badgeText: '#FAE8FF',
+        footerBg: 'rgba(22, 18, 59, 0.93)',
+        footerBorder: '#E879F9',
+        footerText: '#FAF5FF',
+        footerUrl: '#F0ABFC',
+        decorType: 'royal'
+      },
+      {
+        id: 'emerald-hope',
+        name: 'Verde Esperança & Renovação',
+        shortName: 'Verde Vida',
+        swatch: 'linear-gradient(135deg, #022c22 0%, #047857 55%, #34d399 100%)',
+        bgStops: ['#022c22', '#065f46', '#059669'],
+        accent: '#6EE7B7',
+        bubbleBg: 'rgba(255, 255, 255, 0.97)',
+        bubbleBorder: '#10B981',
+        bubbleText: '#064E3B',
+        bubbleTitle: '#047857',
+        badgeBg: '#065F46',
+        badgeText: '#ECFDF5',
+        footerBg: 'rgba(2, 44, 34, 0.93)',
+        footerBorder: '#34D399',
+        footerText: '#ECFDF5',
+        footerUrl: '#6EE7B7',
+        decorType: 'emerald'
+      }
+    ];
+
+    const state = {
+      selectedTemplateId: TEMPLATES[0].id,
+      selectedPhraseIds: ['d3-2'],
+      chapterFilter: 'all',
+      searchQuery: '',
+      mascotImage: null,
+      processedMascotCanvas: null,
+      isCustomMascot: false
+    };
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      const colors = {
+        info: 'bg-slate-900 text-white border-cyan-500/40',
+        success: 'bg-emerald-900 text-white border-emerald-400/50',
+        warning: 'bg-amber-900 text-amber-50 border-amber-400/50'
+      };
+      toast.className = `pointer-events-auto px-4 py-3 rounded-xl shadow-xl border text-xs sm:text-sm font-medium transition-all duration-300 transform translate-y-2 opacity-0 ${colors[type] || colors.info}`;
+      toast.textContent = message;
+      container.appendChild(toast);
+      requestAnimationFrame(() => toast.classList.remove('translate-y-2', 'opacity-0'));
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    function setMascotIndicator(ok, label) {
+      const dot = document.getElementById('mascotStatusDot');
+      const text = document.getElementById('mascotStatusText');
+      if (dot) {
+        dot.className = `inline-block w-2 h-2 rounded-full ${ok ? 'bg-emerald-500' : 'bg-rose-500'}`;
+      }
+      if (text) {
+        text.innerHTML = label;
+      }
+    }
+
+    function processMascotTransparency(img) {
+      try {
+        const w = img.naturalWidth || img.width;
+        const h = img.naturalHeight || img.height;
+        if (!w || !h) return null;
+
+        const off = document.createElement('canvas');
+        off.width = w;
+        off.height = h;
+        const octx = off.getContext('2d');
+        octx.drawImage(img, 0, 0, w, h);
+
+        // Em ambiente HTTPS (GitHub Pages), getImageData funciona normalmente.
+        // Em file:// local, se o navegador bloquear, cai no catch e usa a imagem original sem falhar.
+        const imgData = octx.getImageData(0, 0, w, h);
+        const data = imgData.data;
+        const bgR = data[0], bgG = data[1], bgB = data[2], bgA = data[3];
+        if (bgA < 50) return off;
+
+        const visited = new Uint8Array(w * h);
+        const queue = new Int32Array(w * h);
+        let head = 0, tail = 0;
+
+        const hardSq = 34 * 34;
+        const softSq = 54 * 54;
+
+        function enqueue(x, y) {
+          if (x < 0 || x >= w || y < 0 || y >= h) return;
+          const pos = y * w + x;
+          if (visited[pos]) return;
+          const idx = pos * 4;
+          const dr = data[idx] - bgR, dg = data[idx + 1] - bgG, db = data[idx + 2] - bgB;
+          const dist = dr * dr + dg * dg + db * db;
+          if (dist <= softSq) {
+            visited[pos] = 1;
+            queue[tail++] = pos;
+          }
+        }
+
+        for (let x = 0; x < w; x++) { enqueue(x, 0); enqueue(x, h - 1); }
+        for (let y = 0; y < h; y++) { enqueue(0, y); enqueue(w - 1, y); }
+
+        while (head < tail) {
+          const pos = queue[head++];
+          const idx = pos * 4;
+          const dr = data[idx] - bgR, dg = data[idx + 1] - bgG, db = data[idx + 2] - bgB;
+          const dist = dr * dr + dg * dg + db * db;
+
+          if (dist <= hardSq) {
+            data[idx + 3] = 0;
+          } else {
+            const factor = (Math.sqrt(dist) - 34) / (54 - 34);
+            data[idx + 3] = Math.round(data[idx + 3] * Math.max(0, Math.min(1, factor)));
+          }
+
+          const x = pos % w;
+          const y = (pos - x) / w;
+          enqueue(x + 1, y); enqueue(x - 1, y); enqueue(x, y + 1); enqueue(x, y - 1);
+        }
+
+        octx.putImageData(imgData, 0, 0);
+        return off;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function loadMascotFromSrc(src, isCustom = false) {
+      const img = new Image();
+      img.onload = () => {
+        state.mascotImage = img;
+        state.isCustomMascot = isCustom;
+        state.processedMascotCanvas = processMascotTransparency(img);
+        document.getElementById('btnResetMascot').classList.toggle('hidden', !isCustom);
+        setMascotIndicator(
+          true,
+          isCustom
+            ? 'Mascote personalizado carregado'
+            : 'Mascote RepassaAí ativo (<code class="text-slate-700 font-mono">image_f0a80c.png</code>)'
+        );
+        renderCanvas();
+      };
+      img.onerror = () => {
+        state.mascotImage = null;
+        state.processedMascotCanvas = null;
+        setMascotIndicator(false, 'Arquivo <code class="text-slate-700 font-mono">image_f0a80c.png</code> não encontrado na pasta');
+        renderCanvas();
+      };
+      img.src = src;
+    }
+
+    function roundRectPath(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + widthOr(w), y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    function widthOr(w) { return w; }
+
+    function wrapTextLines(ctx, text, maxWidth) {
+      const words = text.split(/\s+/);
+      const lines = [];
+      let line = '';
+      for (const word of words) {
+        const test = line ? `${line} ${word}` : word;
+        if (ctx.measureText(test).width > maxWidth && line) {
+          lines.push(line);
+          line = word;
+        } else {
+          line = test;
+        }
+      }
+      if (line) lines.push(line);
+      return lines;
+    }
+
+    function drawBackground(ctx, tpl, W, H) {
+      const grad = ctx.createLinearGradient(0, 0, W * 0.35, H);
+      grad.addColorStop(0, tpl.bgStops[0]);
+      grad.addColorStop(0.55, tpl.bgStops[1]);
+      grad.addColorStop(1, tpl.bgStops[2]);
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, W, H);
+
+      ctx.save();
+      if (tpl.decorType === 'tech') {
+        ctx.strokeStyle = 'rgba(0, 229, 255, 0.08)';
+        ctx.lineWidth = 2;
+        for (let x = 0; x <= W; x += 90) {
+          ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+        }
+        for (let y = 0; y <= H; y += 90) {
+          ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+        }
+        const glow = ctx.createRadialGradient(W * 0.72, H * 0.72, 20, W * 0.72, H * 0.72, 460);
+        glow.addColorStop(0, 'rgba(0, 229, 255, 0.28)');
+        glow.addColorStop(1, 'rgba(0, 229, 255, 0)');
+        ctx.fillStyle = glow;
+        ctx.fillRect(0, 0, W, H);
+      } else if (tpl.decorType === 'sunrays') {
+        const sun = ctx.createRadialGradient(W * 0.5, 240, 30, W * 0.5, 240, 780);
+        sun.addColorStop(0, 'rgba(253, 224, 71, 0.42)');
+        sun.addColorStop(0.6, 'rgba(245, 158, 11, 0.12)');
+        sun.addColorStop(1, 'rgba(245, 158, 11, 0)');
+        ctx.fillStyle = sun;
+        ctx.fillRect(0, 0, W, H);
+      } else if (tpl.decorType === 'clouds') {
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.16)';
+        const puffs = [[180, 340, 130], [310, 320, 155], [440, 355, 120], [820, 1180, 150], [950, 1160, 130]];
+        for (const [cx, cy, r] of puffs) {
+          ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fill();
+        }
+      } else if (tpl.decorType === 'royal') {
+        const g1 = ctx.createRadialGradient(220, 260, 20, 220, 260, 520);
+        g1.addColorStop(0, 'rgba(232, 121, 249, 0.25)');
+        g1.addColorStop(1, 'rgba(232, 121, 249, 0)');
+        ctx.fillStyle = g1;
+        ctx.fillRect(0, 0, W, H);
+      } else if (tpl.decorType === 'emerald') {
+        const g2 = ctx.createRadialGradient(W * 0.5, H * 0.45, 40, W * 0.5, H * 0.45, 680);
+        g2.addColorStop(0, 'rgba(110, 231, 183, 0.22)');
+        g2.addColorStop(1, 'rgba(110, 231, 183, 0)');
+        ctx.fillStyle = g2;
+        ctx.fillRect(0, 0, W, H);
+      }
+      ctx.restore();
+    }
+
+    function drawMascot(ctx, tpl) {
+      const targetH = 650;
+      const mascotX = 620;
+      const mascotBottomY = 1715;
+
+      const source = state.processedMascotCanvas || state.mascotImage;
+      if (source && (source.width || source.naturalWidth)) {
+        const sw = source.width || source.naturalWidth;
+        const sh = source.height || source.naturalHeight;
+        const scale = targetH / sh;
+        const dw = sw * scale;
+        const dh = targetH;
+        const dx = mascotX - dw * 0.42;
+        const dy = mascotBottomY - dh;
+
+        ctx.save();
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.34)';
+        ctx.beginPath();
+        ctx.ellipse(dx + dw * 0.52, mascotBottomY + 8, dw * 0.34, 24, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Se o fundo não foi removido (ex: aberto via file://), aplica borda arredondada suave
+        if (!state.processedMascotCanvas && !state.isCustomMascot) {
+          roundRectPath(ctx, dx, dy, dw, dh, 36);
+          ctx.clip();
+        } else {
+          ctx.shadowColor = tpl.accent;
+          ctx.shadowBlur = 24;
+        }
+
+        ctx.drawImage(source, dx, dy, dw, dh);
+        ctx.restore();
+      } else {
+        ctx.save();
+        ctx.fillStyle = tpl.bubbleBg;
+        ctx.beginPath();
+        ctx.arc(760, 1380, 150, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = tpl.bubbleTitle;
+        ctx.font = '800 34px "Plus Jakarta Sans", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('RepassaAí', 760, 1390);
+        ctx.restore();
+      }
+    }
+
+    function renderCanvas() {
+      const canvas = document.getElementById('statusCanvas');
+      const ctx = canvas.getContext('2d');
+      const W = 1080, H = 1920;
+
+      const tpl = TEMPLATES.find(t => t.id === state.selectedTemplateId) || TEMPLATES[0];
+      const selectedPhrases = state.selectedPhraseIds
+        .map(id => DANIEL_DATA.find(p => p.id === id))
+        .filter(Boolean);
+
+      ctx.clearRect(0, 0, W, H);
+      drawBackground(ctx, tpl, W, H);
+
+      // Cabeçalho Superior
+      ctx.save();
+      ctx.fillStyle = tpl.badgeBg;
+      roundRectPath(ctx, 70, 72, 340, 56, 28);
+      ctx.fill();
+      ctx.fillStyle = tpl.badgeText;
+      ctx.font = '800 24px "Plus Jakarta Sans", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('LIVRO DE DANIEL', 240, 100);
+
+      let capLabel = 'CAPÍTULO';
+      if (selectedPhrases.length === 1) {
+        capLabel = `CAPÍTULO ${selectedPhrases[0].chapter}`;
+      } else if (selectedPhrases.length > 1) {
+        const caps = [...new Set(selectedPhrases.map(p => p.chapter))];
+        capLabel = caps.length === 1 ? `CAPÍTULO ${caps[0]}` : `CAPS. ${caps.join(' • ')}`;
+      }
+      ctx.fillStyle = tpl.accent;
+      ctx.font = '800 28px "Plus Jakarta Sans", sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText(capLabel, W - 70, 100);
+      ctx.restore();
+
+      // Balão de Fala do Mascote
+      const bx = 65, by = 165, bw = W - 130, bh = 885, br = 44;
+      ctx.save();
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.28)';
+      ctx.shadowBlur = 32;
+      ctx.shadowOffsetY = 14;
+      ctx.fillStyle = tpl.bubbleBg;
+      roundRectPath(ctx, bx, by, bw, bh, br);
+      ctx.fill();
+
+      // Ponteiro do balão apontando para o mascote
+      ctx.beginPath();
+      ctx.moveTo(640, by + bh - 2);
+      ctx.lineTo(735, by + bh - 2);
+      ctx.lineTo(715, by + bh + 76);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+
+      ctx.save();
+      ctx.strokeStyle = tpl.bubbleBorder;
+      ctx.lineWidth = 5;
+      roundRectPath(ctx, bx, by, bw, bh, br);
+      ctx.stroke();
+      ctx.restore();
+
+      // Conteúdo dentro do Balão
+      if (selectedPhrases.length === 0) {
+        ctx.save();
+        ctx.fillStyle = tpl.bubbleText;
+        ctx.font = '700 38px "Plus Jakarta Sans", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('Selecione ao menos 1 ensinamento', W / 2, by + bh * 0.45);
+        ctx.font = '500 28px Inter, sans-serif';
+        ctx.fillText('para o mascote RepassaAí falar no seu Status.', W / 2, by + bh * 0.52);
+        ctx.restore();
+      } else {
+        const count = selectedPhrases.length;
+        const titleFontSize = count === 1 ? 38 : count === 2 ? 32 : 28;
+        const bodyFontSize = count === 1 ? 35 : count === 2 ? 29 : 25;
+        const bodyLineHeight = Math.round(bodyFontSize * 1.35);
+        const padX = 56;
+        const innerW = bw - padX * 2;
+
+        const blocks = selectedPhrases.map(item => {
+          const tagText = `CAP. ${item.chapter} • ${item.title.toUpperCase()}`;
+          ctx.font = `800 ${titleFontSize}px "Plus Jakarta Sans", sans-serif`;
+          const tagLines = wrapTextLines(ctx, tagText, innerW);
+          ctx.font = `600 ${bodyFontSize}px Inter, sans-serif`;
+          const bodyLines = wrapTextLines(ctx, `"${item.text}"`, innerW);
+          const height = tagLines.length * (titleFontSize + 8) + bodyLines.length * bodyLineHeight + 18;
+          return { item, tagLines, bodyLines, height };
+        });
+
+        const totalBlocksHeight = blocks.reduce((acc, b) => acc + b.height, 0) + (blocks.length - 1) * 28;
+        let curY = by + Math.max(44, (bh - totalBlocksHeight) / 2);
+
+        blocks.forEach((b, idx) => {
+          ctx.save();
+          ctx.fillStyle = tpl.bubbleTitle;
+          ctx.font = `800 ${titleFontSize}px "Plus Jakarta Sans", sans-serif`;
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'top';
+          for (const tLine of b.tagLines) {
+            ctx.fillText(tLine, bx + padX, curY);
+            curY += titleFontSize + 8;
+          }
+
+          curY += 6;
+          ctx.fillStyle = tpl.bubbleText;
+          ctx.font = `600 ${bodyFontSize}px Inter, sans-serif`;
+          for (const line of b.bodyLines) {
+            ctx.fillText(line, bx + padX, curY);
+            curY += bodyLineHeight;
+          }
+
+          if (idx < blocks.length - 1) {
+            curY += 14;
+            ctx.strokeStyle = 'rgba(15, 23, 42, 0.14)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(bx + padX + 40, curY);
+            ctx.lineTo(bx + bw - padX - 40, curY);
+            ctx.stroke();
+            curY += 14;
+          }
+          ctx.restore();
+        });
+      }
+
+      // Mascote RepassaAí
+      drawMascot(ctx, tpl);
+
+      // Rodapé Obrigatório perfeitamente centralizado
+      const fy = 1735, fh = 145, fx = 50, fw = W - 100;
+      ctx.save();
+      ctx.fillStyle = tpl.footerBg;
+      roundRectPath(ctx, fx, fy, fw, fh, 28);
+      ctx.fill();
+      ctx.strokeStyle = tpl.footerBorder;
+      ctx.lineWidth = 3;
+      roundRectPath(ctx, fx, fy, fw, fh, 28);
+      ctx.stroke();
+
+      ctx.textBaseline = 'middle';
+      ctx.textAlign = 'left';
+
+      const prefixText = 'ACESSE ';
+      const urlText = 'WWW.REPASSAAI.COM.BR';
+
+      ctx.font = '700 28px "Plus Jakarta Sans", sans-serif';
+      const wPrefix = ctx.measureText(prefixText).width;
+      ctx.font = '800 32px "Plus Jakarta Sans", sans-serif';
+      const wUrl = ctx.measureText(urlText).width;
+
+      const totalTopLineW = wPrefix + wUrl;
+      const startTopX = (W - totalTopLineW) / 2;
+
+      ctx.fillStyle = tpl.footerText;
+      ctx.font = '700 28px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText(prefixText, startTopX, fy + 48);
+
+      ctx.fillStyle = tpl.footerUrl;
+      ctx.font = '800 32px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText(urlText, startTopX + wPrefix, fy + 48);
+
+      ctx.textAlign = 'center';
+      ctx.fillStyle = tpl.footerText;
+      ctx.font = '600 27px Inter, sans-serif';
+      ctx.fillText('E MONTE SUA MENSAGEM DO BEM POSITIVA!', W / 2, fy + 102);
+      ctx.restore();
+    }
+
+    function renderTemplates() {
+      const grid = document.getElementById('templateGrid');
+      grid.innerHTML = '';
+      for (const tpl of TEMPLATES) {
+        const active = tpl.id === state.selectedTemplateId;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `group text-left rounded-xl p-2 border-2 transition cursor-pointer ${
+          active ? 'border-blue-600 bg-blue-50/60 shadow-sm' : 'border-slate-200 hover:border-slate-300 bg-white'
+        }`;
+        btn.innerHTML = `
+          <div class="w-full h-12 rounded-lg mb-1.5 shadow-inner" style="background: ${tpl.swatch};"></div>
+          <div class="text-[11px] font-bold text-slate-800 truncate">${tpl.shortName}</div>
+        `;
+        btn.onclick = () => {
+          state.selectedTemplateId = tpl.id;
+          document.getElementById('selectedTemplateBadge').textContent = tpl.name;
+          renderTemplates();
+          renderCanvas();
+        };
+        grid.appendChild(btn);
+      }
+    }
+
+    function populateChapterControls() {
+      const select = document.getElementById('chapterFilter');
+      const pills = document.getElementById('chapterPills');
+      pills.innerHTML = '';
+
+      const allPill = document.createElement('button');
+      allPill.type = 'button';
+      allPill.dataset.cap = 'all';
+      allPill.className = 'px-3 py-1 rounded-full text-xs font-bold shrink-0 transition cursor-pointer bg-blue-600 text-white';
+      allPill.textContent = 'Todos';
+      pills.appendChild(allPill);
+
+      for (let c = 1; c <= 12; c++) {
+        const opt = document.createElement('option');
+        opt.value = String(c);
+        opt.textContent = `Capítulo ${c}`;
+        select.appendChild(opt);
+
+        const pill = document.createElement('button');
+        pill.type = 'button';
+        pill.dataset.cap = String(c);
+        pill.className = 'px-2.5 py-1 rounded-full text-xs font-semibold shrink-0 transition cursor-pointer bg-slate-100 text-slate-700 hover:bg-slate-200';
+        pill.textContent = `Cap. ${c}`;
+        pills.appendChild(pill);
+      }
+
+      const syncCapUI = (val) => {
+        state.chapterFilter = val;
+        select.value = val;
+        pills.querySelectorAll('button').forEach(b => {
+          const isSel = b.dataset.cap === val;
+          b.className = `px-2.5 py-1 rounded-full text-xs font-semibold shrink-0 transition cursor-pointer ${
+            isSel ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+          }`;
+        });
+        renderPhrases();
+      };
+
+      select.addEventListener('change', e => syncCapUI(e.target.value));
+      pills.addEventListener('click', e => {
+        const btn = e.target.closest('button[data-cap]');
+        if (btn) syncCapUI(btn.dataset.cap);
+      });
+    }
+
+    function updateCounter() {
+      document.getElementById('selectionCounter').textContent = `${state.selectedPhraseIds.length} / ${MAX_SELECTION} selecionadas`;
+    }
+
+    function togglePhraseSelection(id) {
+      const idx = state.selectedPhraseIds.indexOf(id);
+      if (idx > -1) {
+        state.selectedPhraseIds.splice(idx, 1);
+      } else {
+        if (state.selectedPhraseIds.length >= MAX_SELECTION) {
+          showToast(`Você pode selecionar até ${MAX_SELECTION} frases por Status.`, 'warning');
+          return;
+        }
+        state.selectedPhraseIds.push(id);
+      }
+      updateCounter();
+      renderPhrases();
+      renderCanvas();
+    }
+
+    function renderPhrases() {
+      const list = document.getElementById('phrasesList');
+      const query = state.searchQuery.trim().toLowerCase();
+
+      const filtered = DANIEL_DATA.filter(item => {
+        const matchCap = state.chapterFilter === 'all' || String(item.chapter) === state.chapterFilter;
+        if (!matchCap) return false;
+        if (!query) return true;
+        return (
+          item.title.toLowerCase().includes(query) ||
+          item.text.toLowerCase().includes(query) ||
+          item.chapterTitle.toLowerCase().includes(query) ||
+          `capítulo ${item.chapter}`.includes(query)
+        );
+      });
+
+      list.innerHTML = '';
+      if (filtered.length === 0) {
+        list.innerHTML = `<div class="text-center py-8 text-sm text-slate-500">Nenhuma frase encontrada para "${state.searchQuery}".</div>`;
+        return;
+      }
+
+      for (const item of filtered) {
+        const selected = state.selectedPhraseIds.includes(item.id);
+        const card = document.createElement('div');
+        card.className = `rounded-xl p-3.5 border transition cursor-pointer select-none ${
+          selected
+            ? 'border-blue-600 bg-blue-50/70 shadow-sm'
+            : 'border-slate-200 hover:border-slate-300 bg-white'
+        }`;
+        card.innerHTML = `
+          <div class="flex items-start gap-3">
+            <div class="mt-0.5 w-5 h-5 rounded-md border flex items-center justify-center shrink-0 ${
+              selected ? 'bg-blue-600 border-blue-600 text-white' : 'border-slate-300 bg-white'
+            }">
+              ${selected ? '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>' : ''}
+            </div>
+            <div class="min-w-0 flex-1">
+              <div class="flex flex-wrap items-center gap-1.5 mb-1">
+                <span class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-slate-900 text-cyan-300">
+                  Cap. ${item.chapter}
+                </span>
+                <span class="text-xs font-bold text-blue-900">${item.title}</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">${item.text}</p>
+            </div>
+          </div>
+        `;
+        card.onclick = () => togglePhraseSelection(item.id);
+        list.appendChild(card);
+      }
+    }
+
+    function pickRandomPhrase() {
+      const randomItem = DANIEL_DATA[Math.floor(Math.random() * DANIEL_DATA.length)];
+      state.selectedPhraseIds = [randomItem.id];
+      updateCounter();
+      renderPhrases();
+      renderCanvas();
+      showToast(`Sorteado: Daniel Cap. ${randomItem.chapter} — ${randomItem.title}`, 'info');
+    }
+
+    function downloadStatusImage() {
+      if (state.selectedPhraseIds.length === 0) {
+        showToast('Selecione pelo menos uma frase antes de baixar.', 'warning');
+        return;
+      }
+      try {
+        const canvas = document.getElementById('statusCanvas');
+        const link = document.createElement('a');
+        const capTag = state.selectedPhraseIds.map(id => id.split('-')[0].replace('d', 'cap')).join('_');
+        link.download = `repassaai_daniel_${capTag}_status.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        showToast('Imagem PNG (1080×1920) gerada com sucesso!', 'success');
+      } catch (err) {
+        showToast('Para baixar direto pelo navegador, acesse pelo GitHub Pages ou servidor local.', 'warning');
+      }
+    }
+
+    async function shareStatusImage() {
+      if (state.selectedPhraseIds.length === 0) {
+        showToast('Selecione pelo menos uma frase antes de compartilhar.', 'warning');
+        return;
+      }
+      const canvas = document.getElementById('statusCanvas');
+      const shareText = 'Mensagem do bem com ensinamentos de Daniel! Acesse www.repassaai.com.br e monte sua mensagem do bem positiva!';
+
+      try {
+        canvas.toBlob(async (blob) => {
+          if (blob) {
+            const file = new File([blob], 'repassaai_status_daniel.png', { type: 'image/png' });
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+              try {
+                await navigator.share({
+                  title: 'RepassaAí — Status do Bem',
+                  text: shareText,
+                  files: [file]
+                });
+                showToast('Compartilhamento iniciado!', 'success');
+                return;
+              } catch (e) {
+                if (e.name === 'AbortError') return;
+              }
+            }
+          }
+          const url = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+          window.open(url, '_blank', 'noopener,noreferrer');
+          showToast('Baixe o PNG ao lado e publique direto no Status do WhatsApp!', 'info');
+        }, 'image/png');
+      } catch (err) {
+        const url = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+        window.open(url, '_blank', 'noopener,noreferrer');
+      }
+    }
+
+    document.getElementById('searchInput').addEventListener('input', e => {
+      state.searchQuery = e.target.value;
+      renderPhrases();
+    });
+
+    document.getElementById('btnClearSelection').addEventListener('click', () => {
+      state.selectedPhraseIds = [];
+      updateCounter();
+      renderPhrases();
+      renderCanvas();
+    });
+
+    document.getElementById('btnRandomTop').addEventListener('click', pickRandomPhrase);
+    document.getElementById('btnDownload').addEventListener('click', downloadStatusImage);
+    document.getElementById('btnShare').addEventListener('click', shareStatusImage);
+
+    document.getElementById('mascotUpload').addEventListener('change', e => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        loadMascotFromSrc(ev.target.result, true);
+        showToast('Mascote atualizado!', 'success');
+      };
+      reader.readAsDataURL(file);
+    });
+
+    document.getElementById('btnResetMascot').addEventListener('click', () => {
+      document.getElementById('mascotUpload').value = '';
+      loadMascotFromSrc(DEFAULT_MASCOT_SRC, false);
+      showToast('Mascote padrão RepassaAí restaurado.', 'info');
+    });
+
+    renderTemplates();
+    populateChapterControls();
+    updateCounter();
+    renderPhrases();
+    loadMascotFromSrc(DEFAULT_MASCOT_SRC, false);
+    renderCanvas();
+  </script>
+</body>
+</html>
