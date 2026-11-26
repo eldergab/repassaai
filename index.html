@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RepassaAí — Gerador de Status: Ensinamentos de Daniel</title>
+  <title>RepassaAí — Gerador de Mensagens do Bem</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
             sans: ['Inter', 'sans-serif'],
-            display: ['Plus Jakarta Sans', 'sans-serif'],
+            display: ['Fredoka', 'sans-serif'],
           }
         }
       }
@@ -45,7 +45,7 @@
               Status 9:16
             </span>
           </div>
-          <p class="text-xs text-slate-300">Gerador de Mensagens do Bem • Ensinamentos do Livro de Daniel</p>
+          <p class="text-xs text-slate-300">Gerador de Mensagens do Bem • Escolha uma mensagem para compartilhar</p>
         </div>
       </div>
 
@@ -107,11 +107,11 @@
         <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
           <div class="flex items-center gap-2">
             <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center">2</span>
-            <h2 class="font-display font-bold text-base sm:text-lg text-slate-800">Ensinamentos de Daniel (Cap. 1 a 12)</h2>
+            <h2 class="font-display font-bold text-base sm:text-lg text-slate-800">Escolha um tema e encontre sua mensagem</h2>
           </div>
           <div class="flex items-center gap-2">
             <span id="selectionCounter" class="text-xs font-bold px-2.5 py-1 rounded-full bg-cyan-50 text-cyan-800 border border-cyan-200">
-              1 / 3 selecionadas
+              1 mensagem selecionada
             </span>
             <button
               id="btnClearSelection"
@@ -124,7 +124,7 @@
         </div>
 
         <p class="text-xs text-slate-500 mb-3">
-          Marque <strong>1 até 3 frases</strong> para o mascote falar no balão do seu Status.
+          Escolha um dos temas abaixo. Depois, clique na mensagem que deseja colocar no seu Status.
         </p>
 
         <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 mb-3">
@@ -135,22 +135,21 @@
             <input
               id="searchInput"
               type="text"
-              placeholder="Buscar palavra-chave (ex: fé, oração, sabedoria, fornalha)..."
+              placeholder="Buscar uma mensagem ou palavra..."
               class="w-full pl-9 pr-3 py-2 text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-slate-50/70"
             />
           </div>
-          <div class="sm:col-span-5">
-            <select
-              id="chapterFilter"
-              class="w-full px-3 py-2 text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-slate-50/70 font-medium text-slate-700"
-            >
-              <option value="all">Todos os Capítulos (1 a 12)</option>
-            </select>
-          </div>
+          <div class="sm:col-span-5 flex items-center justify-end text-xs text-slate-500" id="themeCount">236 mensagens disponíveis</div>
         </div>
 
-        <div id="chapterPills" class="flex items-center gap-1.5 overflow-x-auto pb-2 mb-2 custom-scroll"></div>
-        <div id="phrasesList" class="max-h-[460px] overflow-y-auto pr-1 space-y-2.5 custom-scroll"></div>
+        <div id="themeGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 mb-4"></div>
+        <div class="flex items-center justify-between gap-2 mb-2">
+          <h3 id="activeThemeTitle" class="font-display text-lg font-semibold text-slate-800">Escolha um tema</h3>
+          <button id="btnAllThemes" type="button" class="text-xs font-semibold text-blue-700 hover:text-blue-900">Ver temas</button>
+        </div>
+        <div id="phrasesList" class="max-h-[460px] overflow-y-auto pr-1 space-y-2.5 custom-scroll">
+          <p class="text-sm text-slate-500 text-center py-8">Toque em um tema para ver as mensagens.</p>
+        </div>
       </div>
 
     </section>
@@ -255,57 +254,1674 @@
       </svg>
     `)}`;
 
-    const MAX_SELECTION = 3;
+    const MAX_SELECTION = 1;
 
-    const DANIEL_DATA = [
-      { id: 'd1-1', chapter: 1, chapterTitle: 'Fidelidade e Propósito', title: 'Consciência acima da conveniência', text: 'Manter princípios e valores inegociáveis mesmo longe de casa e sob pressão cultural define o caráter.' },
-      { id: 'd1-2', chapter: 1, chapterTitle: 'Fidelidade e Propósito', title: 'Integridade naquilo que parece pequeno', text: 'Escolhas diárias de disciplina e fidelidade preparam o terreno para grandes responsabilidades no futuro.' },
-      { id: 'd1-3', chapter: 1, chapterTitle: 'Fidelidade e Propósito', title: 'Sabedoria que vem do alto', text: 'O verdadeiro discernimento e a excelência intelectual são frutos de uma vida alinhada com Deus, superando o conhecimento puramente humano.' },
-
-      { id: 'd2-1', chapter: 2, chapterTitle: 'A Soberania de Deus sobre os Reinos', title: 'Deus controla a história', text: 'Reis sobem e caem, impérios nascem e desaparecem, mas a autoridade final pertence exclusivamente a Deus.' },
-      { id: 'd2-2', chapter: 2, chapterTitle: 'A Soberania de Deus sobre os Reinos', title: 'Dependência através da oração', text: 'Diante de crises impossíveis, buscar respostas em unidade e oração traz revelação e livramento.' },
-      { id: 'd2-3', chapter: 2, chapterTitle: 'A Soberania de Deus sobre os Reinos', title: 'Humildade diante do sucesso', text: 'Ao receber reconhecimento, apontar a glória para Deus evita a armadilha do orgulho.' },
-
-      { id: 'd3-1', chapter: 3, chapterTitle: 'Fé Inabalável na Fornalha', title: 'Obediência incondicional', text: 'A verdadeira fé permanece firme mesmo quando Deus escolhe não livrar imediatamente do sofrimento ("e, se não, fica sabendo...").' },
-      { id: 'd3-2', chapter: 3, chapterTitle: 'Fé Inabalável na Fornalha', title: 'Presença divina na provação', text: 'Deus nem sempre impede o fogo, mas entra na fornalha junto com aqueles que permanecem fiéis a Ele.' },
-      { id: 'd3-3', chapter: 3, chapterTitle: 'Fé Inabalável na Fornalha', title: 'Testemunho através da coragem', text: 'A recusa em se curvar aos ídolos do tempo presente transforma a perseguição em um testemunho poderoso.' },
-
-      { id: 'd4-1', chapter: 4, chapterTitle: 'O Perigo do Orgulho e a Restauração', title: 'A soberba precede a queda', text: 'Atribuir conquistas apenas à própria força leva à humilhação; todo poder é uma concessão temporária.' },
-      { id: 'd4-2', chapter: 4, chapterTitle: 'O Perigo do Orgulho e a Restauração', title: 'O propósito da disciplina', text: 'As provações permitidas por Deus visam quebrar a autossuficiência humana e restaurar a sanidade espiritual.' },
-      { id: 'd4-3', chapter: 4, chapterTitle: 'O Perigo do Orgulho e a Restauração', title: 'Ninguém está além da graça', text: 'Até mesmo os líderes mais arrogantes podem ser transformados quando reconhecem a grandeza do Altíssimo.' },
-
-      { id: 'd5-1', chapter: 5, chapterTitle: 'A Queda da Arrogância e a Escrita na Parede', title: 'Ignorar a história tem um preço', text: 'Repetir os erros do passado e desprezar lições já aprendidas acelera o juízo.' },
-      { id: 'd5-2', chapter: 5, chapterTitle: 'A Queda da Arrogância e a Escrita na Parede', title: 'Não profanar o que é sagrado', text: 'Tratar com leviandade as coisas de Deus demonstra falta de temor e atrai consequências severas.' },
-      { id: 'd5-3', chapter: 5, chapterTitle: 'A Queda da Arrogância e a Escrita na Parede', title: 'O peso da balança divina', text: 'A vida humana é avaliada pela integridade e justiça de Deus, não pelas aparências ou riquezas.' },
-
-      { id: 'd6-1', chapter: 6, chapterTitle: 'Constância na Oração e Integridade', title: 'Vida irrepreensível', text: 'Uma conduta íntegra faz com que os inimigos não encontrem falhas morais para acusar, restando apenas atacar a fé.' },
-      { id: 'd6-2', chapter: 6, chapterTitle: 'Constância na Oração e Integridade', title: 'Hábitos espirituais inegociáveis', text: 'A oração constante não é um recurso de emergência, mas um estilo de vida mantido antes, durante e depois das crises.' },
-      { id: 'd6-3', chapter: 6, chapterTitle: 'Constância na Oração e Integridade', title: 'Fidelidade que fecha bocas', text: 'A confiança plena em Deus neutraliza as armadilhas humanas e transforma covas de leões em lugares de milagres.' },
-
-      { id: 'd7-1', chapter: 7, chapterTitle: 'O Reino Eterno de Deus', title: 'Os reinos humanos são temporários', text: 'Sistemas opressores podem parecer invencíveis, mas têm prazo de validade determinado por Deus.' },
-      { id: 'd7-2', chapter: 7, chapterTitle: 'O Reino Eterno de Deus', title: 'O Filho do Homem reinará', text: 'A história não caminha para o caos definitivo, mas para o estabelecimento de um reino eterno e justo.' },
-      { id: 'd7-3', chapter: 7, chapterTitle: 'O Reino Eterno de Deus', title: 'Perseverança dos santos', text: 'Mesmo em tempos de perseguição intensa, a vitória final pertence ao povo de Deus.' },
-
-      { id: 'd8-1', chapter: 8, chapterTitle: 'O Fim da Opressão e o Discernimento', title: 'O mal tem limites', text: 'Por mais destrutivo que um poder opressor pareça, sua duração e alcance estão sob o controle divino.' },
-      { id: 'd8-2', chapter: 8, chapterTitle: 'O Fim da Opressão e o Discernimento', title: 'A verdade prevalece sobre o engano', text: 'Mesmo quando a verdade parece lançada por terra, ela será restaurada pelo poder de Deus.' },
-      { id: 'd8-3', chapter: 8, chapterTitle: 'O Fim da Opressão e o Discernimento', title: 'O peso da revelação', text: 'Compreender a seriedade dos propósitos espirituais gera compaixão e responsabilidade, não apenas curiosidade.' },
-
-      { id: 'd9-1', chapter: 9, chapterTitle: 'O Poder da Oração de Confissão', title: 'As Escrituras impulsionam a oração', text: 'Compreender as promessas de Deus leva à intercessão ativa pelo cumprimento delas.' },
-      { id: 'd9-2', chapter: 9, chapterTitle: 'O Poder da Oração de Confissão', title: 'Identificação e arrependimento', text: 'Líderes espirituais não apontam apenas o erro dos outros; eles se colocam na brecha e oram pelo povo.' },
-      { id: 'd9-3', chapter: 9, chapterTitle: 'O Poder da Oração de Confissão', title: 'A misericórdia é a base do perdão', text: 'O clamor a Deus não se apoia nos méritos humanos, mas na Sua grande misericórdia e fidelidade.' },
-
-      { id: 'd10-1', chapter: 10, chapterTitle: 'A Realidade da Batalha Espiritual', title: 'Há uma guerra invisível em curso', text: 'Os conflitos visíveis na terra refletem batalhas espirituais nos lugares celestiais.' },
-      { id: 'd10-2', chapter: 10, chapterTitle: 'A Realidade da Batalha Espiritual', title: 'A oração movimenta o mundo espiritual', text: 'Desde o primeiro momento de busca sincera, Deus ouve e envia resposta, ainda que haja resistência no caminho.' },
-      { id: 'd10-3', chapter: 10, chapterTitle: 'A Realidade da Batalha Espiritual', title: 'Fortalecimento na fraqueza', text: 'Diante da grandeza divina, a força humana desfalece, mas o toque de Deus restaura a paz e o vigor.' },
-
-      { id: 'd11-1', chapter: 11, chapterTitle: 'Conflitos Terrenos e Resistência Fiel', title: 'Segurança além dos governos', text: 'Alianças políticas e instabilidades humanas se repetem, provando que nossa verdadeira segurança está em Deus.' },
-      { id: 'd11-2', chapter: 11, chapterTitle: 'Conflitos Terrenos e Resistência Fiel', title: 'Conhecer a Deus gera coragem', text: 'Aqueles que conhecem verdadeiramente ao seu Deus permanecem firmes e agem com sabedoria nos tempos difíceis.' },
-      { id: 'd11-3', chapter: 11, chapterTitle: 'Conflitos Terrenos e Resistência Fiel', title: 'A provação purifica', text: 'Os tempos difíceis servem para refinar, purificar e fortalecer a nossa fé.' },
-
-      { id: 'd12-1', chapter: 12, chapterTitle: 'A Esperança da Ressurreição', title: 'A morte não é o fim', text: 'Há uma promessa segura de ressurreição e recompensa eterna para os que permanecem fiéis.' },
-      { id: 'd12-2', chapter: 12, chapterTitle: 'A Esperança da Ressurreição', title: 'O valor de guiar outros à justiça', text: 'Aqueles que ensinam a verdade e conduzem pessoas a Deus brilharão como estrelas para sempre.' },
-      { id: 'd12-3', chapter: 12, chapterTitle: 'A Esperança da Ressurreição', title: 'Fidelidade até o fim', text: 'Enquanto os propósitos do futuro se desenrolam no tempo de Deus, o nosso chamado é seguir firmes até o fim.' }
+    const THEME_LIST = [
+      ['Ajuda e apoio', '🤝', 'Mensagens para acolher, apoiar e estender a mão.'],
+      ['Coragem e superação', '🦁', 'Força para enfrentar desafios e seguir em frente.'],
+      ['Amor e bondade', '💙', 'Mensagens sobre carinho, respeito, perdão e gentileza.'],
+      ['Fé e esperança', '✨', 'Confiança, esperança e força interior.'],
+      ['Sabedoria e escolhas', '🧭', 'Reflexões para aprender e fazer boas escolhas.'],
+      ['Gratidão e alegria', '🌻', 'Reconhecer o bem e celebrar as pequenas alegrias.'],
+      ['Paz e equilíbrio', '🕊️', 'Serenidade, harmonia e tranquilidade para o coração.'],
+      ['Família e relacionamentos', '🏡', 'Laços, convivência, união e cuidado com quem amamos.'],
+      ['Propósito e recomeços', '🌱', 'Crescimento, objetivos, trabalho e novos caminhos.']
     ];
+
+    const PHRASES_DATA = [
+      {
+            "id": "orig-001",
+            "title": "Mensagem 1",
+            "text": "Quando Deus ordena um caminho, Ele sempre prepara os meios para que possamos trilhar com fé (1 Néfi 3:7).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-002",
+            "title": "Mensagem 2",
+            "text": "A persistência diante das barreiras transforma o impossível em testemunho de superação (1 Néfi 4:1-2).",
+            "source": "original",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "orig-003",
+            "title": "Mensagem 3",
+            "text": "Segurar-se firmemente às verdades eternas mantém nosso rumo seguro mesmo em meio às névoas da dúvida (1 Néfi 8:24-30).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-004",
+            "title": "Mensagem 4",
+            "text": "Nos momentos de maior aflição no deserto da vida, o Senhor nos fortalece para suportar nossas cargas (1 Néfi 17:1-3).",
+            "source": "original",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "orig-005",
+            "title": "Mensagem 5",
+            "text": "A gratidão em meio às dificuldades abre os olhos da alma para enxergar milagres (1 Néfi 18:16).",
+            "source": "original",
+            "theme": "Gratidão e alegria"
+      },
+      {
+            "id": "orig-006",
+            "title": "Mensagem 6",
+            "text": "A verdadeira alegria é o propósito central da nossa existência nesta Terra (2 Néfi 2:25).",
+            "source": "original",
+            "theme": "Gratidão e alegria"
+      },
+      {
+            "id": "orig-007",
+            "title": "Mensagem 7",
+            "text": "A oposição em todas as coisas nos permite exercitar o arbítrio e crescer em sabedoria (2 Néfi 2:11).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-008",
+            "title": "Mensagem 8",
+            "text": "Ao permanecermos livres para escolher o bem, colhemos paz duradoura para a alma (2 Néfi 2:27).",
+            "source": "original",
+            "theme": "Paz e equilíbrio"
+      },
+      {
+            "id": "orig-009",
+            "title": "Mensagem 9",
+            "text": "A confiança plena no Senhor afasta o medo do que os homens possam fazer (2 Néfi 4:34).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-010",
+            "title": "Mensagem 10",
+            "text": "O Senhor concede conhecimento linha sobre linha e preceito sobre preceito aos que buscam aprender (2 Néfi 28:30).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-011",
+            "title": "Mensagem 11",
+            "text": "Seguir adiante com firmeza em Cristo e um perfeito esplendor de esperança ilumina toda a jornada (2 Néfi 31:20).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-012",
+            "title": "Mensagem 12",
+            "text": "A oração constante nos mantém conectados à fonte de toda luz e direção diária (2 Néfi 32:8-9).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-013",
+            "title": "Mensagem 13",
+            "text": "Buscar primeiro o reino de Deus traz equilíbrio para administrar todas as demais bênçãos (Jacó 2:18-19).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-014",
+            "title": "Mensagem 14",
+            "text": "Uma alma sincera que clama com verdadeira intenção sempre encontra resposta e paz (Enos 1:4-8).",
+            "source": "original",
+            "theme": "Paz e equilíbrio"
+      },
+      {
+            "id": "orig-015",
+            "title": "Mensagem 15",
+            "text": "Quando nossa culpa é perdoada, o coração se enche de desejo de servir ao próximo (Enos 1:9).",
+            "source": "original",
+            "theme": "Amor e bondade"
+      },
+      {
+            "id": "orig-016",
+            "title": "Mensagem 16",
+            "text": "A união e a diligência transformam pequenos esforços em grandes colheitas espirituais (Jarom 1:7-12).",
+            "source": "original",
+            "theme": "Família e relacionamentos"
+      },
+      {
+            "id": "orig-017",
+            "title": "Mensagem 17",
+            "text": "O Senhor opera grandes maravilhas por meio de instrumentos simples e humildes (Ômni 1:25).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-018",
+            "title": "Mensagem 18",
+            "text": "A sabedoria divina nos guia a agir com ordem, prudência e equilíbrio em cada passo (Mosias 4:27).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-019",
+            "title": "Mensagem 19",
+            "text": "Quando estamos a serviço do nosso semelhante, estamos verdadeiramente a serviço de Deus (Mosias 2:17).",
+            "source": "original",
+            "theme": "Ajuda e apoio"
+      },
+      {
+            "id": "orig-020",
+            "title": "Mensagem 20",
+            "text": "A generosidade genuína nasce quando reconhecemos que tudo o que temos vem do Criador (Mosias 4:19-21).",
+            "source": "original",
+            "theme": "Ajuda e apoio"
+      },
+      {
+            "id": "orig-021",
+            "title": "Mensagem 21",
+            "text": "Guardar os mandamentos traz prosperidade espiritual e serenidade diante dos desafios (Mosias 2:22).",
+            "source": "original",
+            "theme": "Paz e equilíbrio"
+      },
+      {
+            "id": "orig-022",
+            "title": "Mensagem 22",
+            "text": "A verdadeira conversão muda a disposição do coração para fazer o bem continuamente (Mosias 5:2).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-023",
+            "title": "Mensagem 23",
+            "text": "Carregar os fardos uns dos outros torna o peso da vida muito mais leve (Mosias 18:8-9).",
+            "source": "original",
+            "theme": "Ajuda e apoio"
+      },
+      {
+            "id": "orig-024",
+            "title": "Mensagem 24",
+            "text": "Consolar os que precisam de consolo é uma das mais nobres expressões de amor (Mosias 18:9).",
+            "source": "original",
+            "theme": "Ajuda e apoio"
+      },
+      {
+            "id": "orig-025",
+            "title": "Mensagem 25",
+            "text": "O Senhor torna leves os fardos colocados sobre nossos ombros para que não desfaleçamos (Mosias 24:14-15).",
+            "source": "original",
+            "theme": "Ajuda e apoio"
+      },
+      {
+            "id": "orig-026",
+            "title": "Mensagem 26",
+            "text": "A paciência nas tribulações prepara o coração para receber livramentos inesperados (Mosias 24:15).",
+            "source": "original",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "orig-027",
+            "title": "Mensagem 27",
+            "text": "Uma mudança sincera de vida transforma até os maiores erros em testemunho de redenção (Mosias 27:24-29).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-028",
+            "title": "Mensagem 28",
+            "text": "O poder da palavra de Deus penetra a mente com mais força do que qualquer espada (Alma 31:5).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-029",
+            "title": "Mensagem 29",
+            "text": "A fé começa como uma pequena semente que cresce quando nutrida com paciência e diligência (Alma 32:28).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-030",
+            "title": "Mensagem 30",
+            "text": "Quando cultivamos a boa semente com carinho, ela se torna uma árvore de frutos preciosos (Alma 32:41-42).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-031",
+            "title": "Mensagem 31",
+            "text": "A humildade voluntária nos poupa das dores que o orgulho inevitavelmente traz (Alma 32:14-16).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-032",
+            "title": "Mensagem 32",
+            "text": "Por meio de coisas pequenas e simples realizam-se grandes obras (Alma 37:6).",
+            "source": "original",
+            "theme": "Propósito e recomeços"
+      },
+      {
+            "id": "orig-033",
+            "title": "Mensagem 33",
+            "text": "Aconselhar-se com o Senhor em todos os seus feitos traz direção segura ao deitar e ao levantar (Alma 37:37).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-034",
+            "title": "Mensagem 34",
+            "text": "O controle sobre as próprias paixões abre espaço para que o amor preencha o coração (Alma 38:12).",
+            "source": "original",
+            "theme": "Amor e bondade"
+      },
+      {
+            "id": "orig-035",
+            "title": "Mensagem 35",
+            "text": "A misericórdia jamais rouba a justiça, mas oferece um caminho de restauração para quem se arrepende (Alma 42:22-25).",
+            "source": "original",
+            "theme": "Amor e bondade"
+      },
+      {
+            "id": "orig-036",
+            "title": "Mensagem 36",
+            "text": "A coragem moral e a retidão inspiram outros a defenderem aquilo que é justo (Alma 48:11-17).",
+            "source": "original",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "orig-037",
+            "title": "Mensagem 37",
+            "text": "Manter a calma e a fé em Deus no meio da tempestade fortalece toda a família (Alma 53:20-21).",
+            "source": "original",
+            "theme": "Família e relacionamentos"
+      },
+      {
+            "id": "orig-038",
+            "title": "Mensagem 38",
+            "text": "A confiança nos ensinamentos aprendidos na juventude sustenta o caráter nas horas decisivas (Alma 56:47-48).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-039",
+            "title": "Mensagem 39",
+            "text": "Quem coloca sua confiança em Deus jamais será desamparado nas batalhas da vida (Alma 57:27).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-040",
+            "title": "Mensagem 40",
+            "text": "A humildade abre as portas da revelação pessoal e da paz interior (Helamã 3:35).",
+            "source": "original",
+            "theme": "Paz e equilíbrio"
+      },
+      {
+            "id": "orig-041",
+            "title": "Mensagem 41",
+            "text": "Construir a vida sobre a rocha do Redentor garante firmeza contra qualquer vendaval (Helamã 5:12).",
+            "source": "original",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "orig-042",
+            "title": "Mensagem 42",
+            "text": "Quando lembramos diariamente de Deus, a prosperidade não corrompe o coração (Helamã 12:1-3).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-043",
+            "title": "Mensagem 43",
+            "text": "A obediência exata e fiel traz a companhia constante do Espírito Santo (Helamã 10:4-5).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-044",
+            "title": "Mensagem 44",
+            "text": "A fé move montanhas quando está alinhada com a vontade e os propósitos de Deus (Éter 12:27 / Helamã 10:5).",
+            "source": "original",
+            "theme": "Propósito e recomeços"
+      },
+      {
+            "id": "orig-045",
+            "title": "Mensagem 45",
+            "text": "A paciência no sofrimento revela a verdadeira grandeza de um coração manso (3 Néfi 11:11).",
+            "source": "original",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "orig-046",
+            "title": "Mensagem 46",
+            "text": "A luz que erguemos através do bom exemplo aponta o caminho seguro para os outros (3 Néfi 18:24).",
+            "source": "original",
+            "theme": "Propósito e recomeços"
+      },
+      {
+            "id": "orig-047",
+            "title": "Mensagem 47",
+            "text": "Orar sempre em família fortalece os laços e traz proteção para o lar (3 Néfi 18:21).",
+            "source": "original",
+            "theme": "Família e relacionamentos"
+      },
+      {
+            "id": "orig-048",
+            "title": "Mensagem 48",
+            "text": "A contenda apaga a paz, mas a mansidão restaura a harmonia entre as pessoas (3 Néfi 11:29-30).",
+            "source": "original",
+            "theme": "Paz e equilíbrio"
+      },
+      {
+            "id": "orig-049",
+            "title": "Mensagem 49",
+            "text": "O perdão sincero liberta quem perdoa e abre caminho para a cura emocional (3 Néfi 13:14-15).",
+            "source": "original",
+            "theme": "Amor e bondade"
+      },
+      {
+            "id": "orig-050",
+            "title": "Mensagem 50",
+            "text": "Pedir com fé, buscar com diligência e bater com perseverança abre as portas do céu (3 Néfi 14:7-8).",
+            "source": "original",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "orig-051",
+            "title": "Mensagem 51",
+            "text": "Fazer aos outros o bem que desejamos receber transforma nossa comunidade (3 Néfi 14:12).",
+            "source": "original",
+            "theme": "Família e relacionamentos"
+      },
+      {
+            "id": "orig-052",
+            "title": "Mensagem 52",
+            "text": "Onde está o nosso tesouro, ali também estará o foco do nosso coração (3 Néfi 13:21).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-053",
+            "title": "Mensagem 53",
+            "text": "A compaixão pelos que sofrem reflete o caráter puro do Salvador (3 Néfi 17:6-7).",
+            "source": "original",
+            "theme": "Ajuda e apoio"
+      },
+      {
+            "id": "orig-054",
+            "title": "Mensagem 54",
+            "text": "A verdadeira felicidade nasce da paz que excede todo entendimento humano (4 Néfi 1:15-16).",
+            "source": "original",
+            "theme": "Gratidão e alegria"
+      },
+      {
+            "id": "orig-055",
+            "title": "Mensagem 55",
+            "text": "Viver sem contendas e com amor no coração cria um ambiente celestial na Terra (4 Néfi 1:15).",
+            "source": "original",
+            "theme": "Amor e bondade"
+      },
+      {
+            "id": "orig-056",
+            "title": "Mensagem 56",
+            "text": "A bondade de Deus permanece constante mesmo quando o mundo ao redor parece instável (Mórmon 9:9-11).",
+            "source": "original",
+            "theme": "Amor e bondade"
+      },
+      {
+            "id": "orig-057",
+            "title": "Mensagem 57",
+            "text": "Os milagres continuam acontecendo onde existe fé sincera e coração quebrantado (Mórmon 9:19-20).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-058",
+            "title": "Mensagem 58",
+            "text": "A esperança é a âncora da alma que nos mantém firmes e constantes em boas obras (Éter 12:4).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-059",
+            "title": "Mensagem 59",
+            "text": "A fé exige primeiro a prova da nossa confiança antes que vejamos o testemunho completo (Éter 12:6).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-060",
+            "title": "Mensagem 60",
+            "text": "Deus nos mostra nossas fraquezas para que nos tornemos humildes e fortes nEle (Éter 12:27).",
+            "source": "original",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "orig-061",
+            "title": "Mensagem 61",
+            "text": "A graça divina transforma pontos fracos em grandes virtudes quando somos humildes (Éter 12:27).",
+            "source": "original",
+            "theme": "Ajuda e apoio"
+      },
+      {
+            "id": "orig-062",
+            "title": "Mensagem 62",
+            "text": "O amor puro é paciente, bondoso, não busca seus próprios interesses e nunca falha (Morôni 7:45-47).",
+            "source": "original",
+            "theme": "Amor e bondade"
+      },
+      {
+            "id": "orig-063",
+            "title": "Mensagem 63",
+            "text": "A caridade é o maior de todos os dons e o vínculo da perfeição (Morôni 7:46-47).",
+            "source": "original",
+            "theme": "Ajuda e apoio"
+      },
+      {
+            "id": "orig-064",
+            "title": "Mensagem 64",
+            "text": "Tudo o que convida a fazer o bem e a amar a Deus vem de fontes divinas (Morôni 7:13).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-065",
+            "title": "Mensagem 65",
+            "text": "Ao olharmos para cada pessoa com o amor de Cristo, aprendemos a servir sem julgar (Morôni 7:48).",
+            "source": "original",
+            "theme": "Ajuda e apoio"
+      },
+      {
+            "id": "orig-066",
+            "title": "Mensagem 66",
+            "text": "A esperança verdadeira traz serenidade mesmo diante das incertezas do amanhã (Morôni 7:40-41).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-067",
+            "title": "Mensagem 67",
+            "text": "A mansidão e a humildade de coração convidam a companhia constante do Espírito (Morôni 8:26).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-068",
+            "title": "Mensagem 68",
+            "text": "A sinceridade de propósito é a chave para receber respostas claras da verdade (Morôni 10:4-5).",
+            "source": "original",
+            "theme": "Propósito e recomeços"
+      },
+      {
+            "id": "orig-069",
+            "title": "Mensagem 69",
+            "text": "Cada pessoa recebe dons diferentes para que todos sejam edificados em conjunto (Morôni 10:8-17).",
+            "source": "original",
+            "theme": "Propósito e recomeços"
+      },
+      {
+            "id": "orig-070",
+            "title": "Mensagem 70",
+            "text": "Desenvolver nossos talentos com gratidão abençoa a vida de muitas famílias (Morôni 10:17).",
+            "source": "original",
+            "theme": "Família e relacionamentos"
+      },
+      {
+            "id": "orig-071",
+            "title": "Mensagem 71",
+            "text": "Não negar os dons de Deus permite que o bem floresça em nosso dia a dia (Morôni 10:8).",
+            "source": "original",
+            "theme": "Propósito e recomeços"
+      },
+      {
+            "id": "orig-072",
+            "title": "Mensagem 72",
+            "text": "A pureza de intenções torna nossas palavras e ações fontes de inspiração (Morôni 7:6-9).",
+            "source": "original",
+            "theme": "Amor e bondade"
+      },
+      {
+            "id": "orig-073",
+            "title": "Mensagem 73",
+            "text": "Viver em gratidão diária afasta o desânimo e renova as energias da alma (Alma 34:38).",
+            "source": "original",
+            "theme": "Gratidão e alegria"
+      },
+      {
+            "id": "orig-074",
+            "title": "Mensagem 74",
+            "text": "O tempo presente é o melhor momento para praticar o bem e se preparar para o futuro (Alma 34:32).",
+            "source": "original",
+            "theme": "Propósito e recomeços"
+      },
+      {
+            "id": "orig-075",
+            "title": "Mensagem 75",
+            "text": "A oração sobre os nossos campos, trabalho e família convida bênçãos sobre tudo o que fazemos (Alma 34:20-27).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-076",
+            "title": "Mensagem 76",
+            "text": "A verdadeira conversão se demonstra na constância silenciosa do bem cotidiano (Alma 23:6).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-077",
+            "title": "Mensagem 77",
+            "text": "A sabedoria começa quando ouvimos conselhos prudentes com humildade (2 Néfi 9:28-29).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-078",
+            "title": "Mensagem 78",
+            "text": "A alegria do Senhor é a nossa força nos dias de trabalho árduo (2 Néfi 25:26).",
+            "source": "original",
+            "theme": "Gratidão e alegria"
+      },
+      {
+            "id": "orig-079",
+            "title": "Mensagem 79",
+            "text": "O perdão restaura pontes que o orgulho havia destruído (3 Néfi 12:23-24).",
+            "source": "original",
+            "theme": "Amor e bondade"
+      },
+      {
+            "id": "orig-080",
+            "title": "Mensagem 80",
+            "text": "Cada novo dia é uma oportunidade divina de recomeçar com fé e esperança (Morôni 7:41).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-081",
+            "title": "Mensagem 81",
+            "text": "Toda obra boa começa com um desejo sincero de servir a Deus e ao próximo (D&C 4:2-3).",
+            "source": "original",
+            "theme": "Ajuda e apoio"
+      },
+      {
+            "id": "orig-082",
+            "title": "Mensagem 82",
+            "text": "Fé, esperança, caridade e amor qualificam o coração para realizar grandes coisas (D&C 4:5).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-083",
+            "title": "Mensagem 83",
+            "text": "A virtude, o conhecimento, a temperança e a paciência edificam um caráter inabalável (D&C 4:6).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-084",
+            "title": "Mensagem 84",
+            "text": "Não temas fazer o bem, pois toda semente lançada com fé dará frutos no tempo certo (D&C 6:33).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-085",
+            "title": "Mensagem 85",
+            "text": "Olhar para Cristo em cada pensamento dissipa a dúvida e vence o medo (D&C 6:36).",
+            "source": "original",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "orig-086",
+            "title": "Mensagem 86",
+            "text": "A paz que invade a mente e o coração é a confirmação mais doce da verdade (D&C 6:22-23).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-087",
+            "title": "Mensagem 87",
+            "text": "O estudo cuidadoso na mente seguido da oração traz clareza para grandes decisões (D&C 9:8).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-088",
+            "title": "Mensagem 88",
+            "text": "Quando o coração se aquece com serenidade, sabemos que estamos no caminho certo (D&C 9:8).",
+            "source": "original",
+            "theme": "Paz e equilíbrio"
+      },
+      {
+            "id": "orig-089",
+            "title": "Mensagem 89",
+            "text": "Orar sempre fortalece a alma para superar qualquer obstáculo invisível (D&C 10:5).",
+            "source": "original",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "orig-090",
+            "title": "Mensagem 90",
+            "text": "A sabedoria de Deus é sempre maior que a astúcia humana (D&C 10:43).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-091",
+            "title": "Mensagem 91",
+            "text": "Confiar no Espírito que nos guia a fazer o bem traz luz e alegria constantes (D&C 11:12-13).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-092",
+            "title": "Mensagem 92",
+            "text": "O valor das almas é imenso aos olhos de Deus, e cada pessoa merece amor e respeito (D&C 18:10).",
+            "source": "original",
+            "theme": "Amor e bondade"
+      },
+      {
+            "id": "orig-093",
+            "title": "Mensagem 93",
+            "text": "Trazer alívio e esperança a uma única pessoa já gera imensa alegria eterna (D&C 18:15).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-094",
+            "title": "Mensagem 94",
+            "text": "Aprender de Cristo e ouvir Suas palavras traz descanso profundo para a mente agitada (D&C 19:23).",
+            "source": "original",
+            "theme": "Paz e equilíbrio"
+      },
+      {
+            "id": "orig-095",
+            "title": "Mensagem 95",
+            "text": "Andar na mansidão do Espírito nos preserva da ansiedade e da pressa do mundo (D&C 19:23).",
+            "source": "original",
+            "theme": "Paz e equilíbrio"
+      },
+      {
+            "id": "orig-096",
+            "title": "Mensagem 96",
+            "text": "O trabalho honesto feito com amor dignifica a vida e sustenta o lar (D&C 42:42).",
+            "source": "original",
+            "theme": "Amor e bondade"
+      },
+      {
+            "id": "orig-097",
+            "title": "Mensagem 97",
+            "text": "A ociosidade rouba o brilho da alma, enquanto a diligência renova a vitalidade (D&C 42:42).",
+            "source": "original",
+            "theme": "Propósito e recomeços"
+      },
+      {
+            "id": "orig-098",
+            "title": "Mensagem 98",
+            "text": "Repartir o que temos com quem passa necessidade é a essência da verdadeira caridade (D&C 42:30-31).",
+            "source": "original",
+            "theme": "Ajuda e apoio"
+      },
+      {
+            "id": "orig-099",
+            "title": "Mensagem 99",
+            "text": "Palavras de consolo e edificação curam feridas que o tempo sozinho não fecha (D&C 42:45).",
+            "source": "original",
+            "theme": "Ajuda e apoio"
+      },
+      {
+            "id": "orig-100",
+            "title": "Mensagem 100",
+            "text": "Receber as bênçãos da vida com gratidão multiplica a alegria no coração (D&C 59:7).",
+            "source": "original",
+            "theme": "Gratidão e alegria"
+      },
+      {
+            "id": "orig-101",
+            "title": "Mensagem 101",
+            "text": "A terra e suas belezas foram criadas para alegrar o coração e fortalecer o corpo (D&C 59:18-19).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-102",
+            "title": "Mensagem 102",
+            "text": "Quem pratica obras de retidão recebe paz neste mundo e esperança no porvir (D&C 59:23).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-103",
+            "title": "Mensagem 103",
+            "text": "Fazer o bem por iniciativa própria, sem esperar ser mandado, revela nobreza de caráter (D&C 58:26-27).",
+            "source": "original",
+            "theme": "Propósito e recomeços"
+      },
+      {
+            "id": "orig-104",
+            "title": "Mensagem 104",
+            "text": "O poder de fazer o bem está dentro de cada um de nós; somos agentes da própria história (D&C 58:28).",
+            "source": "original",
+            "theme": "Propósito e recomeços"
+      },
+      {
+            "id": "orig-105",
+            "title": "Mensagem 105",
+            "text": "A perseverança após a tribulação abre as portas para grandes bênçãos (D&C 58:3-4).",
+            "source": "original",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "orig-106",
+            "title": "Mensagem 106",
+            "text": "Nem sempre compreendemos o propósito imediato das provas, mas o bem sempre prevalece (D&C 58:3).",
+            "source": "original",
+            "theme": "Propósito e recomeços"
+      },
+      {
+            "id": "orig-107",
+            "title": "Mensagem 107",
+            "text": "Não se cansar de fazer o bem é lançar os alicerces de uma grande obra (D&C 64:33).",
+            "source": "original",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "orig-108",
+            "title": "Mensagem 108",
+            "text": "O perdão é um mandamento libertador que limpa o coração de ressentimentos (D&C 64:9-10).",
+            "source": "original",
+            "theme": "Amor e bondade"
+      },
+      {
+            "id": "orig-109",
+            "title": "Mensagem 109",
+            "text": "Deus exige o coração e uma mente solícita para transformar esforços simples em vitórias (D&C 64:34).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-110",
+            "title": "Mensagem 110",
+            "text": "A luz brilha cada vez mais forte naqueles que buscam aprender e viver a verdade (D&C 50:24).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-111",
+            "title": "Mensagem 111",
+            "text": "Quem recebe a luz e continua em Deus cresce em sabedoria até o dia perfeito (D&C 50:24).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-112",
+            "title": "Mensagem 112",
+            "text": "A alegria e o louvor no coração são expressões sinceras de gratidão a Deus (D&C 136:28).",
+            "source": "original",
+            "theme": "Gratidão e alegria"
+      },
+      {
+            "id": "orig-113",
+            "title": "Mensagem 113",
+            "text": "Aprender por meio do estudo e também pela fé ilumina tanto a mente quanto o espírito (D&C 88:118).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-114",
+            "title": "Mensagem 114",
+            "text": "Organizar o lar com ordem, oração e propósito traz harmonia para toda a família (D&C 88:119).",
+            "source": "original",
+            "theme": "Família e relacionamentos"
+      },
+      {
+            "id": "orig-115",
+            "title": "Mensagem 115",
+            "text": "A luz de Cristo está em todas as coisas e dá vida e discernimento a quem a busca (D&C 88:11-13).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-116",
+            "title": "Mensagem 116",
+            "text": "Deixar de lado o sono excessivo e despertar cedo renova o vigor do corpo e da mente (D&C 88:124).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-117",
+            "title": "Mensagem 117",
+            "text": "Revestir-se do vínculo da caridade mantém a paz mesmo nos dias mais desafiadores (D&C 88:125).",
+            "source": "original",
+            "theme": "Paz e equilíbrio"
+      },
+      {
+            "id": "orig-118",
+            "title": "Mensagem 118",
+            "text": "A sabedoria e os tesouros ocultos de conhecimento pertencem aos que cuidam bem do próprio corpo (D&C 89:18-19).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-119",
+            "title": "Mensagem 119",
+            "text": "Cuidar da saúde física com alimentos saudáveis dá energia para correr sem se cansar (D&C 89:20).",
+            "source": "original",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "orig-120",
+            "title": "Mensagem 120",
+            "text": "A inteligência e a luz glorificam a Deus e nos capacitam a ajudar os outros (D&C 93:36).",
+            "source": "original",
+            "theme": "Ajuda e apoio"
+      },
+      {
+            "id": "orig-121",
+            "title": "Mensagem 121",
+            "text": "A verdade é o conhecimento das coisas como são, como foram e como hão de ser (D&C 93:24).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-122",
+            "title": "Mensagem 122",
+            "text": "Educar os filhos em luz e verdade é o maior legado que podemos deixar (D&C 93:40).",
+            "source": "original",
+            "theme": "Família e relacionamentos"
+      },
+      {
+            "id": "orig-123",
+            "title": "Mensagem 123",
+            "text": "Todas as coisas cooperam para o bem daqueles que andam em retidão e fidelidade (D&C 90:24).",
+            "source": "original",
+            "theme": "Propósito e recomeços"
+      },
+      {
+            "id": "orig-124",
+            "title": "Mensagem 124",
+            "text": "A oração humilde e perseverante traz respostas no momento exato da necessidade (D&C 90:24).",
+            "source": "original",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "orig-125",
+            "title": "Mensagem 125",
+            "text": "O Senhor nos chama de amigos quando servimos uns aos outros com sinceridade (D&C 84:77).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-126",
+            "title": "Mensagem 126",
+            "text": "Aqueles que agem com integridade recebem força renovada para cada passo da jornada (D&C 84:88).",
+            "source": "original",
+            "theme": "Propósito e recomeços"
+      },
+      {
+            "id": "orig-127",
+            "title": "Mensagem 127",
+            "text": "A presença divina vai adiante de nós e nos sustenta pela direita e pela esquerda (D&C 84:88).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-128",
+            "title": "Mensagem 128",
+            "text": "Quando somos humildes e buscamos orientação, nossos passos são conduzidos com segurança (D&C 112:10).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-129",
+            "title": "Mensagem 129",
+            "text": "O Espírito do Senhor ilumina a mente e enche a alma de alegria genuína (D&C 11:13).",
+            "source": "original",
+            "theme": "Gratidão e alegria"
+      },
+      {
+            "id": "orig-130",
+            "title": "Mensagem 130",
+            "text": "Nenhum poder pode deter o bem que se espalha por meio de corações sinceros (D&C 121:33).",
+            "source": "original",
+            "theme": "Propósito e recomeços"
+      },
+      {
+            "id": "orig-131",
+            "title": "Mensagem 131",
+            "text": "A influência verdadeira nasce da persuasão, da longanimidade, da gentileza e do amor não fingido (D&C 121:41).",
+            "source": "original",
+            "theme": "Amor e bondade"
+      },
+      {
+            "id": "orig-132",
+            "title": "Mensagem 132",
+            "text": "A bondade e o conhecimento puro engrandecem a alma sem hipocrisia (D&C 121:42).",
+            "source": "original",
+            "theme": "Amor e bondade"
+      },
+      {
+            "id": "orig-133",
+            "title": "Mensagem 133",
+            "text": "Deixar que a virtude adorne nossos pensamentos continuamente fortalece nossa confiança diante de Deus (D&C 121:45).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-134",
+            "title": "Mensagem 134",
+            "text": "O Espírito Santo se torna nosso companheiro constante quando cultivamos pensamentos puros (D&C 121:45-46).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-135",
+            "title": "Mensagem 135",
+            "text": "As adversidades enfrentadas com paciência se convertem em experiência para o nosso próprio bem (D&C 122:7).",
+            "source": "original",
+            "theme": "Propósito e recomeços"
+      },
+      {
+            "id": "orig-136",
+            "title": "Mensagem 136",
+            "text": "Mesmo nas horas mais solitárias, Deus conhece cada lágrima e sustenta o justo (D&C 122:8).",
+            "source": "original",
+            "theme": "Ajuda e apoio"
+      },
+      {
+            "id": "orig-137",
+            "title": "Mensagem 137",
+            "text": "O medo do que os homens pensam desaparece quando confiamos no cuidado de Deus (D&C 122:9).",
+            "source": "original",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "orig-138",
+            "title": "Mensagem 138",
+            "text": "A paz na consciência vale mais do que qualquer reconhecimento passageiro (D&C 121:45).",
+            "source": "original",
+            "theme": "Paz e equilíbrio"
+      },
+      {
+            "id": "orig-139",
+            "title": "Mensagem 139",
+            "text": "Todo princípio de inteligência que alcançamos nesta vida permanece conosco para sempre (D&C 130:18).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-140",
+            "title": "Mensagem 140",
+            "text": "A diligência e a obediência ampliam nossa capacidade de compreender e servir (D&C 130:19).",
+            "source": "original",
+            "theme": "Ajuda e apoio"
+      },
+      {
+            "id": "orig-141",
+            "title": "Mensagem 141",
+            "text": "Toda bênção que recebemos vem pelo cumprimento das leis eternas que a regem (D&C 130:20-21).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-142",
+            "title": "Mensagem 142",
+            "text": "Fortalecer os braços cansados e os joelhos vacilantes é uma missão diária de amor (D&C 81:5).",
+            "source": "original",
+            "theme": "Amor e bondade"
+      },
+      {
+            "id": "orig-143",
+            "title": "Mensagem 143",
+            "text": "Socorrer os fracos e erguer os caídos traz propósito elevado para cada dia (D&C 81:5).",
+            "source": "original",
+            "theme": "Ajuda e apoio"
+      },
+      {
+            "id": "orig-144",
+            "title": "Mensagem 144",
+            "text": "Ser um instrumento nas mãos de Deus transforma atos simples em milagres cotidianos (D&C 35:3).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-145",
+            "title": "Mensagem 145",
+            "text": "A alegria de servir permanece viva muito depois que o esforço físico passou (D&C 18:16).",
+            "source": "original",
+            "theme": "Gratidão e alegria"
+      },
+      {
+            "id": "orig-146",
+            "title": "Mensagem 146",
+            "text": "Quando buscamos primeiro o bem comum, a abundância espiritual se multiplica (D&C 38:24-25).",
+            "source": "original",
+            "theme": "Propósito e recomeços"
+      },
+      {
+            "id": "orig-147",
+            "title": "Mensagem 147",
+            "text": "A união entre irmãos é a chave para vencer qualquer desafio coletivo (D&C 38:27).",
+            "source": "original",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "orig-148",
+            "title": "Mensagem 148",
+            "text": "Olhar para o futuro com otimismo renova a disposição para construir um presente melhor (D&C 45:34-35).",
+            "source": "original",
+            "theme": "Propósito e recomeços"
+      },
+      {
+            "id": "orig-149",
+            "title": "Mensagem 149",
+            "text": "Estar em lugares santos e cultivar bons hábitos protege o coração contra tempestades (D&C 87:8).",
+            "source": "original",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "orig-150",
+            "title": "Mensagem 150",
+            "text": "A retidão e a bondade deixam marcas eternas em todas as vidas que tocamos (D&C 64:33).",
+            "source": "original",
+            "theme": "Amor e bondade"
+      },
+      {
+            "id": "orig-151",
+            "title": "Mensagem 151",
+            "text": "Cada ser humano carrega uma centelha divina de valor infinito e propósito eterno (Moisés 1:39).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-152",
+            "title": "Mensagem 152",
+            "text": "A maior obra de Deus é promover a imortalidade e a vida eterna de Seus filhos (Moisés 1:39).",
+            "source": "original",
+            "theme": "Família e relacionamentos"
+      },
+      {
+            "id": "orig-153",
+            "title": "Mensagem 153",
+            "text": "Quando reconhecemos nossa identidade divina, nenhuma tentação ou desânimo nos diminui (Moisés 1:13-22).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-154",
+            "title": "Mensagem 154",
+            "text": "A luz de Deus dissipa imediatamente qualquer sombra de medo ou dúvida (Moisés 1:21).",
+            "source": "original",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "orig-155",
+            "title": "Mensagem 155",
+            "text": "O trabalho dedicado e honesto transforma o suor do rosto em sustento digno e bênção (Moisés 5:1).",
+            "source": "original",
+            "theme": "Propósito e recomeços"
+      },
+      {
+            "id": "orig-156",
+            "title": "Mensagem 156",
+            "text": "A obediência confiante abre caminho para compreendermos propósitos maiores no futuro (Moisés 5:6).",
+            "source": "original",
+            "theme": "Propósito e recomeços"
+      },
+      {
+            "id": "orig-157",
+            "title": "Mensagem 157",
+            "text": "O amor ao próximo e a justiça constroem comunidades onde não há lugar para a pobreza de espírito (Moisés 7:18).",
+            "source": "original",
+            "theme": "Amor e bondade"
+      },
+      {
+            "id": "orig-158",
+            "title": "Mensagem 158",
+            "text": "Viver em um só coração e uma só mente cria um verdadeiro céu na Terra (Moisés 7:18).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-159",
+            "title": "Mensagem 159",
+            "text": "A compaixão divina se comove com cada dor humana e nos convida a consolar uns aos outros (Moisés 7:28-37).",
+            "source": "original",
+            "theme": "Ajuda e apoio"
+      },
+      {
+            "id": "orig-160",
+            "title": "Mensagem 160",
+            "text": "A verdade e a retidão sempre prevalecem sobre a opressão e o engano (Moisés 7:62).",
+            "source": "original",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "orig-161",
+            "title": "Mensagem 161",
+            "text": "A perseverança em meio à zombaria revela a firmeza de quem conhece a verdade (Moisés 6:31-34).",
+            "source": "original",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "orig-162",
+            "title": "Mensagem 162",
+            "text": "Deus capacita os humildes a falarem palavras de sabedoria que tocam corações (Moisés 6:32-34).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-163",
+            "title": "Mensagem 163",
+            "text": "Ensinar os filhos a amar o bem desde cedo constrói gerações íntegras e felizes (Moisés 6:58).",
+            "source": "original",
+            "theme": "Família e relacionamentos"
+      },
+      {
+            "id": "orig-164",
+            "title": "Mensagem 164",
+            "text": "Caminhar com Deus no dia a dia traz serenidade constante mesmo em tempos turbulentos (Moisés 6:34).",
+            "source": "original",
+            "theme": "Paz e equilíbrio"
+      },
+      {
+            "id": "orig-165",
+            "title": "Mensagem 165",
+            "text": "Buscar a felicidade verdadeira e a paz profunda começa dentro do próprio coração (Abraão 1:2).",
+            "source": "original",
+            "theme": "Gratidão e alegria"
+      },
+      {
+            "id": "orig-166",
+            "title": "Mensagem 166",
+            "text": "Desejar ser um seguidor da retidão abre portas para receber conhecimento e sabedoria maiores (Abraão 1:2).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-167",
+            "title": "Mensagem 167",
+            "text": "Mesmo diante de ameaças e solidão, a fé inabalável atrai o livramento divino (Abraão 1:15-16).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-168",
+            "title": "Mensagem 168",
+            "text": "A coragem de defender o que é certo preserva nossa integridade em qualquer ambiente (Abraão 1:18).",
+            "source": "original",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "orig-169",
+            "title": "Mensagem 169",
+            "text": "Contemplar o universo e as estrelas desperta reverência pela grandeza e ordem da Criação (Abraão 3:2-18).",
+            "source": "original",
+            "theme": "Família e relacionamentos"
+      },
+      {
+            "id": "orig-170",
+            "title": "Mensagem 170",
+            "text": "Cada inteligência humana possui potencial único para crescer, aprender e abençoar o mundo (Abraão 3:19-23).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-171",
+            "title": "Mensagem 171",
+            "text": "A vida mortal é uma escola preciosa para provarmos nossa fidelidade ao bem (Abraão 3:25).",
+            "source": "original",
+            "theme": "Propósito e recomeços"
+      },
+      {
+            "id": "orig-172",
+            "title": "Mensagem 172",
+            "text": "Guardar os princípios eternos no primeiro e no segundo estados coroa a alma de glória (Abraão 3:26).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-173",
+            "title": "Mensagem 173",
+            "text": "A ordem e a harmonia da criação nos inspiram a organizar nossa própria vida com propósito (Abraão 4:1-31).",
+            "source": "original",
+            "theme": "Propósito e recomeços"
+      },
+      {
+            "id": "orig-174",
+            "title": "Mensagem 174",
+            "text": "Quando enfrentamos falta de sabedoria, pedir diretamente a Deus com fé traz resposta segura (Joseph Smith—História 1:11-13).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-175",
+            "title": "Mensagem 175",
+            "text": "Uma única pergunta sincera feita em oração pode iluminar toda uma vida (Joseph Smith—História 1:14-17).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-176",
+            "title": "Mensagem 176",
+            "text": "A luz verdadeira é mais brilhante que o sol do meio-dia e traz paz imediata à alma (Joseph Smith—História 1:16).",
+            "source": "original",
+            "theme": "Paz e equilíbrio"
+      },
+      {
+            "id": "orig-177",
+            "title": "Mensagem 177",
+            "text": "Permanecer fiel àquilo que sabemos ser verdadeiro nos sustenta contra qualquer crítica (Joseph Smith—História 1:25).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-178",
+            "title": "Mensagem 178",
+            "text": "A humildade de buscar orientação nas escrituras abre os olhos para verdades transformadoras (Joseph Smith—História 1:11-12).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-179",
+            "title": "Mensagem 179",
+            "text": "O bem realizado com constância vence o preconceito e fala mais alto que as palavras (Joseph Smith—História 1:24-25).",
+            "source": "original",
+            "theme": "Propósito e recomeços"
+      },
+      {
+            "id": "orig-180",
+            "title": "Mensagem 180",
+            "text": "Cremos em ser honestos, verdadeiros, castos, benevolentes e virtuosos em todas as nossas ações (Regras de Fé 1:13).",
+            "source": "original",
+            "theme": "Amor e bondade"
+      },
+      {
+            "id": "orig-181",
+            "title": "Mensagem 181",
+            "text": "Fazer o bem a todas as pessoas é o estilo de vida que transforma o mundo ao nosso redor (Regras de Fé 1:13).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-182",
+            "title": "Mensagem 182",
+            "text": "Procuramos tudo o que é virtuoso, amável, de boa fama ou louvável para nutrir a mente (Regras de Fé 1:13).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-183",
+            "title": "Mensagem 183",
+            "text": "A esperança nos permite suportar todas as coisas com otimismo e fé no futuro (Regras de Fé 1:13).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-184",
+            "title": "Mensagem 184",
+            "text": "A benevolência genuína estende a mão sem esperar nada em troca (Regras de Fé 1:13).",
+            "source": "original",
+            "theme": "Amor e bondade"
+      },
+      {
+            "id": "orig-185",
+            "title": "Mensagem 185",
+            "text": "Cultivar pensamentos louváveis eleva o espírito e afasta a negatividade diária (Regras de Fé 1:13).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-186",
+            "title": "Mensagem 186",
+            "text": "A honestidade em cada palavra e atitude constrói uma reputação sólida e respeitada (Regras de Fé 1:13).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-187",
+            "title": "Mensagem 187",
+            "text": "A castidade e o respeito próprio preservam a pureza e a dignidade dos relacionamentos (Regras de Fé 1:13).",
+            "source": "original",
+            "theme": "Amor e bondade"
+      },
+      {
+            "id": "orig-188",
+            "title": "Mensagem 188",
+            "text": "O respeito pela liberdade de consciência promove a paz e a convivência fraterna (Regras de Fé 1:11).",
+            "source": "original",
+            "theme": "Paz e equilíbrio"
+      },
+      {
+            "id": "orig-189",
+            "title": "Mensagem 189",
+            "text": "A verdadeira fé se manifesta em boas obras e amor prático no cotidiano (Regras de Fé 1:4 / 1:13).",
+            "source": "original",
+            "theme": "Amor e bondade"
+      },
+      {
+            "id": "orig-190",
+            "title": "Mensagem 190",
+            "text": "A sabedoria divina continua guiando cada pessoa que abre o coração para ouvir (Regras de Fé 1:9).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-191",
+            "title": "Mensagem 191",
+            "text": "Reconhecer a mão de Deus na criação inspira gratidão por cada amanhecer (Moisés 2:31).",
+            "source": "original",
+            "theme": "Gratidão e alegria"
+      },
+      {
+            "id": "orig-192",
+            "title": "Mensagem 192",
+            "text": "Tudo o que Deus cria é bom e tem um propósito harmonioso na vida (Moisés 2:31).",
+            "source": "original",
+            "theme": "Propósito e recomeços"
+      },
+      {
+            "id": "orig-193",
+            "title": "Mensagem 193",
+            "text": "A paciência para esperar no Senhor fortalece a fé nos momentos de silêncio (Moisés 5:5-6).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-194",
+            "title": "Mensagem 194",
+            "text": "A retidão traz segurança mesmo quando o mundo ao redor parece incerto (Moisés 7:16-17).",
+            "source": "original",
+            "theme": "Propósito e recomeços"
+      },
+      {
+            "id": "orig-195",
+            "title": "Mensagem 195",
+            "text": "O amor puro constrói lares onde a paz habita continuamente (Moisés 7:18).",
+            "source": "original",
+            "theme": "Paz e equilíbrio"
+      },
+      {
+            "id": "orig-196",
+            "title": "Mensagem 196",
+            "text": "Cada escolha reta aproxima nossa vida da luz e da sabedoria eterna (Abraão 3:25-26).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-197",
+            "title": "Mensagem 197",
+            "text": "A busca sincera pela verdade sempre encontra a luz que dissipa a confusão (Joseph Smith—História 1:10-17).",
+            "source": "original",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "orig-198",
+            "title": "Mensagem 198",
+            "text": "O exemplo silencioso de integridade inspira outras pessoas a buscarem o bem (Regras de Fé 1:13).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-199",
+            "title": "Mensagem 199",
+            "text": "A esperança renovada diariamente transforma desafios em degraus de crescimento (Regras de Fé 1:13).",
+            "source": "original",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "orig-200",
+            "title": "Mensagem 200",
+            "text": "Espalhar mensagens de fé, virtude e amor torna cada dia mais luminoso para todos (Regras de Fé 1:13).",
+            "source": "original",
+            "theme": "Amor e bondade"
+      },
+      {
+            "id": "daniel-d1-1",
+            "title": "Consciência acima da conveniência",
+            "text": "Manter princípios e valores inegociáveis mesmo longe de casa e sob pressão cultural define o caráter.",
+            "source": "daniel",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "daniel-d1-2",
+            "title": "Integridade naquilo que parece pequeno",
+            "text": "Escolhas diárias de disciplina e fidelidade preparam o terreno para grandes responsabilidades no futuro.",
+            "source": "daniel",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "daniel-d1-3",
+            "title": "Sabedoria que vem do alto",
+            "text": "O verdadeiro discernimento e a excelência intelectual são frutos de uma vida alinhada com Deus, superando o conhecimento puramente humano.",
+            "source": "daniel",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "daniel-d2-1",
+            "title": "Deus controla a história",
+            "text": "Reis sobem e caem, impérios nascem e desaparecem, mas a autoridade final pertence exclusivamente a Deus.",
+            "source": "daniel",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "daniel-d2-2",
+            "title": "Dependência através da oração",
+            "text": "Diante de crises impossíveis, buscar respostas em unidade e oração traz revelação e livramento.",
+            "source": "daniel",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "daniel-d2-3",
+            "title": "Humildade diante do sucesso",
+            "text": "Ao receber reconhecimento, apontar a glória para Deus evita a armadilha do orgulho.",
+            "source": "daniel",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "daniel-d3-1",
+            "title": "Obediência incondicional",
+            "text": "A verdadeira fé permanece firme mesmo quando Deus escolhe não livrar imediatamente do sofrimento (\"e, se não, fica sabendo...\").",
+            "source": "daniel",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "daniel-d3-2",
+            "title": "Presença divina na provação",
+            "text": "Deus nem sempre impede o fogo, mas entra na fornalha junto com aqueles que permanecem fiéis a Ele.",
+            "source": "daniel",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "daniel-d3-3",
+            "title": "Testemunho através da coragem",
+            "text": "A recusa em se curvar aos ídolos do tempo presente transforma a perseguição em um testemunho poderoso.",
+            "source": "daniel",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "daniel-d4-1",
+            "title": "A soberba precede a queda",
+            "text": "Atribuir conquistas apenas à própria força leva à humilhação; todo poder é uma concessão temporária.",
+            "source": "daniel",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "daniel-d4-2",
+            "title": "O propósito da disciplina",
+            "text": "As provações permitidas por Deus visam quebrar a autossuficiência humana e restaurar a sanidade espiritual.",
+            "source": "daniel",
+            "theme": "Propósito e recomeços"
+      },
+      {
+            "id": "daniel-d4-3",
+            "title": "Ninguém está além da graça",
+            "text": "Até mesmo os líderes mais arrogantes podem ser transformados quando reconhecem a grandeza do Altíssimo.",
+            "source": "daniel",
+            "theme": "Propósito e recomeços"
+      },
+      {
+            "id": "daniel-d5-1",
+            "title": "Ignorar a história tem um preço",
+            "text": "Repetir os erros do passado e desprezar lições já aprendidas acelera o juízo.",
+            "source": "daniel",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "daniel-d5-2",
+            "title": "Não profanar o que é sagrado",
+            "text": "Tratar com leviandade as coisas de Deus demonstra falta de temor e atrai consequências severas.",
+            "source": "daniel",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "daniel-d5-3",
+            "title": "O peso da balança divina",
+            "text": "A vida humana é avaliada pela integridade e justiça de Deus, não pelas aparências ou riquezas.",
+            "source": "daniel",
+            "theme": "Amor e bondade"
+      },
+      {
+            "id": "daniel-d6-1",
+            "title": "Vida irrepreensível",
+            "text": "Uma conduta íntegra faz com que os inimigos não encontrem falhas morais para acusar, restando apenas atacar a fé.",
+            "source": "daniel",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "daniel-d6-2",
+            "title": "Hábitos espirituais inegociáveis",
+            "text": "A oração constante não é um recurso de emergência, mas um estilo de vida mantido antes, durante e depois das crises.",
+            "source": "daniel",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "daniel-d6-3",
+            "title": "Fidelidade que fecha bocas",
+            "text": "A confiança plena em Deus neutraliza as armadilhas humanas e transforma covas de leões em lugares de milagres.",
+            "source": "daniel",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "daniel-d7-1",
+            "title": "Os reinos humanos são temporários",
+            "text": "Sistemas opressores podem parecer invencíveis, mas têm prazo de validade determinado por Deus.",
+            "source": "daniel",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "daniel-d7-2",
+            "title": "O Filho do Homem reinará",
+            "text": "A história não caminha para o caos definitivo, mas para o estabelecimento de um reino eterno e justo.",
+            "source": "daniel",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "daniel-d7-3",
+            "title": "Perseverança dos santos",
+            "text": "Mesmo em tempos de perseguição intensa, a vitória final pertence ao povo de Deus.",
+            "source": "daniel",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "daniel-d8-1",
+            "title": "O mal tem limites",
+            "text": "Por mais destrutivo que um poder opressor pareça, sua duração e alcance estão sob o controle divino.",
+            "source": "daniel",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "daniel-d8-2",
+            "title": "A verdade prevalece sobre o engano",
+            "text": "Mesmo quando a verdade parece lançada por terra, ela será restaurada pelo poder de Deus.",
+            "source": "daniel",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "daniel-d8-3",
+            "title": "O peso da revelação",
+            "text": "Compreender a seriedade dos propósitos espirituais gera compaixão e responsabilidade, não apenas curiosidade.",
+            "source": "daniel",
+            "theme": "Propósito e recomeços"
+      },
+      {
+            "id": "daniel-d9-1",
+            "title": "As Escrituras impulsionam a oração",
+            "text": "Compreender as promessas de Deus leva à intercessão ativa pelo cumprimento delas.",
+            "source": "daniel",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "daniel-d9-2",
+            "title": "Identificação e arrependimento",
+            "text": "Líderes espirituais não apontam apenas o erro dos outros; eles se colocam na brecha e oram pelo povo.",
+            "source": "daniel",
+            "theme": "Propósito e recomeços"
+      },
+      {
+            "id": "daniel-d9-3",
+            "title": "A misericórdia é a base do perdão",
+            "text": "O clamor a Deus não se apoia nos méritos humanos, mas na Sua grande misericórdia e fidelidade.",
+            "source": "daniel",
+            "theme": "Amor e bondade"
+      },
+      {
+            "id": "daniel-d10-1",
+            "title": "Há uma guerra invisível em curso",
+            "text": "Os conflitos visíveis na terra refletem batalhas espirituais nos lugares celestiais.",
+            "source": "daniel",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "daniel-d10-2",
+            "title": "A oração movimenta o mundo espiritual",
+            "text": "Desde o primeiro momento de busca sincera, Deus ouve e envia resposta, ainda que haja resistência no caminho.",
+            "source": "daniel",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "daniel-d10-3",
+            "title": "Fortalecimento na fraqueza",
+            "text": "Diante da grandeza divina, a força humana desfalece, mas o toque de Deus restaura a paz e o vigor.",
+            "source": "daniel",
+            "theme": "Paz e equilíbrio"
+      },
+      {
+            "id": "daniel-d11-1",
+            "title": "Segurança além dos governos",
+            "text": "Alianças políticas e instabilidades humanas se repetem, provando que nossa verdadeira segurança está em Deus.",
+            "source": "daniel",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "daniel-d11-2",
+            "title": "Conhecer a Deus gera coragem",
+            "text": "Aqueles que conhecem verdadeiramente ao seu Deus permanecem firmes e agem com sabedoria nos tempos difíceis.",
+            "source": "daniel",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "daniel-d11-3",
+            "title": "A provação purifica",
+            "text": "Os tempos difíceis servem para refinar, purificar e fortalecer a nossa fé.",
+            "source": "daniel",
+            "theme": "Coragem e superação"
+      },
+      {
+            "id": "daniel-d12-1",
+            "title": "A morte não é o fim",
+            "text": "Há uma promessa segura de ressurreição e recompensa eterna para os que permanecem fiéis.",
+            "source": "daniel",
+            "theme": "Fé e esperança"
+      },
+      {
+            "id": "daniel-d12-2",
+            "title": "O valor de guiar outros à justiça",
+            "text": "Aqueles que ensinam a verdade e conduzem pessoas a Deus brilharão como estrelas para sempre.",
+            "source": "daniel",
+            "theme": "Sabedoria e escolhas"
+      },
+      {
+            "id": "daniel-d12-3",
+            "title": "Fidelidade até o fim",
+            "text": "Enquanto os propósitos do futuro se desenrolam no tempo de Deus, o nosso chamado é seguir firmes até o fim.",
+            "source": "daniel",
+            "theme": "Propósito e recomeços"
+      }
+];
 
     // 5 templates coloridos distintos
     const TEMPLATES = [
@@ -408,8 +2024,8 @@
 
     const state = {
       selectedTemplateId: TEMPLATES[0].id,
-      selectedPhraseIds: ['d3-2'],
-      chapterFilter: 'all',
+      selectedPhraseIds: ['daniel-d3-2'],
+      selectedTheme: 'Coragem e superação',
       searchQuery: '',
       mascotImage: null,
       processedMascotCanvas: null,
@@ -657,7 +2273,7 @@
 
       const tpl = TEMPLATES.find(t => t.id === state.selectedTemplateId) || TEMPLATES[0];
       const selectedPhrases = state.selectedPhraseIds
-        .map(id => DANIEL_DATA.find(p => p.id === id))
+        .map(id => PHRASES_DATA.find(p => p.id === id))
         .filter(Boolean);
 
       ctx.clearRect(0, 0, W, H);
@@ -672,19 +2288,13 @@
       ctx.font = '800 24px "Plus Jakarta Sans", sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText('LIVRO DE DANIEL', 240, 100);
+      ctx.fillText('MENSAGEM DO BEM', 240, 100);
 
-      let capLabel = 'CAPÍTULO';
-      if (selectedPhrases.length === 1) {
-        capLabel = `CAPÍTULO ${selectedPhrases[0].chapter}`;
-      } else if (selectedPhrases.length > 1) {
-        const caps = [...new Set(selectedPhrases.map(p => p.chapter))];
-        capLabel = caps.length === 1 ? `CAPÍTULO ${caps[0]}` : `CAPS. ${caps.join(' • ')}`;
-      }
+      const themeLabel = selectedPhrases.length ? selectedPhrases[0].theme.toUpperCase() : 'INSPIRAÇÃO PARA HOJE';
       ctx.fillStyle = tpl.accent;
-      ctx.font = '800 28px "Plus Jakarta Sans", sans-serif';
+      ctx.font = '700 25px Fredoka, sans-serif';
       ctx.textAlign = 'right';
-      ctx.fillText(capLabel, W - 70, 100);
+      ctx.fillText(themeLabel, W - 70, 100, 610);
       ctx.restore();
 
       // Balão de Fala do Mascote
@@ -715,64 +2325,40 @@
       if (selectedPhrases.length === 0) {
         ctx.save();
         ctx.fillStyle = tpl.bubbleText;
-        ctx.font = '700 38px "Plus Jakarta Sans", sans-serif';
+        ctx.font = '700 44px Fredoka, sans-serif';
         ctx.textAlign = 'center';
         ctx.fillText('Selecione ao menos 1 ensinamento', W / 2, by + bh * 0.45);
-        ctx.font = '500 28px Inter, sans-serif';
+        ctx.font = '500 32px Fredoka, sans-serif';
         ctx.fillText('para o mascote RepassaAí falar no seu Status.', W / 2, by + bh * 0.52);
         ctx.restore();
       } else {
-        const count = selectedPhrases.length;
-        const titleFontSize = count === 1 ? 38 : count === 2 ? 32 : 28;
-        const bodyFontSize = count === 1 ? 35 : count === 2 ? 29 : 25;
-        const bodyLineHeight = Math.round(bodyFontSize * 1.35);
-        const padX = 56;
+        const bodyFontSize = 48;
+        const bodyLineHeight = Math.round(bodyFontSize * 1.32);
+        const padX = 66;
         const innerW = bw - padX * 2;
-
-        const blocks = selectedPhrases.map(item => {
-          const tagText = `CAP. ${item.chapter} • ${item.title.toUpperCase()}`;
-          ctx.font = `800 ${titleFontSize}px "Plus Jakarta Sans", sans-serif`;
-          const tagLines = wrapTextLines(ctx, tagText, innerW);
-          ctx.font = `600 ${bodyFontSize}px Inter, sans-serif`;
-          const bodyLines = wrapTextLines(ctx, `"${item.text}"`, innerW);
-          const height = tagLines.length * (titleFontSize + 8) + bodyLines.length * bodyLineHeight + 18;
-          return { item, tagLines, bodyLines, height };
-        });
-
-        const totalBlocksHeight = blocks.reduce((acc, b) => acc + b.height, 0) + (blocks.length - 1) * 28;
-        let curY = by + Math.max(44, (bh - totalBlocksHeight) / 2);
-
-        blocks.forEach((b, idx) => {
-          ctx.save();
-          ctx.fillStyle = tpl.bubbleTitle;
-          ctx.font = `800 ${titleFontSize}px "Plus Jakarta Sans", sans-serif`;
-          ctx.textAlign = 'left';
-          ctx.textBaseline = 'top';
-          for (const tLine of b.tagLines) {
-            ctx.fillText(tLine, bx + padX, curY);
-            curY += titleFontSize + 8;
-          }
-
-          curY += 6;
-          ctx.fillStyle = tpl.bubbleText;
-          ctx.font = `600 ${bodyFontSize}px Inter, sans-serif`;
-          for (const line of b.bodyLines) {
-            ctx.fillText(line, bx + padX, curY);
-            curY += bodyLineHeight;
-          }
-
-          if (idx < blocks.length - 1) {
-            curY += 14;
-            ctx.strokeStyle = 'rgba(15, 23, 42, 0.14)';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(bx + padX + 40, curY);
-            ctx.lineTo(bx + bw - padX - 40, curY);
-            ctx.stroke();
-            curY += 14;
-          }
-          ctx.restore();
-        });
+        const item = selectedPhrases[0];
+        ctx.font = `600 ${bodyFontSize}px Fredoka, sans-serif`;
+        let bodyLines = wrapTextLines(ctx, `“${item.text}”`, innerW);
+        let finalFontSize = bodyFontSize;
+        // Keep long messages readable while fitting inside the speech bubble.
+        while (bodyLines.length * Math.round(finalFontSize * 1.28) > bh - 150 && finalFontSize > 35) {
+          finalFontSize -= 2;
+          ctx.font = `600 ${finalFontSize}px Fredoka, sans-serif`;
+          bodyLines = wrapTextLines(ctx, `“${item.text}”`, innerW);
+        }
+        const lineHeight = Math.round(finalFontSize * 1.28);
+        const totalTextHeight = bodyLines.length * lineHeight;
+        let curY = by + Math.max(65, (bh - totalTextHeight) / 2);
+        ctx.save();
+        ctx.fillStyle = tpl.bubbleText;
+        ctx.font = `600 ${finalFontSize}px Fredoka, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        for (const line of bodyLines) {
+          ctx.fillText(line, W / 2, curY, innerW);
+          curY += lineHeight;
+        }
+        ctx.restore();
       }
 
       drawMascot(ctx, tpl);
@@ -841,116 +2427,74 @@
       }
     }
 
-    function populateChapterControls() {
-      const select = document.getElementById('chapterFilter');
-      const pills = document.getElementById('chapterPills');
-      pills.innerHTML = '';
-
-      const allPill = document.createElement('button');
-      allPill.type = 'button';
-      allPill.dataset.cap = 'all';
-      allPill.className = 'px-3 py-1 rounded-full text-xs font-bold shrink-0 transition cursor-pointer bg-blue-600 text-white';
-      allPill.textContent = 'Todos';
-      pills.appendChild(allPill);
-
-      for (let c = 1; c <= 12; c++) {
-        const opt = document.createElement('option');
-        opt.value = String(c);
-        opt.textContent = `Capítulo ${c}`;
-        select.appendChild(opt);
-
-        const pill = document.createElement('button');
-        pill.type = 'button';
-        pill.dataset.cap = String(c);
-        pill.className = 'px-2.5 py-1 rounded-full text-xs font-semibold shrink-0 transition cursor-pointer bg-slate-100 text-slate-700 hover:bg-slate-200';
-        pill.textContent = `Cap. ${c}`;
-        pills.appendChild(pill);
+    function renderThemes() {
+      const grid = document.getElementById('themeGrid');
+      grid.innerHTML = '';
+      for (const [name, emoji, description] of THEME_LIST) {
+        const count = PHRASES_DATA.filter(item => item.theme === name).length;
+        const active = state.selectedTheme === name;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `text-left rounded-2xl border p-3 transition hover:-translate-y-0.5 hover:shadow-md ${active ? 'border-blue-600 bg-blue-50 shadow-sm' : 'border-slate-200 bg-white hover:border-blue-300'}`;
+        btn.innerHTML = `
+          <div class="flex items-center gap-2 mb-1"><span class="text-2xl">${emoji}</span><span class="text-sm font-bold text-slate-800">${name}</span></div>
+          <p class="text-[11px] text-slate-500 leading-snug">${description}</p>
+          <p class="text-[11px] font-semibold text-blue-700 mt-2">${count} mensagens</p>
+        `;
+        btn.onclick = () => {
+          state.selectedTheme = name;
+          state.searchQuery = '';
+          document.getElementById('searchInput').value = '';
+          renderThemes();
+          renderPhrases();
+        };
+        grid.appendChild(btn);
       }
-
-      const syncCapUI = (val) => {
-        state.chapterFilter = val;
-        select.value = val;
-        pills.querySelectorAll('button').forEach(b => {
-          const isSel = b.dataset.cap === val;
-          b.className = `px-2.5 py-1 rounded-full text-xs font-semibold shrink-0 transition cursor-pointer ${
-            isSel ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-          }`;
-        });
-        renderPhrases();
-      };
-
-      select.addEventListener('change', e => syncCapUI(e.target.value));
-      pills.addEventListener('click', e => {
-        const btn = e.target.closest('button[data-cap]');
-        if (btn) syncCapUI(btn.dataset.cap);
-      });
     }
 
     function updateCounter() {
-      document.getElementById('selectionCounter').textContent = `${state.selectedPhraseIds.length} / ${MAX_SELECTION} selecionadas`;
+      document.getElementById('selectionCounter').textContent = state.selectedPhraseIds.length ? '1 mensagem selecionada' : 'Nenhuma selecionada';
     }
 
     function togglePhraseSelection(id) {
-      const idx = state.selectedPhraseIds.indexOf(id);
-      if (idx > -1) {
-        state.selectedPhraseIds.splice(idx, 1);
-      } else {
-        if (state.selectedPhraseIds.length >= MAX_SELECTION) {
-          showToast(`Você pode selecionar até ${MAX_SELECTION} frases por Status.`, 'warning');
-          return;
-        }
-        state.selectedPhraseIds.push(id);
-      }
+      state.selectedPhraseIds = [id];
       updateCounter();
       renderPhrases();
       renderCanvas();
+      showToast('Mensagem selecionada para o seu Status!', 'success');
     }
 
     function renderPhrases() {
       const list = document.getElementById('phrasesList');
+      const title = document.getElementById('activeThemeTitle');
       const query = state.searchQuery.trim().toLowerCase();
-
-      const filtered = DANIEL_DATA.filter(item => {
-        const matchCap = state.chapterFilter === 'all' || String(item.chapter) === state.chapterFilter;
-        if (!matchCap) return false;
+      const filtered = PHRASES_DATA.filter(item => {
+        const matchTheme = !state.selectedTheme || item.theme === state.selectedTheme;
+        if (!matchTheme) return false;
         if (!query) return true;
-        return (
-          item.title.toLowerCase().includes(query) ||
-          item.text.toLowerCase().includes(query) ||
-          item.chapterTitle.toLowerCase().includes(query) ||
-          `capítulo ${item.chapter}`.includes(query)
-        );
+        return item.title.toLowerCase().includes(query) || item.text.toLowerCase().includes(query) || item.theme.toLowerCase().includes(query);
       });
-
+      title.textContent = state.selectedTheme || (query ? 'Resultados da busca' : 'Escolha um tema');
       list.innerHTML = '';
-      if (filtered.length === 0) {
-        list.innerHTML = `<div class="text-center py-8 text-sm text-slate-500">Nenhuma frase encontrada para "${state.searchQuery}".</div>`;
+      if (!state.selectedTheme && !query) {
+        list.innerHTML = '<p class="text-sm text-slate-500 text-center py-8">Toque em um tema para ver as mensagens.</p>';
         return;
       }
-
+      if (filtered.length === 0) {
+        list.innerHTML = '<div class="text-center py-8 text-sm text-slate-500">Nenhuma mensagem encontrada.</div>';
+        return;
+      }
       for (const item of filtered) {
         const selected = state.selectedPhraseIds.includes(item.id);
-        const card = document.createElement('div');
-        card.className = `rounded-xl p-3.5 border transition cursor-pointer select-none ${
-          selected
-            ? 'border-blue-600 bg-blue-50/70 shadow-sm'
-            : 'border-slate-200 hover:border-slate-300 bg-white'
-        }`;
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = `w-full text-left rounded-2xl p-4 border transition cursor-pointer ${selected ? 'border-blue-600 bg-blue-50/80 shadow-sm' : 'border-slate-200 hover:border-blue-300 bg-white'}`;
         card.innerHTML = `
           <div class="flex items-start gap-3">
-            <div class="mt-0.5 w-5 h-5 rounded-md border flex items-center justify-center shrink-0 ${
-              selected ? 'bg-blue-600 border-blue-600 text-white' : 'border-slate-300 bg-white'
-            }">
-              ${selected ? '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>' : ''}
-            </div>
+            <span class="text-2xl mt-0.5">${selected ? '💙' : '💬'}</span>
             <div class="min-w-0 flex-1">
-              <div class="flex flex-wrap items-center gap-1.5 mb-1">
-                <span class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-slate-900 text-cyan-300">
-                  Cap. ${item.chapter}
-                </span>
-                <span class="text-xs font-bold text-blue-900">${item.title}</span>
-              </div>
-              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">${item.text}</p>
+              <p class="font-display text-base sm:text-lg font-semibold text-slate-800 leading-snug">${item.text}</p>
+              <span class="inline-block mt-2 text-[11px] font-semibold text-blue-700">${selected ? 'Selecionada para o Status' : 'Toque para usar esta mensagem'}</span>
             </div>
           </div>
         `;
@@ -960,12 +2504,15 @@
     }
 
     function pickRandomPhrase() {
-      const randomItem = DANIEL_DATA[Math.floor(Math.random() * DANIEL_DATA.length)];
+      const pool = state.selectedTheme ? PHRASES_DATA.filter(item => item.theme === state.selectedTheme) : PHRASES_DATA;
+      const randomItem = pool[Math.floor(Math.random() * pool.length)];
+      state.selectedTheme = randomItem.theme;
       state.selectedPhraseIds = [randomItem.id];
+      renderThemes();
       updateCounter();
       renderPhrases();
       renderCanvas();
-      showToast(`Sorteado: Daniel Cap. ${randomItem.chapter} — ${randomItem.title}`, 'info');
+      showToast('Mensagem escolhida para inspirar seu dia!', 'info');
     }
 
     function downloadStatusImage() {
@@ -977,7 +2524,7 @@
         const canvas = document.getElementById('statusCanvas');
         const link = document.createElement('a');
         const capTag = state.selectedPhraseIds.map(id => id.split('-')[0].replace('d', 'cap')).join('_');
-        link.download = `repassaai_daniel_${capTag}_status.png`;
+        link.download = `repassaai_mensagem_${capTag}_status.png`;
         link.href = canvas.toDataURL('image/png');
         link.click();
         showToast('Imagem PNG (1080×1920) gerada com sucesso!', 'success');
@@ -992,12 +2539,12 @@
         return;
       }
       const canvas = document.getElementById('statusCanvas');
-      const shareText = 'Mensagem do bem com ensinamentos de Daniel! Acesse www.repassaai.com.br e monte sua mensagem do bem positiva!';
+      const shareText = 'Uma mensagem do bem para inspirar seu dia! Acesse www.repassaai.com.br e compartilhe positividade!';
 
       try {
         canvas.toBlob(async (blob) => {
           if (blob) {
-            const file = new File([blob], 'repassaai_status_daniel.png', { type: 'image/png' });
+            const file = new File([blob], 'repassaai_status_mensagem.png', { type: 'image/png' });
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
               try {
                 await navigator.share({
@@ -1024,6 +2571,16 @@
 
     document.getElementById('searchInput').addEventListener('input', e => {
       state.searchQuery = e.target.value;
+      if (state.searchQuery.trim()) state.selectedTheme = null;
+      renderThemes();
+      renderPhrases();
+    });
+
+    document.getElementById('btnAllThemes').addEventListener('click', () => {
+      state.selectedTheme = null;
+      state.searchQuery = '';
+      document.getElementById('searchInput').value = '';
+      renderThemes();
       renderPhrases();
     });
 
@@ -1056,7 +2613,7 @@
     });
 
     renderTemplates();
-    populateChapterControls();
+    renderThemes();
     updateCounter();
     renderPhrases();
     loadMascotFromSrc(LOCAL_MASCOT_SRC, false, true);
